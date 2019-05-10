@@ -1,8 +1,8 @@
 {
-  "name": "easyapi-team-vue",
+  "name": "easyapi-team",
   "version": "1.0.0",
   "description": "EasyAPI Team",
-  "author": "Jinkin Wu <jinkin1995@gmail.com>",
+  "author": "EasyAPI<leida@easyapi.com>",
   "private": true,
   "scripts": {
     "dev": "npm run dll && node build/dev-server.js",

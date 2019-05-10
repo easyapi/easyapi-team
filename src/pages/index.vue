@@ -140,7 +140,7 @@
       changeTeam() {
         this.$ajax({
           method: "POST",
-          url: changeTeam + this.domain
+          url: changeTeam + "/" + this.domain
         }).then(res => {
           console.log(res)
           if (res.data.code === 1) {

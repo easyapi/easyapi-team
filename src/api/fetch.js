@@ -8,11 +8,7 @@ import Cookies from 'js-cookie'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
-  //部署注销↓-----
-  // let token='eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4Mzk2MTQwOTBAcXEuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTU1OTE4NjI1NX0.VEYdhkvlInkVd8SuQ2Qgl2O_mKqnSag8C3XzjxaojPQOvA9O3wA0BMxnrUjZ-RgiDvMiEwYQAqP2z-RoqVz2WA'
-  // Cookies.set('authenticationToken',token)
-  //部署注销↑-----
-  if (config.url.indexOf('/page/team')==-1){
+  if (config.url.indexOf('/page/team') == -1) {
     if (!Cookies.get('authenticationToken')) {
       location.href = 'https://account.easyapi.com/login'// 如果没有authenticationToken存在
     }
@@ -61,7 +57,7 @@ axios.interceptors.response.use(function (response) {
   } else if (error.response.data.code === -1) {
     // 处理-3非法团队
     // window.location.href = "https://team.easyapi.com";
-  }  else {
+  } else {
     return Promise.reject(error);
   }
 });

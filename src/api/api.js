@@ -58,8 +58,6 @@ export const getQiniuToken = `${domainUrl}/api/qiniu/upToken`
 
 //获取发票Token
 export const getInvoiceToken = `${domainUrl}/api/invoice/token`
-//切换默认团队
-export const changeTeam = `${domainUrl}/api/changeTeam/`
 //获取团队信息
 export const getTeamInfoUrl = `${domainUrl}/api/team/view`
 
