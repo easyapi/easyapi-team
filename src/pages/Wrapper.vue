@@ -15,6 +15,9 @@
         <li :class="{'active': $route.name === 'Members'}">
           <router-link to="/members">成员</router-link>
         </li>
+        <li :class="{'active': $route.name === 'Services'}">
+          <router-link to="/services">服务</router-link>
+        </li>
         <li :class="{'active': $route.name === 'Orders'}">
           <router-link to="/orders">订单</router-link>
         </li>

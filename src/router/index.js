@@ -1,8 +1,8 @@
 /*
  * @Author: Jinkin1995 - jinkin1995@gmail.com
  * @Date: 2017-12-11 20:28:49
- * @Last Modified by:   Jinkin1995 - jinkin1995@gmail.com
- * @Last Modified time: 2017-09-01 20:28:49
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2019-08-03 12:08:11
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -16,13 +16,17 @@ const Index = () => import(/* webpackChunkName: "index" */ '../pages/index.vue')
 const Account = () => import('../pages/account.vue')
 
 const Recharges = () => import('../pages/recharge/index.vue')
+
 const RechargeSuccess = () => import('../pages/recharge/success.vue')
 
 const Members = () => import('../pages/member/index.vue')
 
+const Services = () => import('../pages/service/index.vue')
+
 const Orders = () => import('../pages/order/index.vue')
 
 const New = () => import('../pages/new.vue')
+
 const NewSuccess = () => import('../pages/new-success.vue')
 
 Vue.use(Router)
@@ -48,6 +52,10 @@ export default new Router({
           name: 'Recharges',
           component: Recharges
         }, {
+          path: 'services',
+          name: 'Services',
+          component: Services
+        },{
           path: 'members',
           name: 'Members',
           component: Members
