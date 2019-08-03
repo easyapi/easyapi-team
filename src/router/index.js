@@ -1,9 +1,3 @@
-/*
- * @Author: Jinkin1995 - jinkin1995@gmail.com
- * @Date: 2017-12-11 20:28:49
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-08-03 12:08:11
- */
 import Vue from 'vue'
 import Router from 'vue-router'
 
@@ -55,7 +49,7 @@ export default new Router({
           path: 'services',
           name: 'Services',
           component: Services
-        },{
+        }, {
           path: 'members',
           name: 'Members',
           component: Members
