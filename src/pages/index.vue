@@ -40,7 +40,7 @@
     <div class="team-business">
       <div class="business-details">
         <a  style="display: block"  @click="jumpHref('https://doc.easyapi.com')">
-          <img src="../assets/images/file.png" alt="">
+          <img src="../../static/images/index/file.png" alt="">
           <span class="details-name">API文档</span>
           <span class="service-introduction" style="margin-top:5px;">API开发文档，立刻着手开发</span>
           <span class="btn" style="margin-top:32px;">文档中心</span>
@@ -48,7 +48,7 @@
       </div>
       <div class="business-details">
         <a   style="display: block" @click="jumpHref('https://monitor.easyapi.com')">
-          <img src="../assets/images/monitor.png" alt="">
+          <img src="../../static/images/index/monitor.png" alt="">
           <span class="details-name">API监控</span>
           <span class="service-introduction" style="margin-top:5px;">3种API监控方式</span>
           <span class="service-introduction">全方面保障您的API接口</span>
@@ -57,7 +57,7 @@
       </div>
       <div class="business-details">
         <a style="display: block" @click="jumpHref('https://gateway.easyapi.com')">
-          <img src="../assets/images/gateway.png" alt="">
+          <img src="../../static/images/index/gateway.png" alt="">
           <span class="details-name">API网关</span>
           <span class="service-introduction">鉴权、限流、接口容器等</span>
           <span class="btn" style="margin-top:32px;">网关中心</span>
@@ -65,7 +65,7 @@
       </div>
       <div class="business-details">
         <a  style="display: block" @click="jumpHref('https://service.easyapi.com')">
-          <img src="../assets/images/service.png" alt="">
+          <img src="../../static/images/index/service.png" alt="">
           <span class="details-name">API服务</span>
           <span class="service-introduction" style="margin-top:5px;">第三方API接口服务</span>
           <span class="service-introduction">独立的接口场景化服务</span>
@@ -200,7 +200,7 @@
   .team-hl {
     width: 100%;
     height: 450px;
-    background: url(../assets/images/background.png) no-repeat;
+    background: url('../../static/images/bg_index.png') no-repeat;
     background-size: 100% 100%;
   }
 
@@ -367,6 +367,6 @@
     font-size: 14px;
     text-align: center;
   }
+
+
 </style>
-
-

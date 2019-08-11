@@ -29,7 +29,7 @@
             <span><img src="../../assets/images/wechat.png" alt="" style="padding-top:10px;"></span>
           </div>
           <div class="payment" :class="{state:assignment==='支付宝'}"  @click="stand('支付宝')">
-            <span> <img src="../../assets/images/alipay2.png" alt="" style="padding-top:8px;"></span>
+            <span> <img src="../../assets/images/alipay.png" alt="" style="padding-top:8px;"></span>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@
             obj.price = res.data.content[key];
             arr.push(obj);
           });
-          
+
           this.frequency = arr;
           console.log(this.frequency);
             // this.servicePriceId = res.data.content[0].servicePriceId
@@ -301,7 +301,7 @@
       // this.choosePaymentMethod()
     },
     watch: {
-      
+
     }
   }
 </script>
