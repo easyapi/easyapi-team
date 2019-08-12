@@ -7,7 +7,7 @@
         <Col span="12" class="ts-btn">
           <a href="/members">
             <div class="ts-btn_t">
-              <img class="icon" src="../assets/images/team-success_member.png">
+              <img class="icon" src="../../static/images/success_member.png">
               <span class="p">添加成员</span>
             </div>
           </a>
@@ -15,7 +15,7 @@
         <Col span="12" class="ts-btn">
           <a href="/account">
             <div class="ts-btn_t">
-              <img class="icon" src="../assets/images/team-success_recharge.png">
+              <img class="icon" src="../../static/images/success_recharge.png">
               <span class="p">账户充值</span>
             </div>
           </a>
@@ -28,7 +28,7 @@
         <Col span="6" class="tb-btn">
           <a href="https://doc.easyapi.com">
             <div class="tb-btn_t">
-              <img class="icon" src="../assets/images/team-success_api.png">
+              <img class="icon" src="../../static/images/success_api.png">
               <p class="p">API文档</p>
             </div>
           </a>
@@ -36,7 +36,7 @@
         <Col span="6" class="tb-btn">
           <a href="https://monitor.easyapi.com">
             <div class="tb-btn_t">
-              <img class="icon" src="../assets/images/team-success_monitor.png">
+              <img class="icon" src="../../static/images/success_monitor.png">
               <p class="p">API监控</p>
             </div>
           </a>
@@ -44,7 +44,7 @@
         <Col span="6" class="tb-btn">
           <a href="https://gateway.easyapi.com">
             <div class="tb-btn_t">
-              <img class="icon" src="../assets/images/team-success_gateway.png">
+              <img class="icon" src="../../static/images/success_gateway.png">
               <p class="p">API网关</p>
             </div>
           </a>
@@ -52,7 +52,7 @@
         <Col span="6" class="tb-btn">
           <a href="https://market.easyapi.com">
             <div class="tb-btn_t">
-              <img class="icon" src="../assets/images/team-success_service.png">
+              <img class="icon" src="../../static/images/success_service.png">
               <p class="p">API服务</p>
             </div>
           </a>

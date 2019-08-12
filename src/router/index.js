@@ -23,6 +23,14 @@ const New = () => import('../pages/new.vue')
 
 const NewSuccess = () => import('../pages/new-success.vue')
 
+const RenewCount = () => import('../pages/renew/count.vue')
+
+const RenewMonthly = () => import('../pages/renew/monthly.vue')
+
+const RenewAlipay = () => import('../pages/renew/alipay.vue')
+
+const RenewSuccess = () => import('../pages/renew/success.vue')
+
 Vue.use(Router)
 
 export default new Router({
@@ -71,6 +79,26 @@ export default new Router({
       path: '/recharge/success',
       name: '充值成功',
       component: RechargeSuccess
+    },
+    {
+      path: '/renew/count',
+      name: 'renew-count',
+      component: RenewCount
+    },
+    {
+      path: '/renew/monthly',
+      name: 'renew-monthly',
+      component: RenewMonthly
+    },
+    {
+      path: '/renew/alipay',
+      name: 'renew-alipay',
+      component: RenewAlipay
+    },
+    {
+      path: '/renew/success',
+      name: 'renew-success',
+      component: RenewSuccess
     },
   ]
 })

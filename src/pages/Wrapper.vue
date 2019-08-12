@@ -70,8 +70,6 @@
     methods: {
       // 获取成员列表
       getTeamUserList: function () {
-        console.log(this.$store.state);
-        console.log(this.$store.state.user.team.id);
         this.loadingMemberList = true
         this.$ajax({
           method: 'GET',
@@ -82,7 +80,6 @@
             size: 100
           }
         }).then(res => {
-          console.log(res)
           this.members = res.data.content;
           this.loadingMemberList = false;
         }).catch((err) => {
