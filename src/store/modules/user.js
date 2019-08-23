@@ -4,7 +4,7 @@ import {getAccountInfo} from '@/api/api'
 
 const user = {
   state: {
-    accountInfo:'',
+    accountInfo: '',
     userId: '',
     username: '',
     nickname: '',
@@ -22,8 +22,8 @@ const user = {
 
   mutations: {
     //accountInfo
-    SET_ACCOUNTINFO:(state,accountInfo)=>{
-      state.accountInfo=accountInfo
+    SET_ACCOUNTINFO: (state, accountInfo) => {
+      state.accountInfo = accountInfo
     },
     SET_USERID: (state, userId) => {
       state.userId = userId
@@ -71,16 +71,15 @@ const user = {
         method: 'GET',
         url: getAccountInfo,
       }).then(res => {
-        console.log(res)
         let userInfoData = res.data
-        commit('SET_ACCOUNTINFO',userInfoData)
+        commit('SET_ACCOUNTINFO', userInfoData)
         commit('SET_USERID', userInfoData.id)
         commit('SET_USERNAME', userInfoData.username)
         commit('SET_NICKNAME', userInfoData.nickname)
         commit('SET_PHOTO', userInfoData.photo)
         commit('SET_MOBILE', userInfoData.mobile)
         commit('SET_EMAIL', userInfoData.email)
-        if (userInfoData.team){
+        if (userInfoData.team) {
           //团队信息{}，包括：name，img，id。。
           commit('SET_TEAM', userInfoData.team)
           //团队信息具体信息

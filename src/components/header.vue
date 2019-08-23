@@ -58,7 +58,6 @@
 
 <script>
   import {mapGetters} from 'vuex'
-  import {getAccountInfo} from '../api/api'
   import Cookies from 'js-cookie'
   export default {
     'name': 'Header',
