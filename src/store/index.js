@@ -1,17 +1,20 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import mutations from "./mutations";
-import actions from "./actions";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import user from './modules/user'
+import team from './modules/team'
+import getters from './getters'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
-const state = {
-  // 账号信息
-  accountInfo: {}
-};
+const store = new Vuex.Store({
+  modules: {
+    user,
+    team
+  },
+  mutations: {},
+  actions: {},
+  getters
 
-export default new Vuex.Store({
-  state,
-  actions,
-  mutations
-});
+})
+
+export default store
