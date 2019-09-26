@@ -1,66 +1,125 @@
-import axios from 'axios'
-import router from '../router'
-import Cookies from 'js-cookie'
+let accessToken = null
+let authToken = null
 
-// request header
-// axios.defaults.baseURL = 'https://api2.easyapi.com';
-// axios.defaults.headers.post['encryptDisable'] = true;
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-// 添加请求拦截器
-axios.interceptors.request.use(function (config) {
-  if (config.url.indexOf('/page/team') == -1) {
-    if (!Cookies.get('authenticationToken')) {
-      location.href = 'https://account.easyapi.com/login'// 如果没有authenticationToken存在
-    }
+export const setToken = (t) => {
+    return new Promise((resolve, reject) => {
+        accessToken = t
+        resolve()
+    })
+}
+
+export const setAuthToken = (t) => {
+  return new Promise((resolve, reject) => {
+      authToken = t
+      resolve()
+  })
+}
+
+export const getAuthToken = () => {
+  return authToken
+}
+
+//--- public ajax sender
+export const ajaxSender = (params, vue) => {
+  if(vue) {
+    vue.$loadingStart()
   }
-  // Cookies.set('authenticationToken','eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoeWZAYmFuZ3F1LmNvbSIsImF1dGgiOiJST0xFX1VTRVIiLCJleHAiOjE1NjI0MTgzOTN9.M64dJH7n4wrMgqpv4ABgGeAjnM-3eeijl_NNBa4GeHXRqnkuY8z2ErW30Cm6TZCgg07CXJWwNCsoJDm6FdX6hA');
-  //全局加Token
-  config.headers.authorization = "Bearer " + Cookies.get('authenticationToken');
-  return config;
-}, function (error) {
-  // 对请求错误做些什么
 
-  return Promise.reject(error);
-});
-
-// 添加响应拦截器
-axios.interceptors.response.use(function (response) {
-
-  if (response.status === 204) {
-    // 处理204返回内容为空
-    console.log(204);
+  if(!checkToken()) {
+    return
   }
-  return response;
-}, function (error) {
-  // 对响应错误做点什么
-  console.log(error.response)
-  if (error.response.data.code === -9) {
-    // 处理-9用户信息不存在
-    window.location.href = "https://account.easyapi.com/login";
-  } else if (error.response.data.code === -8) {
-    // 处理-8无团队信息
-    window.location.href = "https://team.easyapi.com";
-  } else if (error.response.data.code === -7) {
-    // 处理-7认证失败
-    router.push(`/unavailable`)
-  } else if (error.response.data.code === -6) {
-    // 处理-6服务未订购
-    router.push(`/unavailable`)
-  } else if (error.response.data.code === -5) {
-    // 处理-5服务已过期
-    router.push(`/unavailable`)
-  } else if (error.response.data.code === -4) {
-    // 处理-4服务使用次数不足
-    router.push(`/unavailable`)
-  } else if (error.response.data.code === -3) {
-    // 处理-3团队账户余额不足
-    $router.push(`/unavailable`)
-  } else if (error.response.data.code === -1) {
-    // 处理-3非法团队
-    // window.location.href = "https://team.easyapi.com";
-  } else {
-    return Promise.reject(error);
-  }
-});
 
-export default axios
+
+  let options = {
+    method: params.method,
+    url: params.url,
+    data: params.data || {},
+    headers: {'authorization': `Bearer ${authToken}`},
+    // headers: {'authorization': `Bearer ${'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZzIwMDg0QDEyNi5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTU1MDM4ODA1OX0.xCHlKP5_FjRyiDwAJNGib7MlOfRvzqG1dQcuvYzxUcqir9-WGXPbUItSIvQWDPaOHfnwxYGKROjOZUTYAGG_DQ'}`},
+    cache: false,
+    timeout: 8000
+  }
+  console.log(options)
+
+  if (params.json) {
+    options = Object.assign({}, {
+      contentType: "application/json"
+    }, options)
+    options.data = JSON.stringify(params.data)
+  }
+
+  return $.ajax(options)
+    .done((data, textStatus, jqXHR) => {
+      if (vue) {
+        vue.$loadingEnd()
+      }
+      if (jqXHR.status === 204) {
+        params.successfun(null)
+        return
+      }
+
+      if(data && Number(data.status) < 0) {
+        vue.$Message.error(data.msg);
+        return
+      }
+
+      if(typeof data == 'string') {
+        let res = ''
+        try {
+          res = JSON.parse(data)
+        } catch(e) {
+          res = data
+        }
+        params.successfun(res)
+
+      } else {
+        params.successfun(data)
+      }
+    })
+    .fail((data) => {
+      if (vue) {
+        vue.$loadingEnd()
+      }
+
+      let resJson = data.responseJSON
+
+      if (!dealRes(resJson)) {
+        return
+      }
+
+      console.log('fail', data)
+
+      if(params.failfun) {
+        params.failfun(data)
+      }
+    })
+    .always(() => {
+      if (params.always) {
+        params.always()
+      }
+    });
+}
+
+/**
+ * 验证token
+ */
+function checkToken () {
+  return true
+  console.log('authToken', authToken)
+  if (!authToken) {
+    // 如果没有authToken存在
+    location.href = 'https://account.easyapi.com/login';
+    return false
+  }
+}
+
+// 处理返回状态
+function dealRes (resJson) {
+  if (resJson.code == -9) {
+    location.href = 'https://account.easyapi.com/login';
+    return false
+  }
+}
+
+
+

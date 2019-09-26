@@ -6,49 +6,49 @@
           <img src="../assets/images/logo.png" alt="">
         </div>
       </a>
-      <router-link v-if="team" class="ea-header-item" to="/">{{team.name}}</router-link>
+      <router-link class="ea-header-item" to="/">API服务中心</router-link>
     </div>
     <div class="h-right clearfix">
       <div class="fr menu-box">
         <div class="current-team-box">
-          <a id="showTeamInfo" :class="{active:showTeamInfo}">
+          <a id="showSerInfo" :class="{active:showSerInfo}" @click="showSerInfoFn">
             <span class="team-icon"></span>
           </a>
-          <div :class="{active:showTeamInfo}" class="current-team-info">
+          <div :class="{active:showSerInfo}" class="current-team-info">
             <h2 class="current-team-name lrPading-20">当前团队</h2>
             <div class="clear current-team-content lrPading-20">
-              <img class="lf teams-img" :src='teamImg+"!icon.jpg"' alt="">
+              <img class="lf teams-img" :src="teamData.photo" alt="">
               <div class="lf teams-img-r">
-                <p>{{teamName}}</p>
+                <p>{{teamData.name}}</p>
                 <div class="team-btn">
-                  <router-link class="ea-btn" to="/account">账户</router-link>
-                  <router-link class="ea-btn" to="/members">成员</router-link>
-                  <router-link class="ea-btn" to="/orders">订单</router-link>
+                  <a href="https://team.easyapi.com/" class="ea-btn">账户</a>
+                  <a href="https://team.easyapi.com/members" class="ea-btn">成员</a>
+                  <a href="https://team.easyapi.com/orders" class="ea-btn">订单</a>
                 </div>
               </div>
             </div>
             <div class="change-team-box">
               <h2 class="lrPading-20">切换团队：</h2>
               <div class="ea-team-list-box lrPading-20">
-                <a class="ea-team-item" v-for="(item,index) in teamList" v-bind:key="index" @click="tabTeamFn(item.team.id)">
+                <a class="ea-team-item" v-if="teamListData.length" v-for="(item, index) in teamListData" @click="tabTeamFn(item)" :key="index">
                   <img :src="item.team.img+'!icon.jpg'" alt="">
-                  <span style="display: block">{{item.team.name}}</span>
+                  <span>{{item.team.name}}</span>
                 </a>
               </div>
             </div>
             <div class="create-team">
-              <Button type="info" class="ea-info-btn" @click="jupmPage('/new')">创建新团队</Button>
+              <Button type="info" class="ea-info-btn" to="https://team.easyapi.com/new" target="_blank">创建新团队</Button>
             </div>
           </div>
         </div>
         <div class="user-avatar">
           <a >
-            <img id="showPersonage" :src="photo" alt="">
+            <img id="showPersonage" :src="userInfoData.photo" alt="">
           </a>
           <div :class="{active:isActive}" class="ea-DropdownMenu">
             <a href="https://account.easyapi.com/notification/" target="_blank">我的通知</a>
             <a href="https://account.easyapi.com/setting/data" target="_blank">个人设置</a>
-            <a @click="quitLogin()" href="https://account.easyapi.com/logout">退出</a>
+            <a href="https://account.easyapi.com/logout">退出</a>
           </div>
         </div>
       </div>
@@ -57,80 +57,94 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
-  import Cookies from 'js-cookie'
+  import {getMyTeam, tabTeam} from '../api/api'
+  import {ajaxSender} from '../api/fetch'
+
   export default {
-    'name': 'Header',
-    'data': function () {
+    name: "Header",
+    data: function () {
       return {
-        inBack: false,
-        userInfo: [],
+        selectedIndex: 5,
         isActive: false,
-        showTeamInfo: false,
-        authenticationToken: Cookies.get('authenticationToken')
-      }
+        showSerInfo: false,
+        teamData: {
+          photo: '--',
+          name: '--'
+        },
+        userInfoData: {
+          photo: '--',
+          name: '--'
+        },
+        teamListData: ""
+      };
     },
-    computed: {
-      ...mapGetters([
-        'photo',
-        'team',
-        'teamName',
-        'teamImg',
-        'teamList'
-      ])
-    },
+
     created: function () {
-      if (this.$route.path.indexOf('/back/') < 0) {
-        this.inBack = false
-      } else {
-        this.inBack = true
-      }
+
       let body = document.querySelector('body');
       body.addEventListener('click', (e) => {
-        if (e.target.id === 'showTeamInfo' || e.target.className === 'team-icon') {
+        if (e.target.id === 'showSerInfo' || e.target.className === 'team-icon') {
           this.isActive = false;
-          this.showTeamInfo = !this.showTeamInfo
+          this.showSerInfo = !this.showSerInfo
         } else if (e.target.id === 'showPersonage') {
           this.isActive = !this.isActive;
-          this.showTeamInfo = false;
+          this.showSerInfo = false;
         } else {
-          this.showTeamInfo = false;
+          this.showSerInfo = false;
           this.isActive = false;
         }
       }, false)
     },
 
-    methods: {
-      quitLogin() {
-        this.$store.dispatch('Logout');
-        window.location.href = "https://account.easyapi.com/login";
-      },
-      jupmPage(url) {
-        this.$router.push(url);
-      },
-      tabTeamFn(id) {
-        this.$store.dispatch('switchoverTeam', id);
-
-      },
-
-    },
-    'watch': {
-      $route: function () {
-        if (this.$route.path.indexOf('/back/') < 0) {
-          this.inBack = false
-        } else {
-          this.inBack = true
-        }
+    watch: {
+      '$store.state.accountInfo': function () {
+        this.userInfoData.photo = this.$store.state.accountInfo.photo
+        this.userInfoData.name = this.$store.state.accountInfo.nickname
+        this.teamData.photo = this.$store.state.accountInfo.team.img
+        this.teamData.name = this.$store.state.accountInfo.team.name
+        this.getTeamList()
+        localStorage.setItem("name", this.teamData.name);
       }
     },
-    mounted() {
-      if (this.authenticationToken){
-        this.$store.dispatch('GetUserInfo');
-        this.$store.dispatch('getTeamList');
+
+    methods: {
+      showSerInfoFn() {
+        if (this.showSerInfo === true) {
+          this.getTeamList();//获取团队列表
+        }
+      },
+
+      getTeamList() {
+        ajaxSender({
+          url: getMyTeam,
+          method: 'get',
+          data: {
+            page: 0,
+            size: 500
+          },
+          successfun: (res) => {
+            this.teamListData = res.content;
+          }
+        })
+      },
+
+      jupmPage(url) {
+        this.$router.push(url)
+      },
+
+      tabTeamFn(item) {
+        ajaxSender({
+          url: tabTeam + '/' + item.team.id,
+          method: 'put',
+          successfun: (res) => {
+            if (res.code) {
+              location.reload()
+            }
+          }
+        })
       }
     }
-  }
-
+  };
 </script>
 
 <style lang="stylus">
@@ -251,7 +265,6 @@
       border-bottom-left-radius: 5px;
       width: 100px;
       display: none;
-      font-size: 14px;
 
       &.active {
         display: block;
@@ -261,7 +274,7 @@
         display: block;
         line-height: 26px;
         height: inherit;
-        padding: 5px 15px;
+        padding-left: 15px;
         color: #777;
         font-weight: normal;
 
@@ -312,8 +325,8 @@
       width: 410px;
       border-bottom-right-radius: 5px;
       border-bottom-left-radius: 5px;
+      z-index: 99;
       display: none;
-      z-index: 9999;
 
       &.active {
         display: block;
@@ -330,7 +343,7 @@
         border-bottom: 1px solid #eaeaea;
         height: 110px;
         padding: 10px 0;
-        display flex
+
         .teams-img {
           width: 80px;
           height: 80px;
@@ -346,11 +359,11 @@
 
           & > p {
             color: #333;
-            height auto;
-            line-height 16px;
+            height: 39px;
+            line-height: 39px;
             font-size: 1rem;
-            padding-top:10px;
           }
+
           .team-btn {
             height: 50px;
             line-height: 50px;
@@ -390,14 +403,14 @@
           justify-content: flex-start;
 
           .ea-team-item {
+            display: inline-block;
             width: 50%;
             color: #333;
             font-size: 1rem;
             font-weight: normal;
-            height auto
-            display flex
-            flex-direction row
-            align-items center
+            height: 40px;
+            line-height: 40px;
+
             & > img {
               width: 28px;
               height: 28px;
@@ -406,13 +419,7 @@
             }
 
             & > span {
-              display:inline-block;
-              width:calc(100% - 28px);
-              padding 0 10px;
-              overflow:hidden;
-              text-overflow:ellipsis;
-              white-space:nowrap;
-              box-sizing border-box;
+              vertical-align: middle;
             }
           }
         }
