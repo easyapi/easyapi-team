@@ -98,7 +98,7 @@
     height: 260px
     padding-top: 40px
     padding-bottom: 40px
-    background: c-blue-light url('../../static/images/bg_0.png') no-repeat center
+    background: c-blue-light url('../../static/images/bg_center.png') no-repeat center
     background-size: cover
     text-align: center
 

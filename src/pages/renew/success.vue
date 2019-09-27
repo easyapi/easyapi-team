@@ -1,10 +1,10 @@
 <template>
-  <div class="paymentSuccess">
+  <div class="payment-success">
     <div class="img">
       <img src="../../assets/images/success.png" alt="">
       <span>充值成功，谢谢！</span>
     </div>
-    <span class="siz">如果有问题，请发送邮箱到leida@easyapi.com处理。谢谢您的支持</span>
+    <span class="siz">如果有问题，请发送邮箱到leida@easyapi.com处理。谢谢您的支持！</span>
   </div>
 </template>
 <script>
@@ -15,10 +15,9 @@
   }
 </script>
 <style>
-  .paymentSuccess {
+  .payment-success {
     width: 100%;
     height: auto;
-
   }
 
   .img {
