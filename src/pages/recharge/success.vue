@@ -5,20 +5,20 @@
       <h2>充值成功，谢谢！</h2>
     </main>
     <footer>
-      <p class="tips grey">如果有任何问题，请发送邮件到leida@easyapi.com处理，谢谢您的支持</p>
+      <p class="tips grey">
+        如果有任何问题，请发送邮件到leida@easyapi.com处理，谢谢您的支持
+      </p>
     </footer>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'RechargeSuccess',
-  mounted: function () {
-    document.title = '充值成功 - EasyAPI'
+  name: "RechargeSuccess",
+  mounted: function() {
+    document.title = "充值成功 - EasyAPI";
   }
-}
-
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -36,5 +36,4 @@ export default {
     margin-top: 80px
     padding-top: 30px
     border-top: 1px solid c-border
-
 </style>

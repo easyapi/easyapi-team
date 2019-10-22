@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import user from './modules/user'
-import team from './modules/team'
-import getters from './getters'
+import Vue from "vue";
+import Vuex from "vuex";
+import user from "./modules/user";
+import team from "./modules/team";
+import getters from "./getters";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules: {
@@ -14,7 +14,6 @@ const store = new Vuex.Store({
   mutations: {},
   actions: {},
   getters
+});
 
-})
-
-export default store
+export default store;

@@ -24,16 +24,6 @@ Array.prototype.rmIndex = function(index) {
   this.splice(index, 1);
   return this;
 };
-Vue.prototype.$getCookieObj = function(cookie) {
-  let v = cookie.split("; ");
-  // console.log(v)
-  let _obj = {};
-  for (let i = 0; i < v.length; ++i) {
-    let k = v[i].split("=");
-    _obj[k[0]] = k[1];
-  }
-  return _obj;
-};
 
 /**
  * loading control
@@ -82,10 +72,12 @@ router.afterEach(route => {
 //自定义组件
 // ea-dialog
 import EaDialog from "./components/common/ea-dialog/EaDialog.vue";
+
 Vue.component("ea-dialog", EaDialog);
 
 // ea-button
 import EaButton from "./components/common/ea-button/EaButton.vue";
+
 Vue.component("ea-button", EaButton);
 
 Vue.config.productionTip = false;

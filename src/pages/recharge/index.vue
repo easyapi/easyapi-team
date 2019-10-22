@@ -1,8 +1,19 @@
 <template>
   <div class="m-wrapper">
     <h4 class="title">充值记录</h4>
-    <Table stripe :columns="tableHead" :data="tableData" :loading="dataLoading"></Table>
-    <Page :total="total" :current="Number(page)" :page-size="10" class="page-nav" @on-change="pageChange"></Page>
+    <Table
+      stripe
+      :columns="tableHead"
+      :data="tableData"
+      :loading="dataLoading"
+    ></Table>
+    <Page
+      :total="total"
+      :current="Number(page)"
+      :page-size="10"
+      class="page-nav"
+      @on-change="pageChange"
+    ></Page>
   </div>
 </template>
 
@@ -27,10 +38,7 @@ export default {
           title: "金额",
           key: "price",
           render: (h, params) => {
-            return h(
-              "p",
-              "¥"+params.row.price
-            )
+            return h("p", "¥" + params.row.price);
           }
           //   return this.renderPrice(h, params.row)
           // }
@@ -47,11 +55,11 @@ export default {
               "p",
               {
                 class: {
-                  'un-pay': params.row.state == '0'
+                  "un-pay": params.row.state == "0"
                 }
               },
               this.payState[params.row.state]
-            )
+            );
           }
         },
         {
@@ -68,55 +76,57 @@ export default {
       detailOpen: false,
       // --data
       payState: {
-        '0': '待付款',
-        '1': '充值成功',
-        '-1': '已取消',
-        '9': '充值成功',
-        '-9': '充值失败'
+        "0": "待付款",
+        "1": "充值成功",
+        "-1": "已取消",
+        "9": "充值成功",
+        "-9": "充值失败"
       }
     };
   },
-  created: function () {
-    let curPage = this.$route.query.page
+  created: function() {
+    let curPage = this.$route.query.page;
     if (curPage) {
-      this.page = curPage
+      this.page = curPage;
     }
-    this.getList()
+    this.getList();
   },
-  mounted: function () {
-    document.title = '充值记录 - EasyAPI'
+  mounted: function() {
+    document.title = "充值记录 - EasyAPI";
   },
   methods: {
-    pageChange: function (page) {
-      this.page = page
-      location.hash = this.$route.path + '?page=' + page
-      this.getList()
+    pageChange: function(page) {
+      this.page = page;
+      location.hash = this.$route.path + "?page=" + page;
+      this.getList();
     },
-    getList: function (page) {
-      this.dataLoading = true
+    getList: function(page) {
+      this.dataLoading = true;
       this.$ajax({
         method: "GET",
         url: getRechargeList
-      }).then(res => {
-        this.dataLoading = false
-        console.log(res.data);
-        if (res.data == null) {
-          this.tableData = []
-          this.dataLoading = false
-        } else {
-          if (res.data.content.length) this.tableData = res.data.content
-        }
-      }).catch(function(err){
-        this.dataLoading = false
-        console.log(err);
-      });
+      })
+        .then(res => {
+          this.dataLoading = false;
+          console.log(res.data);
+          if (res.data == null) {
+            this.tableData = [];
+            this.dataLoading = false;
+          } else {
+            if (res.data.content.length) this.tableData = res.data.content;
+          }
+        })
+        .catch(function(err) {
+          this.dataLoading = false;
+          console.log(err);
+        });
     }
   },
   watch: {
     "$store.state.accountInfo.team": function() {
       this.getList();
     }
-  },
+  }
 };
 </script>
 
@@ -132,7 +142,4 @@ export default {
 .page-nav
   float: right
   margin: 15px 0 40px
-
-
 </style>
-

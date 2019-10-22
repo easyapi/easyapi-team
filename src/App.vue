@@ -6,36 +6,34 @@
 </template>
 
 <script>
-  import Header from './components/header'
+  import Header from "./components/header";
 
   export default {
-    name: 'app',
+    name: "app",
     components: {
-      'Header': Header
+      Header: Header
     },
     data: function () {
       return {
-        showHead: true,
-      }
+        showHead: true
+      };
     },
     created: function () {
     },
 
     mounted() {
-
     },
     watch: {
-      '$route': function (val, from) {
+      $route: function (val) {
         if (val.name === "homePage") {
-          this.showHead = false
+          this.showHead = false;
         } else {
-          this.showHead = true
+          this.showHead = true;
         }
-      },
-    },
-  }
+      }
+    }
+  };
 </script>
-
 
 <style lang="stylus" scoped>
   @import './assets/styles/color.styl'
@@ -142,5 +140,4 @@
     background-color: c-blue
     margin: 2px
     animation-fill-mode: both
-
 </style>

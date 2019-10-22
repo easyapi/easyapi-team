@@ -1,16 +1,16 @@
-import Vue from 'vue';
-import merge from '@/utils/merge';
-import PopupManager from '@/utils/popup/popup-manager';
-import getScrollBarWidth from '@/utils/scrollbar-width';
-import { getStyle } from '@/utils/dom';
+import Vue from "vue";
+import merge from "@/utils/merge";
+import PopupManager from "@/utils/popup/popup-manager";
+import getScrollBarWidth from "@/utils/scrollbar-width";
+import { getStyle } from "@/utils/dom";
 
 let idSeed = 1;
 const transitions = [];
 
-const hookTransition = (transition) => {
+const hookTransition = transition => {
   if (transitions.indexOf(transition) !== -1) return;
 
-  const getVueInstance = (element) => {
+  const getVueInstance = element => {
     let instance = element.__vue__;
     if (!instance) {
       const textNode = element.previousSibling;
@@ -57,7 +57,7 @@ export default {
     },
     transition: {
       type: String,
-      default: ''
+      default: ""
     },
     openDelay: {},
     closeDelay: {},
@@ -96,14 +96,18 @@ export default {
   },
 
   beforeMount() {
-    this._popupId = 'popup-' + idSeed++;
+    this._popupId = "popup-" + idSeed++;
     PopupManager.register(this._popupId, this);
   },
 
   beforeDestroy() {
     PopupManager.deregister(this._popupId);
     PopupManager.closeModal(this._popupId);
-    if (this.modal && this.bodyOverflow !== null && this.bodyOverflow !== 'hidden') {
+    if (
+      this.modal &&
+      this.bodyOverflow !== null &&
+      this.bodyOverflow !== "hidden"
+    ) {
       document.body.style.overflow = this.bodyOverflow;
       document.body.style.paddingRight = this.bodyPaddingRight;
     }
@@ -184,24 +188,34 @@ export default {
           PopupManager.closeModal(this._popupId);
           this._closing = false;
         }
-        PopupManager.openModal(this._popupId, PopupManager.nextZIndex(), this.modalAppendToBody ? undefined : dom, props.modalClass, props.modalFade);
+        PopupManager.openModal(
+          this._popupId,
+          PopupManager.nextZIndex(),
+          this.modalAppendToBody ? undefined : dom,
+          props.modalClass,
+          props.modalFade
+        );
         if (props.lockScroll) {
           if (!this.bodyOverflow) {
             this.bodyPaddingRight = document.body.style.paddingRight;
             this.bodyOverflow = document.body.style.overflow;
           }
           scrollBarWidth = getScrollBarWidth();
-          let bodyHasOverflow = document.documentElement.clientHeight < document.body.scrollHeight;
-          let bodyOverflowY = getStyle(document.body, 'overflowY');
-          if (scrollBarWidth > 0 && (bodyHasOverflow || bodyOverflowY === 'scroll')) {
-            document.body.style.paddingRight = scrollBarWidth + 'px';
+          let bodyHasOverflow =
+            document.documentElement.clientHeight < document.body.scrollHeight;
+          let bodyOverflowY = getStyle(document.body, "overflowY");
+          if (
+            scrollBarWidth > 0 &&
+            (bodyHasOverflow || bodyOverflowY === "scroll")
+          ) {
+            document.body.style.paddingRight = scrollBarWidth + "px";
           }
-          document.body.style.overflow = 'hidden';
+          document.body.style.overflow = "hidden";
         }
       }
 
-      if (getComputedStyle(dom).position === 'static') {
-        dom.style.position = 'absolute';
+      if (getComputedStyle(dom).position === "static") {
+        dom.style.position = "absolute";
       }
 
       dom.style.zIndex = PopupManager.nextZIndex();
@@ -246,7 +260,7 @@ export default {
 
       if (this.lockScroll) {
         setTimeout(() => {
-          if (this.modal && this.bodyOverflow !== 'hidden') {
+          if (this.modal && this.bodyOverflow !== "hidden") {
             document.body.style.overflow = this.bodyOverflow;
             document.body.style.paddingRight = this.bodyPaddingRight;
           }
@@ -269,6 +283,4 @@ export default {
   }
 };
 
-export {
-  PopupManager
-};
+export { PopupManager };
