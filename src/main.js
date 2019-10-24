@@ -5,7 +5,7 @@ import router from "./router";
 import iView from "iview";
 import axios from "./api/fetch";
 import VueBus from "vue-bus";
-
+import 'core-js';
 // iview - ui
 import "iview/dist/styles/iview.css";
 
