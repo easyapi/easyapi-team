@@ -2551,10 +2551,15 @@ core-js-pure@^3.0.0:
   resolved "https://registry.npm.taobao.org/core-js-pure/download/core-js-pure-3.3.3.tgz#c6a796e371782394ffb60d82ff67e0e073070093"
   integrity sha1-xqeW43F4I5T/tg2C/2fg4HMHAJM=
 
-core-js@^3.3.2, core-js@^3.3.5:
+core-js@^3.3.2:
   version "3.3.5"
   resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.3.5.tgz?cache=0&sync_timestamp=1572283858623&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.3.5.tgz#58d20f48a95a07304b62ff752742b82b56431ed8"
   integrity sha1-WNIPSKlaBzBLYv91J0K4K1ZDHtg=
+
+core-js@^3.3.6:
+  version "3.3.6"
+  resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.3.6.tgz#6ad1650323c441f45379e176ed175c0d021eac92"
+  integrity sha1-atFlAyPEQfRTeeF27RdcDQIerJI=
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -6037,10 +6042,10 @@ npm-bundled@^1.0.1:
   resolved "https://registry.npm.taobao.org/npm-bundled/download/npm-bundled-1.0.6.tgz#e7ba9aadcef962bb61248f91721cd932b3fe6bdd"
   integrity sha1-57qarc75YrthJI+RchzZMrP+a90=
 
-npm-check-updates@^3.1.25:
-  version "3.1.25"
-  resolved "https://registry.npm.taobao.org/npm-check-updates/download/npm-check-updates-3.1.25.tgz#69b22fcecd4c10722fe3ff66bc5de3810355445c"
-  integrity sha1-abIvzs1MEHIv4/9mvF3jgQNVRFw=
+npm-check-updates@^3.1.26:
+  version "3.1.26"
+  resolved "https://registry.npm.taobao.org/npm-check-updates/download/npm-check-updates-3.1.26.tgz#506d6d9e06b3d433bbc0ade37dd8a4686cb28ba9"
+  integrity sha1-UG1tngaz1DO7wK3jfdikaGyyi6k=
   dependencies:
     chalk "^2.4.2"
     cint "^8.2.1"
