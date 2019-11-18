@@ -34,6 +34,10 @@ const RenewAlipay = () => import("../pages/renew/alipay.vue");
 
 const RenewSuccess = () => import("../pages/renew/success.vue");
 
+const UserEdit = () => import("../pages/user/edit.vue");
+
+const UserPassword = () => import("../pages/user/password.vue");
+
 Vue.use(Router);
 
 export default new Router({
@@ -111,6 +115,16 @@ export default new Router({
       path: "/renew/success",
       name: "renew-success",
       component: RenewSuccess
+    },
+    {
+      path: "/user/edit",
+      name: "user-edit",
+      component: UserEdit
+    },
+    {
+      path: "/user/password",
+      name: "user-password",
+      component: UserPassword
     }
   ]
 });
