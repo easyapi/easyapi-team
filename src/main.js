@@ -5,6 +5,7 @@ import router from "./router";
 import iView from "iview";
 import axios from "./api/fetch";
 import VueBus from "vue-bus";
+
 import 'core-js';
 // iview - ui
 import "iview/dist/styles/iview.css";
@@ -18,9 +19,8 @@ import "./assets/styles/fontello/fontello.css";
 // --
 Vue.use(iView);
 Vue.use(VueBus);
-
 Vue.prototype.$ajax = axios;
-Array.prototype.rmIndex = function(index) {
+Array.prototype.rmIndex = function (index) {
   this.splice(index, 1);
   return this;
 };
@@ -28,7 +28,7 @@ Array.prototype.rmIndex = function(index) {
 /**
  * loading control
  */
-Vue.prototype.$loadingStart = function() {
+Vue.prototype.$loadingStart = function () {
   let loadingW = document.getElementById("loading");
   loadingW.style.display = "block";
   setTimeout(() => {
@@ -36,7 +36,7 @@ Vue.prototype.$loadingStart = function() {
   }, 200);
 };
 
-Vue.prototype.$loadingEnd = function() {
+Vue.prototype.$loadingEnd = function () {
   let loadingW = document.getElementById("loading");
   loadingW.classList.add("hide");
   setTimeout(() => {
@@ -46,7 +46,7 @@ Vue.prototype.$loadingEnd = function() {
 /**
  * custom filters
  */
-Vue.filter("dateFormat", function(val) {
+Vue.filter("dateFormat", function (val) {
   let t = null;
   if (val) t = new Date(val);
   else return "--";
@@ -81,6 +81,7 @@ import EaButton from "./components/common/ea-button/EaButton.vue";
 Vue.component("ea-button", EaButton);
 
 Vue.config.productionTip = false;
+
 
 new Vue({
   router,

@@ -13,9 +13,12 @@
     "calcudate": "^2.0.0",
     "core-js": "^3.4.1",
     "iview": "^3.5.3",
+    "jquery": "^3.4.1",
     "js-cookie": "^2.2.1",
     "js-md5": "^0.7.3",
     "npm-check-updates": "^3.2.1",
+    "sockjs-client": "^1.4.0",
+    "stompjs": "^2.3.3",
     "vue": "^2.6.10",
     "vue-bus": "^1.2.1",
     "vue-router": "^3.1.3",
@@ -34,11 +37,5 @@
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.6.10"
-  },
-  "prettier/prettier": [
-    "error",
-    {
-      "endOfLine": "crlf"
-    }
-  ]
+  }
 }

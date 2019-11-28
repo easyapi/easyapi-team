@@ -3,12 +3,14 @@
     <div class="h-left clearfix">
       <a href="https://www.easyapi.com">
         <div class="ea-header-item logo">
-          <img src="../assets/images/logo.png" alt="" />
+          <img src="../assets/images/logo.png" alt />
         </div>
       </a>
-      <router-link v-if="team" class="ea-header-item" to="/">{{
+      <router-link v-if="team" class="ea-header-item" to="/">
+        {{
         team.name
-      }}</router-link>
+        }}
+      </router-link>
     </div>
     <div class="h-right clearfix">
       <div class="fr menu-box">
@@ -19,7 +21,7 @@
           <div :class="{ active: showTeamInfo }" class="current-team-info">
             <h2 class="current-team-name lrPading-20">当前团队</h2>
             <div class="clear current-team-content lrPading-20">
-              <img class="lf teams-img" :src="teamImg + '!icon.jpg'" alt="" />
+              <img class="lf teams-img" :src="teamImg + '!icon.jpg'" alt />
               <div class="lf teams-img-r">
                 <p>{{ teamName }}</p>
                 <div class="team-btn">
@@ -38,32 +40,24 @@
                   v-bind:key="index"
                   @click="tabTeamFn(item.team.id)"
                 >
-                  <img :src="item.team.img + '!icon.jpg'" alt="" />
+                  <img :src="item.team.img + '!icon.jpg'" alt />
                   <span style="display: block">{{ item.team.name }}</span>
                 </a>
               </div>
             </div>
             <div class="create-team">
-              <Button type="info" class="ea-info-btn" @click="jupmPage('/new')"
-                >创建新团队</Button
-              >
+              <Button type="info" class="ea-info-btn" @click="jupmPage('/new')">创建新团队</Button>
             </div>
           </div>
         </div>
         <div class="user-avatar">
           <a>
-            <img id="showPersonage" :src="photo" alt="" />
+            <img id="showPersonage" :src="photo" alt />
           </a>
           <div :class="{ active: isActive }" class="ea-DropdownMenu">
-            <a href="https://account.easyapi.com/notification/" target="_blank"
-              >我的通知</a
-            >
-            <a href="https://account.easyapi.com/setting/data" target="_blank"
-              >个人设置</a
-            >
-            <a @click="quitLogin()" href="https://account.easyapi.com/logout"
-              >退出</a
-            >
+            <a href="https://account.easyapi.com/notification/" target="_blank">我的通知</a>
+            <router-link to="/user/edit">个人设置</router-link>
+            <a @click="quitLogin()" href="https://account.easyapi.com/logout">退出</a>
           </div>
         </div>
       </div>
@@ -72,82 +66,82 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Cookies from "js-cookie";
+import { mapGetters } from 'vuex'
+import Cookies from 'js-cookie'
 export default {
-  name: "Header",
+  name: 'Header',
   data: function() {
     return {
       inBack: false,
       userInfo: [],
       isActive: false,
       showTeamInfo: false,
-      authenticationToken: Cookies.get("authenticationToken")
-    };
+      authenticationToken: Cookies.get('authenticationToken')
+    }
   },
   computed: {
-    ...mapGetters(["photo", "team", "teamName", "teamImg", "teamList"])
+    ...mapGetters(['photo', 'team', 'teamName', 'teamImg', 'teamList'])
   },
   created: function() {
-    if (this.$route.path.indexOf("/back/") < 0) {
-      this.inBack = false;
+    if (this.$route.path.indexOf('/back/') < 0) {
+      this.inBack = false
     } else {
-      this.inBack = true;
+      this.inBack = true
     }
-    let body = document.querySelector("body");
+    let body = document.querySelector('body')
     body.addEventListener(
-      "click",
+      'click',
       e => {
         if (
-          e.target.id === "showTeamInfo" ||
-          e.target.className === "team-icon"
+          e.target.id === 'showTeamInfo' ||
+          e.target.className === 'team-icon'
         ) {
-          this.isActive = false;
-          this.showTeamInfo = !this.showTeamInfo;
-        } else if (e.target.id === "showPersonage") {
-          this.isActive = !this.isActive;
-          this.showTeamInfo = false;
+          this.isActive = false
+          this.showTeamInfo = !this.showTeamInfo
+        } else if (e.target.id === 'showPersonage') {
+          this.isActive = !this.isActive
+          this.showTeamInfo = false
         } else {
-          this.showTeamInfo = false;
-          this.isActive = false;
+          this.showTeamInfo = false
+          this.isActive = false
         }
       },
       false
-    );
+    )
   },
 
   methods: {
     quitLogin() {
-      this.$store.dispatch("Logout");
-      window.location.href = "https://account.easyapi.com/login";
+      this.$store.dispatch('Logout')
+      window.location.href = 'https://account.easyapi.com/login'
     },
     jupmPage(url) {
-      this.$router.push(url);
+      this.$router.push(url)
     },
     tabTeamFn(id) {
-      this.$store.dispatch("switchoverTeam", id);
+      this.$store.dispatch('switchoverTeam', id)
     }
   },
   watch: {
     $route: function() {
-      if (this.$route.path.indexOf("/back/") < 0) {
-        this.inBack = false;
+      if (this.$route.path.indexOf('/back/') < 0) {
+        this.inBack = false
       } else {
-        this.inBack = true;
+        this.inBack = true
       }
     }
   },
   mounted() {
     if (this.authenticationToken) {
-      this.$store.dispatch("GetUserInfo");
-      this.$store.dispatch("getTeamList");
+      this.$store.dispatch('GetUserInfo')
+      this.$store.dispatch('getTeamList')
     }
   }
-};
+}
 </script>
 
 <style lang="stylus">
-.header
+.header {
   top: 0;
   left: 0;
   right: 0;
@@ -159,23 +153,30 @@ export default {
   font-weight: bold;
   z-index: 888;
 
-  .h-left
-    float: left
-    width: 70%
-  .ea-header-item
-    position: relative
-    float: left
-    height: 50px
-    padding: 0 30px
-    color: #fff
-    border-right: 1px solid darken(#1ac1d6, 5%)
-    font-size: 14px
-  .logo
-    padding-left: 0
-    img
-      margin: 10px 0
-      height: 30px
-      width: 30px
+  .h-left {
+    float: left;
+    width: 70%;
+  }
+
+  .ea-header-item {
+    position: relative;
+    float: left;
+    height: 50px;
+    padding: 0 30px;
+    color: #fff;
+    border-right: 1px solid darken(#1ac1d6, 5%);
+    font-size: 14px;
+  }
+
+  .logo {
+    padding-left: 0;
+
+    img {
+      margin: 10px 0;
+      height: 30px;
+      width: 30px;
+    }
+  }
 
   .h-right {
     float: right;
@@ -221,6 +222,7 @@ export default {
       }
     }
   }
+}
 
 .easyapi-logo {
   height: 50px;
@@ -291,7 +293,7 @@ export default {
     position: relative;
 
     & > a {
-      padding: (15px / 2px)  20px;
+      padding: (15px / 2px) 20px;
       height: 50px;
       display: inline-block;
 
@@ -343,7 +345,8 @@ export default {
       border-bottom: 1px solid #eaeaea;
       height: 110px;
       padding: 10px 0;
-      display flex
+      display: flex;
+
       .teams-img {
         width: 80px;
         height: 80px;
@@ -359,11 +362,12 @@ export default {
 
         & > p {
           color: #333;
-          height auto;
-          line-height 16px;
+          height: auto;
+          line-height: 16px;
           font-size: 1rem;
-          padding-top:10px;
+          padding-top: 10px;
         }
+
         .team-btn {
           height: 50px;
           line-height: 50px;
@@ -407,10 +411,11 @@ export default {
           color: #333;
           font-size: 1rem;
           font-weight: normal;
-          height auto
-          display flex
-          flex-direction row
-          align-items center
+          height: auto;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
           & > img {
             width: 28px;
             height: 28px;
@@ -419,13 +424,13 @@ export default {
           }
 
           & > span {
-            display:inline-block;
-            width:calc(100% - 28px);
-            padding 0 10px;
-            overflow:hidden;
-            text-overflow:ellipsis;
-            white-space:nowrap;
-            box-sizing border-box;
+            display: inline-block;
+            width: calc(100% - 28px);
+            padding: 0 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            box-sizing: border-box;
           }
         }
       }

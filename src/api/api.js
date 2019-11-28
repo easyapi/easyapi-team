@@ -1,5 +1,8 @@
 export const domainUrl = "https://account.easyapi.com";
 
+//上传用户信息
+export const uploadAccountInfo = `${domainUrl}/api/account/upload`
+//获取个人信息
 export const getAccountInfo = `${domainUrl}/api/account`;
 //获取团队列表
 export const getUserTeamList = `${domainUrl}/api/user/teams`;

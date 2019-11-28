@@ -5,17 +5,18 @@
       <div class="m">
         <p class="amount">
           {{ accountGolbalInfo.balance.toFixed(2)
-          }}<span class="amount-unit">元</span>
+          }}
+          <span class="amount-unit">元</span>
         </p>
         <router-link to="/recharges">充值列表</router-link>
         <!--<router-link class="invoice" :to="'https://team.easyapi.com/?invoice&accessToken=' + this.Itoken">索取发票</router-link>-->
         <span class="invoice" @click="jumpInvoice">索取发票</span>
-        <span class="invoiceQR">
-          <img src="../assets/images/scan.png" alt="" />
-          <div class="Code-picture">
+        <span class="invoiceQR" @mouseenter="showCode" @mouseleave="hideCode">
+          <img src="../assets/images/scan.png" alt />
+          <div class="Code-picture" :class="codeShow?'code-show':'code-hide'" v-if="codeHas">
             <img
               :src="'http://qr.topscan.com/api.php?text=' + picture"
-              alt=""
+              alt
               style="width: 100px;height: 100px"
             />
           </div>
@@ -43,27 +44,20 @@
           </div>
         </div>
       </div>
-      <ea-button
-        class="team-btn"
-        text="确定"
-        :space="true"
-        @click="setMoneyWarn"
-      />
+      <ea-button class="team-btn" text="确定" :space="true" @click="setMoneyWarn" />
     </section>
     <section>
       <h3>团队信息</h3>
       <div class="m">
         <div class="team-info grid">
           <div class="team-icon">
-            <img :src="accountGolbalInfo.team.img + '!icon.jpg'" alt="" />
+            <img :src="accountGolbalInfo.team.img + '!icon.jpg'" alt />
           </div>
           <div>
             <ul class="team-info_list">
               <li>团队名称: {{ accountGolbalInfo.team.name }}</li>
               <li>行业: {{ accountGolbalInfo.team.industry }}</li>
-              <li>
-                创建时间: {{ accountGolbalInfo.team.addTime | dateFormat }}
-              </li>
+              <li>创建时间: {{ accountGolbalInfo.team.addTime | dateFormat }}</li>
               <li>团队URL: {{ accountGolbalInfo.team.url }}</li>
             </ul>
           </div>
@@ -86,72 +80,36 @@
       <div class="m">
         <p>
           所有者: {{ accountGolbalInfo.team.user.nickname }} &nbsp;&nbsp;{{
-            accountGolbalInfo.team.user.username
+          accountGolbalInfo.team.user.username
           }}
         </p>
-        <p class="tip">
-          转让其他成员后，将无法再管理当前团队。该操作无法撤销。
-        </p>
+        <p class="tip">转让其他成员后，将无法再管理当前团队。该操作无法撤销。</p>
       </div>
-      <ea-button
-        class="team-btn"
-        text="转让团队"
-        :space="true"
-        @click="teamTransfer = true"
-      />
+      <ea-button class="team-btn" text="转让团队" :space="true" @click="teamTransfer = true" />
     </section>
     <section v-if="role == '创建人'">
       <h3>解散团队</h3>
       <div class="m">
-        <p class="tip">
-          解散后所有数据都将被彻底删除, 此操作无法撤销, 请谨慎。
-        </p>
+        <p class="tip">解散后所有数据都将被彻底删除, 此操作无法撤销, 请谨慎。</p>
       </div>
-      <ea-button
-        class="team-btn"
-        text="解散团队"
-        type="red"
-        :space="true"
-        @click="teamClose = true"
-      />
+      <ea-button class="team-btn" text="解散团队" type="red" :space="true" @click="teamClose = true" />
     </section>
     <section v-if="role == '成员' || role == '管理员'">
       <h3>退出团队</h3>
       <div class="m">
-        <p class="tip">
-          退出后所有数据都将被彻底删除, 此操作无法撤销, 请谨慎。
-        </p>
+        <p class="tip">退出后所有数据都将被彻底删除, 此操作无法撤销, 请谨慎。</p>
       </div>
-      <ea-button
-        class="team-btn"
-        text="退出团队"
-        type="red"
-        :space="true"
-        @click="quitTeam"
-      />
+      <ea-button class="team-btn" text="退出团队" type="red" :space="true" @click="quitTeam" />
     </section>
 
     <!-- 充值 -->
-    <ea-dialog
-      title="账户充值"
-      :open="recharge"
-      width="600"
-      @visibleChange="rcSDVisible"
-    >
+    <ea-dialog title="账户充值" :open="recharge" width="600" @visibleChange="rcSDVisible">
       <Row>
-        <Col class="bottom-10 top-5" span="4">
-          充值金额:
-        </Col>
+        <Col class="bottom-10 top-5" span="4">充值金额:</Col>
         <Col class="bottom-10 top-5" span="20">
-          <Input
-            class="pay-amount"
-            v-model="rechargeAmount"
-            placeholder="请输入充值金额"
-          ></Input>
+          <Input class="pay-amount" v-model="rechargeAmount" placeholder="请输入充值金额"></Input>
         </Col>
-        <Col class="bottom-10 top-5" span="4">
-          支付方式:
-        </Col>
+        <Col class="bottom-10 top-5" span="4">支付方式:</Col>
         <Col class="bottom-10 top-5" span="20">
           <Row>
             <Col span="8" class="type-wrapper">
@@ -159,7 +117,7 @@
                 @click="setRechargeType(1)"
                 :class="['zf-type', { 'p-active': rechargeType == 1 }]"
               >
-                <img class="zfb" src="../assets/images/alipay.png" alt="" />
+                <img class="zfb" src="../assets/images/alipay.png" alt />
               </div>
             </Col>
             <Col span="8" class="type-wrapper">
@@ -167,7 +125,7 @@
                 @click="setRechargeType(2)"
                 :class="['zf-type', { 'p-active': rechargeType == 2 }]"
               >
-                <img class="wxzf" src="../assets/images/wxpay.png" alt="" />
+                <img class="wxzf" src="../assets/images/wxpay.png" alt />
               </div>
             </Col>
             <Col span="8" class="type-wrapper">
@@ -175,31 +133,19 @@
                 @click="setRechargeType(3)"
                 :class="['zf-type', { 'p-active': rechargeType == 3 }]"
               >
-                <img class="api-zf" src="../assets/images/apipay.png" alt="" />
+                <img class="api-zf" src="../assets/images/apipay.png" alt />
               </div>
             </Col>
           </Row>
-          <p class="top-20 bottom-5 tips">
-            如果有问题, 请发送邮件刀leida@easyapi.com处理。 谢谢您的支持
-          </p>
-          <ea-button
-            class="top-20 recharge-btn bottom-5"
-            text="立即支付"
-            @click="payNow"
-          />
+          <p class="top-20 bottom-5 tips">如果有问题, 请发送邮件刀leida@easyapi.com处理。 谢谢您的支持</p>
+          <ea-button class="top-20 recharge-btn bottom-5" text="立即支付" @click="payNow" />
         </Col>
       </Row>
     </ea-dialog>
-    <ea-dialog
-      title="API充值"
-      :open="apiRecharge"
-      width="500"
-      @visibleChange="arSDVisible"
-    >
+    <ea-dialog title="API充值" :open="apiRecharge" width="500" @visibleChange="arSDVisible">
       <p class="top-10 bottom-10">
-        为了更好的为您的团队，提供实时充值服务，我们提供了<span class="t-blue"
-          >API充值接口.</span
-        >
+        为了更好的为您的团队，提供实时充值服务，我们提供了
+        <span class="t-blue">API充值接口.</span>
       </p>
       <Row>
         <Row style="margin-bottom: 30px;">
@@ -208,10 +154,9 @@
           </Col>
           <Col class="bottom-10 top-10" span="21">
             <p>
-              请您，使用支付宝<span class="t-blue"
-                >单笔转账到支付宝账户接口</span
-              ><br />
-              对我们的公司帐号leida@daoqun.net, 进行转账
+              请您，使用支付宝
+              <span class="t-blue">单笔转账到支付宝账户接口</span>
+              <br />对我们的公司帐号leida@daoqun.net, 进行转账
             </p>
           </Col>
         </Row>
@@ -221,10 +166,9 @@
           </Col>
           <Col class="bottom-10 top-5" span="21">
             <p>
-              转账成功后，请调用我们的<span class="t-blue"
-                >支付宝转账确认接口</span
-              ><br />
-              如果传递的支付宝订单号正确，则自动为您充值到帐号上。
+              转账成功后，请调用我们的
+              <span class="t-blue">支付宝转账确认接口</span>
+              <br />如果传递的支付宝订单号正确，则自动为您充值到帐号上。
             </p>
           </Col>
         </Row>
@@ -232,76 +176,48 @@
     </ea-dialog>
 
     <!-- 转让团队 -->
-    <ea-dialog
-      title="转让团队"
-      :open="teamTransfer"
-      width="300"
-      @visibleChange="ttSDVisible"
-    >
+    <ea-dialog title="转让团队" :open="teamTransfer" width="300" @visibleChange="ttSDVisible">
       <Row>
-        <Col class="bottom-10 top-5" span="8">
-          选择成员:
-        </Col>
+        <Col class="bottom-10 top-5" span="8">选择成员:</Col>
         <Col class="bottom-10 top-5" span="16">
           <Select v-model="transferMember" size="small">
             <Option
               v-for="item in members"
               :value="item.user.username"
               :key="item.userTeamId"
-              >{{ item.user.nickname }}
-            </Option>
+            >{{ item.user.nickname }}</Option>
           </Select>
         </Col>
       </Row>
 
-      <ea-button
-        class="close-btn top-10 bottom-5"
-        text="确认转让"
-        @click="confirmTransferTeam"
-      />
+      <ea-button class="close-btn top-10 bottom-5" text="确认转让" @click="confirmTransferTeam" />
     </ea-dialog>
 
     <!-- 团队信息 -->
-    <ea-dialog
-      title="修改团队信息"
-      :open="teamInfoChange"
-      width="450"
-      @visibleChange="tiSDVisible"
-    >
+    <ea-dialog title="修改团队信息" :open="teamInfoChange" width="450" @visibleChange="tiSDVisible">
       <Row>
-        <Col class="bottom-10 top-5" span="8">
-          团队Logo:
-        </Col>
+        <Col class="bottom-10 top-5" span="8">团队Logo:</Col>
         <Col class="bottom-10 top-5" span="16">
           <div class="ti-img">
-            <img :src="teamIcon" alt="" />
-            <input
-              type="file"
-              name="teamIcon"
-              id="teamIcon"
-              @change="uploadImg"
-            />
+            <img :src="teamIcon" alt />
+            <input type="file" name="teamIcon" id="teamIcon" @change="uploadImg" />
           </div>
         </Col>
-        <Col class="bottom-10 top-5" span="8">
-          团队名称:
-        </Col>
+        <Col class="bottom-10 top-5" span="8">团队名称:</Col>
         <Col class="bottom-10 top-5" span="16">
           <Input v-model="teamName" placeholder="请输入团队名称"></Input>
         </Col>
-        <Col class="bottom-10 top-5" span="8">
-          行业类别:
-        </Col>
+        <Col class="bottom-10 top-5" span="8">行业类别:</Col>
         <Col class="bottom-10 top-5" span="16">
           <Select class="type-select" v-model="teamType" size="small">
-            <Option v-for="item in industries" :value="item" :key="item">{{
+            <Option v-for="item in industries" :value="item" :key="item">
+              {{
               item
-            }}</Option>
+              }}
+            </Option>
           </Select>
         </Col>
-        <Col class="bottom-10 top-5" span="8">
-          团队URL:
-        </Col>
+        <Col class="bottom-10 top-5" span="8">团队URL:</Col>
         <Col class="bottom-10 top-5" span="16">
           <Input v-model="teamUrl" placeholder="团队URL">
             <span slot="prepend">https://</span>
@@ -311,56 +227,30 @@
           <!--<small class="err">该团队URL已经被占用</small>-->
           <!--</p>-->
         </Col>
-        <Col class="bottom-10 top-5" span="8">
-          一句话描述:
-        </Col>
+        <Col class="bottom-10 top-5" span="8">一句话描述:</Col>
         <Col class="bottom-10 top-5" span="16">
           <Input v-model="teamDes" placeholder="请输入团队描述"></Input>
         </Col>
       </Row>
 
-      <ea-button
-        class="close-btn top-10 bottom-5"
-        text="修改团队信息"
-        @click="changeTeamInfo"
-      />
+      <ea-button class="close-btn top-10 bottom-5" text="修改团队信息" @click="changeTeamInfo" />
     </ea-dialog>
 
     <!-- 解散团队 -->
-    <ea-dialog
-      title="解散团队"
-      :open="teamClose"
-      width="300"
-      @visibleChange="tcSDVisible"
-    >
+    <ea-dialog title="解散团队" :open="teamClose" width="300" @visibleChange="tcSDVisible">
       <p class="tips red">解散团队后，所有内容都会被立即删除，不可恢复。</p>
       <p class="tips grey">如果你确定要这样做，请在下面输入账户密码确认</p>
-      <Input
-        class="top-10"
-        v-model="email"
-        placeholder="请输入邮箱以获取验证码"
-      >
-        <Button class="capt-btn" slot="append" @click="getCaptcha"
-          >获取验证码</Button
-        >
+      <Input class="top-10" v-model="email" placeholder="请输入邮箱以获取验证码">
+        <Button class="capt-btn" slot="append" @click="getCaptcha">获取验证码</Button>
       </Input>
-      <Input
-        class="top-10 captcha"
-        v-model="captcha"
-        :disabled="!captchaUse"
-        placeholder="请输入验证码"
-      ></Input>
-      <ea-button
-        class="close-btn top-10 bottom-5"
-        text="解散团队"
-        @click="delTeam"
-      />
+      <Input class="top-10 captcha" v-model="captcha" :disabled="!captchaUse" placeholder="请输入验证码"></Input>
+      <ea-button class="close-btn top-10 bottom-5" text="解散团队" @click="delTeam" />
     </ea-dialog>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 import {
   getTeamUserList,
   getAccountMoney,
@@ -372,35 +262,37 @@ import {
   transferTeam,
   aliPayApi,
   wxPayApi,
-  getInvoiceToken
-} from "../api/api";
-
-import md5 from "js-md5";
-
+  getInvoiceToken,
+  checkTeamUrl
+} from '../api/api'
+import $ from 'jquery'
+import md5 from 'js-md5'
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 export default {
-  name: "Account",
-  props: ["propMembers"],
+  name: 'Account',
+  props: ['propMembers'],
   data: function() {
     return {
       members: this.propMembers,
-      Itoken: "",
-      picture: "",
+      Itoken: '',
+      picture: '',
       accountGolbalInfo: {
         balance: 0,
         team: {
-          img: "",
-          name: "",
-          url: "",
-          description: "",
-          industry: "",
+          img: '',
+          name: '',
+          url: '',
+          description: '',
+          industry: '',
           user: {
-            nickname: "",
-            username: ""
+            nickname: '',
+            username: ''
           }
         }
       },
       // 帐号角色
-      role: "",
+      role: '',
 
       // 充值预警
       needMoneyWarn: false,
@@ -417,81 +309,84 @@ export default {
 
       // team-info
       teamInfoChange: false,
-      teamIcon: "",
-      teamName: "",
-      teamType: "",
-      teamUrl: "",
-      teamDes: "",
+      teamIcon: '',
+      teamName: '',
+      teamType: '',
+      teamUrl: '',
+      teamDes: '',
       industries: [
-        "互联网",
-        "新媒体",
-        "技术与服务",
-        "娱乐",
-        "生活服务",
-        "教育",
-        "制造业",
-        "家具建材",
-        "金融服务",
-        "旅行与交通",
-        "通讯",
-        "医疗健康",
-        "文化与设计",
-        "其他"
+        '互联网',
+        '新媒体',
+        '技术与服务',
+        '娱乐',
+        '生活服务',
+        '教育',
+        '制造业',
+        '家具建材',
+        '金融服务',
+        '旅行与交通',
+        '通讯',
+        '医疗健康',
+        '文化与设计',
+        '其他'
       ],
 
       // team-transfer
       teamTransfer: false,
-      transferMember: "",
+      transferMember: '',
 
       // team-close
       teamClose: false,
-      email: "",
-      captcha: "",
-      captchaUse: false
-    };
+      email: '',
+      captcha: '',
+      captchaUse: false,
+      codeShow: false,
+      codeHas: false,
+      timer: null
+    }
   },
   watch: {
-    "$store.state.user.userTeam": function() {
-      this.getTeamInfo();
-      this.role = this.$store.state.user.userTeam.type;
+    '$store.state.user.userTeam': function() {
+      this.getTeamInfo()
+      this.role = this.$store.state.user.userTeam.type
     }
   },
   computed: {},
   created: function() {
-    this.$store.dispatch("GetUserInfo");
-    console.log(this.$store.state);
-    this.obtainInvoiceToken();
-    this.getTeamInfo();
+    this.$store.dispatch('GetUserInfo')
+    //console.log(this.$store.state)
+    this.obtainInvoiceToken()
+    this.getTeamInfo()
     if ((this.role = this.$store.state.user.userTeam.type)) {
-      this.role = this.$store.state.user.userTeam.type;
+      this.role = this.$store.state.user.userTeam.type
     }
   },
   mounted: function() {
-    console.log(this.propMembers);
-    this.obtainInvoiceToken();
-    document.title = "团队账户 - EasyAPI";
+    //console.log(this.propMembers)
+    this.obtainInvoiceToken()
+    document.title = '团队账户 - EasyAPI'
     //add SockJS script's src
-    let sockjs = document.createElement("script");
-    sockjs.setAttribute(
-      "src",
-      "https://cdn.bootcss.com/sockjs-client/1.0.0/sockjs.min.js"
-    );
-    let stomp = document.createElement("script");
-    stomp.setAttribute(
-      "src",
-      "https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"
-    );
-    $("#app").append(sockjs);
-    $("#app").append(stomp);
+    // let sockjs = document.createElement('script')
+    // sockjs.setAttribute(
+    //   'src',
+    //   'https://cdn.bootcss.com/sockjs-client/1.0.0/sockjs.min.js'
+    // )
+    // let stomp = document.createElement('script')
+    // stomp.setAttribute(
+    //   'src',
+    //   'https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js'
+    // )
+    // $('#app').append(sockjs)
+    // $('#app').append(stomp)
     if (this.$store.state.user.team.id) {
-      this.getTeamUserList();
+      this.getTeamUserList()
     }
   },
   methods: {
     // 获取成员列表
     getTeamUserList: function() {
       this.$ajax({
-        method: "GET",
+        method: 'GET',
         url: getTeamUserList,
         params: {
           teamId: this.$store.state.user.team.id,
@@ -500,83 +395,82 @@ export default {
         }
       })
         .then(res => {
-          console.log(res);
-          this.members = res.data.content;
+          //console.log(res)
+          this.members = res.data.content
         })
-        .catch(err => {});
+        .catch(err => {})
     },
     //获取发票Token
     obtainInvoiceToken() {
       this.$ajax({
-        method: "get",
+        method: 'get',
         url: getInvoiceToken
       }).then(res => {
         if (res.data.code == 1) {
-          this.Itoken = res.data.content;
-          console.log(this.Itoken);
-          this.QRcode();
+          this.Itoken = res.data.content
+          //console.log(this.Itoken)
+          this.QRcode()
         }
-      });
+      })
     },
     //跳转发票
     jumpInvoice() {
-      var teamId = this.$store.state.user.team.id;
-      console.log(teamId);
-      let encryption = md5("" + teamId);
-      console.log(encryption);
+      var teamId = this.$store.state.user.team.id
+      //console.log(teamId)
+      let encryption = md5('' + teamId)
+      //console.log(encryption)
       window.open(
-        "https://fapiao-user-center-web.easyapi.com/?taxNumber=91320211MA1WML8X6T&accessToken=" +
+        'https://fapiao-user-center-web.easyapi.com/?taxNumber=91320211MA1WML8X6T&accessToken=' +
           this.Itoken +
-          "&" +
-          "username=" +
+          '&' +
+          'username=' +
           encryption.toUpperCase()
-      );
+      )
     },
     //生成二维码
     QRcode: function() {
-      var teamId = this.$store.state.user.team.id;
-      console.log(teamId);
-      let encryption = md5("" + teamId);
+      var teamId = this.$store.state.user.team.id
+      //console.log(teamId)
+      let encryption = md5('' + teamId)
       this.picture =
-        "https://fapiao-h5.easyapi.com?taxNumber=91320211MA1WML8X6T&accessToken=" +
+        'https://fapiao-h5.easyapi.com?taxNumber=91320211MA1WML8X6T&accessToken=' +
         this.Itoken +
-        "%26username=" +
-        encryption.toUpperCase();
+        '%26username=' +
+        encryption.toUpperCase()
     },
     getTeamInfo: function() {
       if (!this.$store.state.user.team) {
-        return;
+        return
       }
       this.$ajax({
-        method: "GET",
+        method: 'GET',
         url: getAccountMoney,
         params: {
           teamId: this.$store.state.user.team.id
         }
       }).then(res => {
-        console.log(res);
+        //console.log(res)
         if (res.data.code == 1) {
-          this.accountGolbalInfo = res.data.content;
+          this.accountGolbalInfo = res.data.content
           // 设置预警值
           if (res.data.content.warningBalance > 0) {
-            this.moneyWarnSize = res.data.content.warningBalance;
-            this.needMoneyWarn = true;
+            this.moneyWarnSize = res.data.content.warningBalance
+            this.needMoneyWarn = true
           } else {
-            this.needMoneyWarn = false;
+            this.needMoneyWarn = false
           }
         }
-      });
+      })
     },
 
     // 账户充值
     toRecharge: function() {
-      this.recharge = true;
+      this.recharge = true
     },
 
     // 选择充值方式
     setRechargeType: function(type) {
-      console.log(type);
-      this.rechargeType = type;
+      this.rechargeType = type
     },
 
     // 立即支付
@@ -584,111 +478,126 @@ export default {
       switch (this.rechargeType) {
         // 支付宝
         case 1:
-          this.aliPay();
-          break;
+          this.aliPay()
+          break
         // 微信支付
         case 2:
-          this.wxPay();
-          break;
+          this.wxPay()
+          break
         case 3:
-          this.recharge = false;
-          this.apiRecharge = true;
-          break;
+          this.recharge = false
+          this.apiRecharge = true
+          break
       }
     },
 
     aliPay: function() {
       if (!this.rechargeAmount) {
-        this.$Message.error("请输入充值金额");
-        return;
+        this.$Message.error('请输入充值金额')
+        return
       }
       this.$ajax({
-        method: "GET",
+        method: 'GET',
         url: aliPayApi,
         params: {
           price: Number(this.rechargeAmount)
         }
       })
         .then(res => {
+          console.log(res)
           if (res.data.code) {
-            let html = res.data.alipay;
-            let form = $(html);
-            form.attr("target", "_blank");
-            $("#app").append(form);
-            this.recharge = false;
+            let html = res.data.alipay
+            let form = $(html)
+            form.attr('target', '_blank')
+            $('#app').append(form)
+            this.recharge = false
             this.$Modal.confirm({
-              title: "提示",
+              title: '提示',
               content:
-                "<p>请您在新打开的页面上完成充值。<br>充值完成后，根据您的情况点击下面按钮。</p>",
-              okText: "充值成功",
-              cancelText: "充值失败",
+                '<p>请您在新打开的页面上完成充值。<br>充值完成后，根据您的情况点击下面按钮。</p>',
+              okText: '充值成功',
+              cancelText: '充值失败',
               onOk: () => {
-                this.$Modal.remove();
-                this.getTeamInfo();
+                this.$Modal.remove()
+                this.getTeamInfo()
               }
-            });
+            })
           }
         })
-        .catch(function(err) {
-          this.$Message.error("接口错误，请稍后再试");
-        });
+        .catch(err => {
+          this.$Message.error('接口错误，请稍后再试')
+        })
     },
-
+    openAliyun() {
+      return new Promise((resolve, reject) => {
+        this.$ajax({
+          method: 'GET',
+          url: aliPayApi,
+          params: {
+            price: Number(this.rechargeAmount)
+          }
+        })
+          .then(res => {
+            resolve(res)
+          })
+          .catch(function(err) {
+            reject(err)
+          })
+      })
+    },
     wxPay: function() {
-      let _that = this;
+      let _that = this
       if (!this.rechargeAmount) {
-        this.$Message.error("请输入充值金额");
-        return;
+        this.$Message.error('请输入充值金额')
+        return
       }
       this.$ajax({
-        method: "GET",
+        method: 'GET',
         url: wxPayApi,
         params: {
           price: Number(this.rechargeAmount)
         }
       })
         .then(res => {
-          console.log(res);
           if (res.data.code === 1) {
-            let url = res.data.codeUrl;
-            this.recharge = false;
+            let url = res.data.codeUrl
+            this.recharge = false
             this.$Modal.confirm({
-              title: "微信扫码支付",
+              title: '微信扫码支付',
               content: `<div class="wx-pay"><p class="wx-pay_amount">支付${_that.rechargeAmount}元</p><p><img src="http://qr.topscan.com/api.php?text=${url}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
-              okText: "",
-              cancelText: "",
+              okText: '',
+              cancelText: '',
               onOk: () => {
-                _that.$Modal.remove();
-                _that.getTeamInfo();
+                _that.$Modal.remove()
+                _that.getTeamInfo()
               }
-            });
+            })
             let socket = new SockJS(
-              "https://account.easyapi.com/easyapi-socket"
-            );
-            let stompClient = Stomp.over(socket);
+              'https://account.easyapi.com/easyapi-socket'
+            )
+            let stompClient = Stomp.over(socket)
             stompClient.connect({}, frame => {
-              console.log("Connected: " + frame);
               stompClient.subscribe(
-                "/topic/wxpay/" + _that.accountGolbalInfo.team.user.id,
+                '/topic/wxpay/' + _that.accountGolbalInfo.team.user.id,
                 message => {
-                  var json = JSON.parse(message.body);
-                  _that.$Modal.remove();
-                  _that.$Message.success("充值成功！！");
+                  var json = JSON.parse(message.body)
+                  _that.$Modal.remove()
+                  _that.$Message.success('充值成功！！')
                 }
-              );
-            });
+              )
+            })
           }
         })
         .catch(err => {
-          this.$Message.error("接口错误，请稍后再试");
-        });
+          this.$Message.error('接口错误，请稍后再试')
+        })
     },
 
     // 设置余额预警
     setMoneyWarn: function() {
-      let s = this.needMoneyWarn ? this.moneyWarnSize : 0;
+      let s = this.needMoneyWarn ? this.moneyWarnSize : 0
       this.$ajax({
-        method: "PUT",
+        method: 'PUT',
         url: moneyWarn,
         data: {
           id: this.accountGolbalInfo.id,
@@ -698,29 +607,29 @@ export default {
       })
         .then(res => {
           if (res.data.code === 1) {
-            this.$Message.success("余额预警设置成功!");
+            this.$Message.success('余额预警设置成功!')
           }
         })
         .catch(function(err) {
-          this.$Message.success("余额预警设置失败!");
-        });
+          this.$Message.success('余额预警设置失败!')
+        })
     },
 
     // 展开修改团队信息
     toTeamChange: function() {
-      this.teamInfoChange = true;
-      this.teamIcon = this.accountGolbalInfo.team.img;
-      this.teamName = this.accountGolbalInfo.team.name;
-      this.teamType = this.accountGolbalInfo.team.industry;
-      this.teamUrl = this.accountGolbalInfo.team.url;
-      this.teamDes = this.accountGolbalInfo.team.description;
+      this.teamInfoChange = true
+      this.teamIcon = this.accountGolbalInfo.team.img
+      this.teamName = this.accountGolbalInfo.team.name
+      this.teamType = this.accountGolbalInfo.team.industry
+      this.teamUrl = this.accountGolbalInfo.team.url
+      this.teamDes = this.accountGolbalInfo.team.description
     },
 
     // 修改团队
     changeTeamInfo: function() {
-      console.log(this.teamType);
+      //console.log(this.teamType)
       this.$ajax({
-        method: "PUT",
+        method: 'PUT',
         url: `${teamUrl}/${this.$store.state.user.team.id}`,
         data: {
           name: this.teamName,
@@ -732,115 +641,115 @@ export default {
         json: true
       })
         .then(res => {
-          console.log(res);
+          //console.log(res)
           if (res.data.code) {
-            this.$Message.success("修改成功!");
+            this.$Message.success('修改成功!')
             setTimeout(() => {
-              location.reload();
-            }, 1000);
+              location.reload()
+            }, 1000)
           }
         })
         .catch(function(err) {
-          this.teamInfoChange = false;
-          this.$Message.success("修改失败!");
-        });
+          this.teamInfoChange = false
+          this.$Message.success('修改失败!')
+        })
     },
 
     cleanUrl() {
-      this.urlOccupy = false;
+      this.urlOccupy = false
     },
 
     // 检查团队URL是否合法
     async checkUrl() {
       if (!this.url) {
-        return;
+        return
       }
       await this.checkTeamUrl().catch(err => {
-        this.urlOccupy = true;
-        this.$Message.error("团队URL已经被占用");
-      });
+        this.urlOccupy = true
+        this.$Message.error('团队URL已经被占用')
+      })
     },
 
     checkTeamUrl(success, fail) {
       return new Promise((resolve, reject) => {
         let _data = {
           url: this.baseUrl
-        };
+        }
         this.$ajax({
           url: checkTeamUrl,
-          method: "get",
+          method: 'get',
           params: _data
         })
           .then(res => {
             if (res.data.code == 1) {
-              resolve("团队URL可用");
+              resolve('团队URL可用')
             } else {
-              reject("团队URL已存在");
+              reject('团队URL已存在')
             }
           })
           .catch(err => {
             if (
               err.responseJSON.code == -1 ||
-              err.responseJSON.message == "该编码已存在"
+              err.responseJSON.message == '该编码已存在'
             ) {
-              reject("团队URL已存在");
+              reject('团队URL已存在')
             }
-          });
-      });
+          })
+      })
     },
 
     // 转让团队
     confirmTransferTeam: function() {
-      let user = this.$store.state.user;
-      console.log(user);
-      // console.log(this.team.id)
+      let user = this.$store.state.user
+      //console.log(user)
+      // //console.log(this.team.id)
       this.$ajax({
-        method: "put",
-        url: transferTeam.replace("#id#", user.team.id),
+        method: 'put',
+        url: transferTeam.replace('#id#', user.team.id),
         data: {
           username: this.transferMember
         }
       })
         .then(res => {
-          console.log(res);
+          //console.log(res)
           if (res.data.code) {
-            this.$Message.success("转让成功!");
-            this.teamTransfer = false;
-            this.getTeamInfo();
+            this.$Message.success('转让成功!')
+            this.teamTransfer = false
+            this.getTeamInfo()
           }
         })
         .catch(function(err) {
-          this.$Message.error("修改失败!");
-        });
+          this.$Message.error('修改失败!')
+        })
     },
 
     //上传图片
     uploadImg: function(e) {
-      this.$loadingStart();
+      this.$loadingStart()
 
-      let f = e.target.files[0];
-      $("#teamIcon").val();
+      let f = e.target.files[0]
+      $('#teamIcon').val()
       this.getQiniu().then(tokenRes => {
-        const qiNiuFileDomain = "https://qiniu.easyapi.com";
+        const qiNiuFileDomain = 'https://qiniu.easyapi.com'
         //
-        let res = JSON.parse(tokenRes);
-        let token = res.upToken;
+        let res = JSON.parse(tokenRes)
+        let token = res.upToken
         //start to upload
-        var xhr = new XMLHttpRequest();
+        var xhr = new XMLHttpRequest()
 
-        xhr.open("POST", "https://upload.qiniu.com/", true);
+        xhr.open('POST', 'https://upload.qiniu.com/', true)
 
-        var formData, startDate;
+        var formData, startDate
 
-        formData = new FormData();
-        formData.append("token", token);
-        formData.append("file", f);
-        formData.append("key", `${new Date().getTime()}`);
+        formData = new FormData()
+        formData.append('token', token)
+        formData.append('file', f)
+        formData.append('key', `${new Date().getTime()}`)
 
         // var taking
 
         xhr.upload.addEventListener(
-          "progress",
+          'progress',
           evt => {
             // if (evt.lengthComputable) {
             //     var nowDate = new Date().getTime();
@@ -856,49 +765,49 @@ export default {
             //     }
             //     var percentComplete = Math.round(evt.loaded * 100 / evt.total);
             //     progressbar.progressbar("value", percentComplete);
-            //     // console && console.log(percentComplete, ",", formatSpeed);
+            //     // console && //console.log(percentComplete, ",", formatSpeed);
           },
           false
-        );
+        )
 
         xhr.onreadystatechange = response => {
           if (
             xhr.readyState == 4 &&
             xhr.status == 200 &&
-            xhr.responseText != ""
+            xhr.responseText != ''
           ) {
-            let res = JSON.parse(response.currentTarget.response);
-            console.log("upload", res);
-            this.$loadingEnd();
-            this.teamIcon = `${qiNiuFileDomain}/${res.key}`;
+            let res = JSON.parse(response.currentTarget.response)
+            //console.log('upload', res)
+            this.$loadingEnd()
+            this.teamIcon = `${qiNiuFileDomain}/${res.key}`
           } else if (xhr.status != 200 && xhr.responseText) {
-            this.$loadingEnd();
+            this.$loadingEnd()
           }
-        };
+        }
 
-        startDate = new Date().getTime();
+        startDate = new Date().getTime()
 
-        xhr.send(formData);
-      });
+        xhr.send(formData)
+      })
     },
 
     // 解散团队-获取验证码
     getCaptcha: function() {
-      let email = this.email.trim();
+      let email = this.email.trim()
       if (!email) {
-        this.$Message.error("请输入邮箱");
-        return;
+        this.$Message.error('请输入邮箱')
+        return
       }
       if (
         !/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(
           email
         )
       ) {
-        this.$Message.error("邮箱格式错误");
-        return;
+        this.$Message.error('邮箱格式错误')
+        return
       }
       this.$ajax({
-        method: "POST",
+        method: 'POST',
         url: getCaptcha,
         data: {
           username: email
@@ -906,83 +815,101 @@ export default {
       })
         .then(res => {
           if (res.data.code === 1) {
-            this.$Message.success("验证码发送成功，请查收");
-            this.captchaUse = true;
+            this.$Message.success('验证码发送成功，请查收')
+            this.captchaUse = true
           }
         })
         .catch(error => {
-          this.$Message.error(error.response.data.message);
-        });
+          this.$Message.error(error.response.data.message)
+        })
     },
 
     // 解散团队
     delTeam: function() {
-      let user = this.$store.state.user;
+      let user = this.$store.state.user
       this.$ajax({
-        method: "DELETE",
+        method: 'DELETE',
         url: `${teamUrl}/${user.team.id}`,
         data: {
           code: this.captcha
         }
       }).then(res => {
         if (res.data.code === 1) {
-          this.$Message.success("解散成功");
-          this.$store.dispatch("GetUserInfo");
-          this.$router.replace("/launch");
+          this.$Message.success('解散成功')
+          this.$store.dispatch('GetUserInfo')
+          this.$router.replace('/launch')
         }
-      });
+      })
     },
 
     // 退出团队
     quitTeam: function() {
       this.$Modal.confirm({
-        title: "提示",
-        content: "确定退出该团队？",
+        title: '提示',
+        content: '确定退出该团队？',
         onOk: () => {
           this.$ajax({
-            method: "GET",
-            url: quitTeam.replace("#id#", this.$store.state.user.team.id),
+            method: 'GET',
+            url: quitTeam.replace('#id#', this.$store.state.user.team.id),
             params: {
               code: this.captcha
             }
           }).then(res => {
             if (res.data.code === 1) {
-              this.$Message.success("解散成功");
-              this.$router.replace("/launch");
+              this.$Message.success('解散成功')
+              this.$router.replace('/launch')
             }
-          });
+          })
         },
         onCancel: () => {}
-      });
+      })
     },
 
     //获取七牛token
     getQiniu: function() {
       return new Promise((resolve, reject) => {
         $.get(getQiniuToken, res => {
-          resolve(res);
-        });
-      });
+          resolve(res)
+        })
+      })
     },
 
     // dialog callback
     rcSDVisible: function(v) {
-      if (!v) this.recharge = false;
+      if (!v) this.recharge = false
     },
     arSDVisible: function(v) {
-      if (!v) this.apiRecharge = false;
+      if (!v) this.apiRecharge = false
     },
     tcSDVisible: function(v) {
-      if (!v) this.teamClose = false;
+      if (!v) this.teamClose = false
     },
     tiSDVisible: function(v) {
-      if (!v) this.teamInfoChange = false;
+      if (!v) this.teamInfoChange = false
     },
     ttSDVisible: function(v) {
-      if (!v) this.teamTransfer = false;
+      if (!v) this.teamTransfer = false
+    },
+    showCode() {
+      this.codeHas = true
+      let timer = setTimeout(() => {
+        this.codeShow = true
+        timer = null
+        clearTimeout(timer)
+      }, 100)
+      clearTimeout(this.timer)
+      this.timer = null
+    },
+    hideCode() {
+      this.codeShow = false
+      this.timer = setTimeout(() => {
+        this.codeHas = false
+        this.timer = null
+        clearTimeout(this.timer)
+      }, 300)
     }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
@@ -991,6 +918,10 @@ export default {
 .m-wrapper {
   max-width: 960px;
   padding: 50px 0;
+}
+
+a {
+  color: #2d8cf0;
 }
 
 section {
@@ -1008,7 +939,7 @@ section {
   .m {
     width: 70%;
     font-size: 14px;
-    position relative
+    position: relative;
   }
 
   .tip {
@@ -1128,11 +1059,11 @@ section {
 }
 
 .pay-amount {
-  width: 31%
+  width: 31%;
 }
 
 .type-wrapper {
-  padding-right: 10px
+  padding-right: 10px;
 }
 
 .zf-type {
@@ -1143,14 +1074,12 @@ section {
   height: 75px;
 }
 
-.zfb,
-.wxzf,
-.api-zf {
+.zfb, .wxzf, .api-zf {
   width: 100%;
 }
 
 .p-active {
-  border: 1px solid c-blue
+  border: 1px solid c-blue;
 }
 
 .tips {
@@ -1163,12 +1092,12 @@ section {
 }
 
 .circle {
-  border: 2px solid c-blue
-  height: 40px
-  width: 40px
-  text-align: center
-  line-height: 40px
-  border-radius: 50%
+  border: 2px solid c-blue;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 50%;
 }
 </style>
 
@@ -1176,46 +1105,53 @@ section {
 @import '../assets/styles/color.styl';
 
 .wx-pay {
-  text-align: center
-  margin-left: -48px
+  text-align: center;
+  margin-left: -48px;
+
   .wx-pay_amount {
-    color: c-red
-    font-size: 1.2em
+    color: c-red;
+    font-size: 1.2em;
   }
 }
 
-.type-select,
-.type-select .ivu-select-selection,
-.type-select .ivu-select-selected-value {
+.type-select, .type-select .ivu-select-selection, .type-select .ivu-select-selected-value {
   height: 32px !important;
   line-height: 32px !important;
 }
 
 .invoice {
-  color red;
-  cursor pointer;
-  padding-left 10px
+  color: red;
+  cursor: pointer;
+  padding-left: 10px;
 }
 
 .Code-picture {
-  width 120px
-  height 120px
-  padding 10px;
-  border 1px solid #dddddd;
-  position absolute
-  bottom 25px;
-  left 90px;
-  z-index 9999
-  display none
-  background-color #ffffff;
+  width: 120px;
+  height: 120px;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background-color: #ffffff;
+  opacity: 0;
 }
 
 .invoiceQR {
-  cursor pointer;
-  padding-left 10px
+  cursor: pointer;
+  margin-left: 10px;
+  position: relative;
 }
 
-.invoiceQR:hover .Code-picture {
-  display block
+.code-show {
+  opacity: 1;
+  transition: all 0.2s linear 0.1s;
+}
+
+.code-hide {
+  opacity: 0;
+  transition: all 0.2s linear 0.1s;
 }
 </style>
