@@ -22,7 +22,7 @@
         <li :class="{ active: $route.name === 'Members' }">
           <router-link to="/members">成员</router-link>
         </li>
-        <li :class="{ active: $route.name === 'Services' }">
+        <li :class="{ active: $route.name.indexOf('Services')!=-1 }">
           <router-link to="/services">服务</router-link>
         </li>
         <li :class="{ active: $route.name === 'Orders' }">
@@ -37,43 +37,43 @@
 </template>
 
 <script>
-import { getTeamUserList } from "../api/api";
-import { mapGetters } from "vuex";
+import { getTeamUserList } from '../api/api'
+import { mapGetters } from 'vuex'
 
 export default {
-  name: "Wrapper",
+  name: 'Wrapper',
   data: function() {
     return {
-      module: "root-set",
+      module: 'root-set',
       members: [{}]
-    };
+    }
   },
   computed: {
-    ...mapGetters(["team"])
+    ...mapGetters(['team'])
   },
   created: function() {},
   mounted: function() {
-    this.module = this.$route.name;
+    this.module = this.$route.name
     if (this.$store.state.user.team.id) {
-      this.getTeamUserList();
+      this.getTeamUserList()
     }
   },
   watch: {
     $route: function() {
-      this.module = this.$route.name;
+      this.module = this.$route.name
     },
-    "$store.state.user.team.id": function(v, oldV) {
+    '$store.state.user.team.id': function(v, oldV) {
       if (v !== oldV) {
-        this.getTeamUserList();
+        this.getTeamUserList()
       }
     }
   },
   methods: {
     // 获取成员列表
     getTeamUserList: function() {
-      this.loadingMemberList = true;
+      this.loadingMemberList = true
       this.$ajax({
-        method: "GET",
+        method: 'GET',
         url: getTeamUserList,
         params: {
           teamId: this.$store.state.user.team.id,
@@ -82,74 +82,87 @@ export default {
         }
       })
         .then(res => {
-          this.members = res.data.content;
-          this.loadingMemberList = false;
+          this.members = res.data.content
+          this.loadingMemberList = false
         })
         .catch(err => {
-          this.loadingMemberList = false;
-        });
+          this.loadingMemberList = false
+        })
     }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
-@import '../assets/styles/color.styl'
-.team-hd
-  height: 260px
-  padding-top: 40px
-  padding-bottom: 40px
-  background: c-blue-light url('../../static/images/bg_center.png') no-repeat center
-  background-size: cover
-  text-align: center
+@import '../assets/styles/color.styl';
 
-  .team-icon
-    display: inline-block
-    height: 80px
-    width: 80px
+.team-hd {
+  height: 260px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: c-blue-light url('../../static/images/bg_center.png') no-repeat center;
+  background-size: cover;
+  text-align: center;
 
-    img
-      display: inline-block
-      height: 100%
-      width: 100%
-      background: c-grey
-      border-radius: 50%
-      border: 4px solid c-white
+  .team-icon {
+    display: inline-block;
+    height: 80px;
+    width: 80px;
 
-  .name
-    margin: 10px 0 15px
-    font-size: 22px
+    img {
+      display: inline-block;
+      height: 100%;
+      width: 100%;
+      background: c-grey;
+      border-radius: 50%;
+      border: 4px solid c-white;
+    }
+  }
 
-  .des
-    font-size: 14px
+  .name {
+    margin: 10px 0 15px;
+    font-size: 22px;
+  }
 
-nav
-  border-bottom: 1px solid c-border
+  .des {
+    font-size: 14px;
+  }
+}
 
-.menu
-  text-align: center
+nav {
+  border-bottom: 1px solid c-border;
+}
 
-  li
-    position: relative
-    display: inline-block
-    padding: 20px 0
-    margin: 0 20px
-    font-size: 14px
+.menu {
+  text-align: center;
 
-    a
-      color: c-black
+  li {
+    position: relative;
+    display: inline-block;
+    padding: 20px 0;
+    margin: 0 20px;
+    font-size: 14px;
 
-    &.active
-      a
-        color: c-blue
+    a {
+      color: c-black;
+    }
 
-      &:after
-        display: inline-block
-        content: ''
-        position: absolute
-        bottom: 0
-        left: 0
-        width: 100%
-        height: 4px
-        background-color: c-blue
+    &.active {
+      a {
+        color: c-blue;
+      }
+
+      &:after {
+        display: inline-block;
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background-color: c-blue;
+      }
+    }
+  }
+}
 </style>

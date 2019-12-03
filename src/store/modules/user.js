@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import axios from "@/api/fetch";
-import {getAccountInfo} from "@/api/api";
+import { getAccountInfo } from "@/api/api";
 
 const user = {
   state: {
@@ -61,10 +61,10 @@ const user = {
 
   actions: {
     // 用户名登录
-    LoginByUsername({commit}, userInfo) {
+    LoginByUsername({ commit }, userInfo) {
     },
     // 获取用户信息
-    GetUserInfo({commit, state}) {
+    GetUserInfo({ commit, state }) {
       axios({
         method: "GET",
         url: getAccountInfo
@@ -87,16 +87,16 @@ const user = {
           }
 
           //用户团队{}
-          console.log(userInfoData.userTeam);
+          // console.log(userInfoData.userTeam);
           commit("SET_USERTEAM", userInfoData.userTeam);
-          console.log(state.userTeam);
+          // console.log(state.userTeam);
         })
         .catch(error => {
           console.log(error.response);
         });
     },
     // 登出
-    Logout({commit, state}) {
+    Logout({ commit, state }) {
       Cookies.remove("authenticationToken");
     }
   }
