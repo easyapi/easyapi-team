@@ -31,6 +31,7 @@
 
 <script>
 import leftNav from './components/leftNav'
+import { changePassword } from '../../api/api.js'
 export default {
   name: 'edit',
   data() {
@@ -38,6 +39,8 @@ export default {
       console.log(value, rule)
       if (value === '') {
         callback(new Error('新密码不得为空'))
+      } else if (value === this.passwordInfo.old) {
+        callback(new Error('新密码不得与旧密码相同'))
       } else {
         if (this.passwordInfo.newAgain !== '') {
           // 对第二个密码框单独验证
@@ -49,6 +52,8 @@ export default {
     const newAgain = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('确认新密码不得为空'))
+      } else if (value === this.passwordInfo.old) {
+        callback(new Error('新密码不得与旧密码相同'))
       } else {
         if (this.passwordInfo.new !== value) {
           callback(new Error('两次输入密码不一致'))
@@ -79,9 +84,20 @@ export default {
   },
   methods: {
     changePassword() {
+      let data = {
+        oldPassword: this.passwordInfo.old,
+        password: this.passwordInfo.new
+      }
       this.$refs.password.validate(valid => {
         if (valid) {
-          this.$Message.success('Success!')
+          this.$ajax
+            .post(changePassword, data)
+            .then(res => {
+              console.log(res)
+            })
+            .catch(err => {
+              console.log(err)
+            })
         } else {
           this.$Message.error('Fail!')
         }
