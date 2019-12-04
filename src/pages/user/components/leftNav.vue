@@ -47,7 +47,6 @@ export default {
       height: 60px;
       border-radius: 50%;
       overflow: hidden;
-      background: red;
       margin: 0 20px;
     }
 

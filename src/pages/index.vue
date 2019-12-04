@@ -24,7 +24,7 @@
           </span>
           <div class="ea-DropdownMenu" :class="{ active: showTeamInfo }">
             <a href="https://account.easyapi.com/notification/">我的通知</a>
-            <router-link to="/user">个人设置</router-link>
+            <router-link to="/user/edit">个人设置</router-link>
             <a @click="quitLogin()" href="https://account.easyapi.com/logout">退出</a>
           </div>
         </div>

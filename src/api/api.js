@@ -45,8 +45,12 @@ export const getRechargeList = `${domainUrl}/api/recharges`;
 export const getCaptcha = `${domainUrl}/api/account/captcha/activation`;
 
 /* == 服务列表 ==*/
+
+//查询 服务报价列表
+export const ServiceList = `https://api2.easyapi.com/console/servicePrice`;
+
 //查询 服务报价列表GET
-export const ServiceList = `${domainUrl}/api/team/document/price`;
+export const docPrice = `${domainUrl}/api/team/document/price`;
 //续购服务POST
 export const balance = `${domainUrl}/console/servicePrice/continueBuy`;
 //查询团队的财务数据GET
@@ -55,7 +59,8 @@ export const paymentMethod = `${domainUrl}/console/money/mine`;
 export const Surplus = `${domainUrl}/console/teamService`;
 //文档续费
 export const documentRenewUrl = `${domainUrl}/api/team/document/renew`;
-
+//获取用户服务列表
+export const getUserService = `https://api2.easyapi.com/console/user/services`;
 /* == 订单列表 ==*/
 //获取订单列表
 export const getOrderList = `${domainUrl}/api/order`;
