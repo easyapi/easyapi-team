@@ -11,6 +11,7 @@
             class="Insequence_Price"
             :class="{ eaActive: selectMoney === price.month }"
             v-for="(price, i) in frequency"
+            :key="'price'+i"
             @click="
               selectMoneyFn(
                 price.month,
@@ -21,17 +22,17 @@
               )
             "
           >
-            <strong v-if="price.month < 12"
-              >{{ price.month }}月&nbsp;&nbsp;￥{{
-                price.price - price.discount
-              }}</strong
-            >
+            <strong v-if="price.month < 12">
+              {{ price.month }}月&nbsp;&nbsp;￥{{
+              price.price - price.discount
+              }}
+            </strong>
             <p v-if="price.month < 12">￥{{ onePrice[i] }}/月</p>
-            <strong v-if="price.month >= 12"
-              >{{ price.month / 12 }}年&nbsp;&nbsp;￥{{
-                price.price - price.discount
-              }}</strong
-            >
+            <strong v-if="price.month >= 12">
+              {{ price.month / 12 }}年&nbsp;&nbsp;￥{{
+              price.price - price.discount
+              }}
+            </strong>
             <p v-if="price.month >= 12">￥{{ onePrice[i] }}/月</p>
           </div>
         </div>
@@ -45,9 +46,9 @@
             @click="stand('余额支付')"
             v-if="balance >= price - discount"
           >
-            <span
-              ><strong>余额支付(￥{{ balance }})</strong></span
-            >
+            <span>
+              <strong>余额支付(￥{{ balance }})</strong>
+            </span>
           </div>
           <div
             class="payment_p"
@@ -55,41 +56,26 @@
             @click="stand('余额支付')"
             v-if="balance < price - discount"
           >
-            <span
-              ><strong>余额支付(￥{{ balance }})</strong></span
-            >
-            <span
-              style="display: block;color: #303030;line-height:25px;width:285px"
-              >余额不足，建议使用其他支付方式，或者<a
+            <span>
+              <strong>余额支付(￥{{ balance }})</strong>
+            </span>
+            <span style="display: block;color: #303030;line-height:25px;width:285px">
+              余额不足，建议使用其他支付方式，或者
+              <a
                 href="https://team.easyapi.com/account"
                 style="color: #1cc0d6;"
-                >充值</a
-              >
+              >充值</a>
             </span>
           </div>
-          <div
-            class="payment"
-            :class="{ state: assignment === '微信支付' }"
-            @click="stand('微信支付')"
-          >
-            <span
-              ><img
-                src="../../assets/images/wechat.png"
-                alt=""
-                style="padding-top:10px;"
-            /></span>
-          </div>
-          <div
-            class="payment"
-            :class="{ state: assignment === '支付宝' }"
-            @click="stand('支付宝')"
-          >
+          <div class="payment" :class="{ state: assignment === '微信支付' }" @click="stand('微信支付')">
             <span>
-              <img
-                src="../../assets/images/alipay.png"
-                alt=""
-                style="padding-top:8px;"
-            /></span>
+              <img src="../../assets/images/wechat.png" alt style="padding-top:10px;" />
+            </span>
+          </div>
+          <div class="payment" :class="{ state: assignment === '支付宝' }" @click="stand('支付宝')">
+            <span>
+              <img src="../../assets/images/alipay.png" alt style="padding-top:8px;" />
+            </span>
           </div>
         </div>
       </div>
@@ -100,14 +86,14 @@
         </div>
       </div>
       <div class="Insequence_fl">
-        <strong class="Insequence_service_title" style="padding-top:10px"
-          >应付金额：</strong
-        >
+        <strong class="Insequence_service_title" style="padding-top:10px">应付金额：</strong>
         <div class="frequency">
-          <strong style="color: #fa2222;font-size: 26px;">{{
+          <strong style="color: #fa2222;font-size: 26px;">
+            {{
             price - discount
-          }}</strong
-          >&nbsp;<span style="color: #323232;font-size: 14px;">元</span>
+            }}
+          </strong>&nbsp;
+          <span style="color: #323232;font-size: 14px;">元</span>
         </div>
       </div>
       <div class="Insequence_fa">
@@ -115,19 +101,16 @@
           v-if="balance >= discount || assignment !== '余额支付'"
           style="border-radius: 4px;background-color: #1cc0d6;color: #fff;font-size: 14px;"
           @click="Sure"
-          >确定购买
-        </Button>
+        >确定购买</Button>
         <Button
           v-if="balance < discount && assignment == '余额支付'"
           style="border-radius: 4px;background-color: #1cc0d6;color: #fff;font-size: 14px;"
           disabled
           @click="Sure"
-          >确定购买
-        </Button>
+        >确定购买</Button>
         <span
           style="display: block;padding-top:5px;color: #888888;font-size: 12px;"
-          >若在购买过程中遇到任何问题，请致电：13656171020</span
-        >
+        >若在购买过程中遇到任何问题，请致电：13656171020</span>
       </div>
       <Modal v-model="purchase" @on-ok="determineThePurchase">
         <p style="text-align: center;font-size: 16px">你确定续费吗？</p>
@@ -136,58 +119,58 @@
   </div>
 </template>
 <script>
-import { ServiceList, balance, paymentMethod, Surplus } from "../../api/api";
-import calcudate from "calcudate";
-import Cookies from "js-cookie";
-
+import { ServiceList, balance, paymentMethod, Surplus } from '../../api/api'
+import calcudate from 'calcudate'
+import Cookies from 'js-cookie'
+import $ from 'jquery'
 export default {
   data() {
     return {
       purchase: false,
-      frequency: "",
-      selectMoney: "",
-      servicePriceId: "",
-      balance: "",
-      assignment: "余额支付",
-      discount: "",
-      howMany: "",
-      serviceId: "",
-      teamServiceId: "",
+      frequency: '',
+      selectMoney: '',
+      servicePriceId: '',
+      balance: '',
+      assignment: '余额支付',
+      discount: '',
+      howMany: '',
+      serviceId: '',
+      teamServiceId: '',
       onePrice: [],
-      authenticationToken: "",
-      price: "",
-      name: "",
-      dateMonth: "",
-      dueTime: "",
-      clockItem: ""
-    };
+      authenticationToken: '',
+      price: '',
+      name: '',
+      dateMonth: '',
+      dueTime: '',
+      clockItem: ''
+    }
   },
   methods: {
     selectMoneyFn(M, servicePriceId, discount, price, month) {
-      let now = "";
+      let now = ''
       if (this.howMany) {
-        now = new Date(this.howMany);
+        now = new Date(this.howMany)
       } else {
-        now = new Date();
+        now = new Date()
       }
-      this.selectMoney = M;
-      this.servicePriceId = servicePriceId;
-      this.discount = discount;
-      this.price = price;
-      this.dateMonth = month;
+      this.selectMoney = M
+      this.servicePriceId = servicePriceId
+      this.discount = discount
+      this.price = price
+      this.dateMonth = month
       this.dueTime = calcudate
         .add(now)
         .months(this.dateMonth)
-        .toLocaleDateString();
+        .toLocaleDateString()
     },
     stand(pay) {
-      this.assignment = pay;
+      this.assignment = pay
     },
     //查询 服务报价列表
     getServiceList() {
-      let second = "";
+      let second = ''
       this.$ajax({
-        method: "get",
+        method: 'get',
         url: ServiceList + this.serviceId,
         headers: {
           authorization: this.authenticationToken
@@ -195,114 +178,114 @@ export default {
       })
         .then(res => {
           if (res.data.code !== 0) {
-            this.frequency = res.data.content;
+            this.frequency = res.data.content
             //this.selectMoney = res.data.content[0].month
-            this.price = res.data.content[0].price;
-            this.discount = res.data.content[0].discount;
-            this.servicePriceId = res.data.content[0].servicePriceId;
+            this.price = res.data.content[0].price
+            this.discount = res.data.content[0].discount
+            this.servicePriceId = res.data.content[0].servicePriceId
             for (var i = 0; i < this.frequency.length; i++) {
               second = (
                 (this.frequency[i].price - this.frequency[i].discount) /
                 this.frequency[i].month
-              ).toFixed(4);
-              this.onePrice.push(second);
+              ).toFixed(4)
+              this.onePrice.push(second)
             }
-            this.howMuchOfTheRest();
+            this.howMuchOfTheRest()
           }
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     //余额
     choosePaymentMethod() {
       this.$ajax({
-        method: "get",
+        method: 'get',
         url: paymentMethod,
         headers: {
           authorization: this.authenticationToken
         }
       })
         .then(res => {
-          this.balance = res.data.content.balance;
+          this.balance = res.data.content.balance
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     //剩余多少日期
     howMuchOfTheRest() {
       this.$ajax({
-        method: "get",
-        url: Surplus + "/" + this.teamServiceId,
+        method: 'get',
+        url: Surplus + '/' + this.teamServiceId,
         headers: {
           authorization: this.authenticationToken
         }
       })
         .then(res => {
-          let now = "";
+          let now = ''
           if (res.data.endTime && res.data.endTime >= this.clockItem) {
-            this.howMany = res.data.endTime.split(" ")[0];
-            now = new Date(this.howMany);
+            this.howMany = res.data.endTime.split(' ')[0]
+            now = new Date(this.howMany)
             this.dueTime = calcudate
               .add(now)
               .months(this.dateMonth)
-              .toLocaleDateString();
+              .toLocaleDateString()
           } else {
-            now = new Date();
+            now = new Date()
             this.dueTime = calcudate
               .add(now)
               .months(this.selectMoney)
-              .toLocaleDateString();
+              .toLocaleDateString()
           }
-          this.name = res.data.service.name;
+          this.name = res.data.service.name
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     },
     //当前时间
     getItem() {
-      var currentTime = new Date();
-      console.log(currentTime.toLocaleString());
-      var year = currentTime.getFullYear(); //年
-      var month = currentTime.getMonth() + 1; //月
-      var day = currentTime.getDate(); //日
+      var currentTime = new Date()
+      console.log(currentTime.toLocaleString())
+      var year = currentTime.getFullYear() //年
+      var month = currentTime.getMonth() + 1 //月
+      var day = currentTime.getDate() //日
 
-      var hh = currentTime.getHours(); //时
-      var mm = currentTime.getMinutes(); //分
-      var ss = currentTime.getSeconds(); //秒
-      this.clockItem = year + "-";
+      var hh = currentTime.getHours() //时
+      var mm = currentTime.getMinutes() //分
+      var ss = currentTime.getSeconds() //秒
+      this.clockItem = year + '-'
 
-      if (month < 10) this.clockItem += "0";
+      if (month < 10) this.clockItem += '0'
 
-      this.clockItem += month + "-";
+      this.clockItem += month + '-'
 
-      if (day < 10) this.clockItem += "0";
+      if (day < 10) this.clockItem += '0'
 
-      this.clockItem += day + " ";
+      this.clockItem += day + ' '
 
-      if (hh < 10) this.clockItem += "0";
+      if (hh < 10) this.clockItem += '0'
 
-      this.clockItem += hh + ":";
-      if (mm < 10) this.clockItem += "0";
-      this.clockItem += mm + ":";
+      this.clockItem += hh + ':'
+      if (mm < 10) this.clockItem += '0'
+      this.clockItem += mm + ':'
 
-      if (ss < 10) this.clockItem += "0";
-      this.clockItem += ss;
-      console.log(this.clockItem);
+      if (ss < 10) this.clockItem += '0'
+      this.clockItem += ss
+      console.log(this.clockItem)
     },
     //确定购买
     Sure() {
-      if (this.selectMoney === "") {
-        this.$Message.warning("请选择服务价格");
-        return;
+      if (this.selectMoney === '') {
+        this.$Message.warning('请选择服务价格')
+        return
       }
-      this.purchase = true;
+      this.purchase = true
     },
     determineThePurchase() {
       this.$ajax({
-        method: "POST",
+        method: 'POST',
         url: balance,
         headers: {
           authorization: this.authenticationToken
@@ -313,53 +296,53 @@ export default {
         }
       })
         .then(res => {
-          console.log(res);
-          if (this.assignment === "支付宝") {
-            this.formHtml = res.data.alipay;
-            console.log(this.formHtml);
-            let form = $(this.formHtml);
-            form.attr("target", "_blank");
-            $("#app").append(form);
-          } else if (this.assignment === "微信支付") {
-            let weChatPayment = res.data.codeUrl;
+          console.log(res)
+          if (this.assignment === '支付宝') {
+            this.formHtml = res.data.alipay
+            console.log(this.formHtml)
+            let form = $(this.formHtml)
+            form.attr('target', '_blank')
+            $('#app').append(form)
+          } else if (this.assignment === '微信支付') {
+            let weChatPayment = res.data.codeUrl
             this.$Modal.confirm({
-              title: "微信扫码支付",
+              title: '微信扫码支付',
               content: `<div class="wx-pay"><p class="wx-pay_amount">支付${this
                 .price -
                 this
                   .discount}元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
-              okText: "",
-              cancelText: "",
+              okText: '',
+              cancelText: '',
               onOk: () => {
-                this.getServiceList();
-                this.choosePaymentMethod();
-                this.howMuchOfTheRest();
+                this.getServiceList()
+                this.choosePaymentMethod()
+                this.howMuchOfTheRest()
               }
-            });
+            })
           }
-          this.$Message.success(res.data.message);
+          this.$Message.success(res.data.message)
         })
         .catch(error => {
-          if (this.assignment == "" || this.assignment == null) {
-            this.$Message.warning("请选择和支付方式");
+          if (this.assignment == '' || this.assignment == null) {
+            this.$Message.warning('请选择和支付方式')
           } else {
-            this.$Message.error(error.response.data.message);
+            this.$Message.error(error.response.data.message)
           }
-        });
+        })
     }
   },
   created() {
-    this.serviceId = this.$route.query.serviceId;
-    this.teamServiceId = this.$route.query.teamServiceId;
-    this.getItem();
-    this.authenticationToken = "Bearer " + Cookies.get("authenticationToken");
+    this.serviceId = this.$route.query.serviceId
+    this.teamServiceId = this.$route.query.teamServiceId
+    this.getItem()
+    this.authenticationToken = 'Bearer ' + Cookies.get('authenticationToken')
   },
   mounted() {
-    document.title = "服务续费 - EasyAPI";
-    this.getServiceList();
-    this.choosePaymentMethod();
+    document.title = '服务续费 - EasyAPI'
+    this.getServiceList()
+    this.choosePaymentMethod()
   }
-};
+}
 </script>
 <style scoped>
 .Insequence {
@@ -440,7 +423,7 @@ export default {
   position: absolute;
   left: 195px;
   top: 79px;
-  content: " ";
+  content: ' ';
   width: 20px;
   height: 20px;
   background-image: url(../../assets/images/checked.png);
@@ -500,7 +483,7 @@ export default {
   position: absolute;
   left: 193px;
   top: 28px;
-  content: " ";
+  content: ' ';
   width: 20px;
   height: 20px;
   background-image: url(../../assets/images/checked.png);

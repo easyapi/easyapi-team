@@ -9,7 +9,7 @@
       :loading="dataLoading"
     ></Table>
     <p v-if="!tableData.length" style="text-align: center">
-      <img src="../../assets/images/no-data.png" alt="" />
+      <img src="../../assets/images/no-data.png" alt />
     </p>
     <Page
       :total="total"
@@ -28,47 +28,51 @@
       <Row class="detail-table">
         <Col span="12">
           <Col span="8" class="row detail-key">订单号</Col>
-          <Col span="16" class="row ">{{ tableData[billDetailIndex].no }}</Col>
+          <Col span="16" class="row">{{ tableData[billDetailIndex].no }}</Col>
         </Col>
         <Col span="12">
           <Col span="8" class="row detail-key">金额</Col>
-          <Col
-            span="16"
-            class="row "
-            v-html="renderPrice(null, tableData[billDetailIndex], true)"
-          ></Col>
+          <Col span="16" class="row" v-html="renderPrice(null, tableData[billDetailIndex], true)"></Col>
         </Col>
         <Col span="12">
           <Col span="8" class="row detail-key">服务名称</Col>
-          <Col span="16" class="row ">{{
+          <Col span="16" class="row">
+            {{
             tableData[billDetailIndex].name
-          }}</Col>
+            }}
+          </Col>
         </Col>
         <Col span="12">
           <Col span="8" class="row detail-key">计量</Col>
           <Col
             span="16"
-            class="row "
+            class="row"
             v-html="renderQuantity(null, tableData[billDetailIndex], true)"
           ></Col>
         </Col>
         <Col span="12">
           <Col span="8" class="row detail-key">状态</Col>
-          <Col span="16" class="row ">{{
+          <Col span="16" class="row">
+            {{
             payState[tableData[billDetailIndex].state]
-          }}</Col>
+            }}
+          </Col>
         </Col>
         <Col span="12">
           <Col span="8" class="row detail-key">时间</Col>
-          <Col span="16" class="row ">{{
+          <Col span="16" class="row">
+            {{
             tableData[billDetailIndex].addTime | dateFormat
-          }}</Col>
+            }}
+          </Col>
         </Col>
         <Col span="24">
           <Col span="4" class="row row-remark detail-key">备注</Col>
-          <Col span="20" class="row row-remark">{{
+          <Col span="20" class="row row-remark">
+            {{
             tableData[billDetailIndex].remark || "无"
-          }}</Col>
+            }}
+          </Col>
         </Col>
       </Row>
     </ea-dialog>
@@ -76,73 +80,73 @@
 </template>
 
 <script>
-import { getOrderList } from "../../api/api";
+import { getOrderList } from '../../api/api'
 
 export default {
-  name: "Bill",
+  name: 'Bill',
   components: {},
   data: function() {
     return {
       tableHead: [
         {
-          title: "日期",
-          key: "addTime"
+          title: '日期',
+          key: 'addTime'
         },
         {
-          title: "订单号",
-          key: "no"
+          title: '订单号',
+          key: 'no'
         },
         {
-          title: "服务名称",
-          key: "name"
+          title: '服务名称',
+          key: 'name'
         },
         {
-          title: "金额",
-          key: "amount",
+          title: '金额',
+          key: 'amount',
           render: (h, params) => {
-            return this.renderPrice(h, params.row);
+            return this.renderPrice(h, params.row)
           }
         },
         {
-          title: "计量",
-          key: "account",
+          title: '计量',
+          key: 'account',
           render: (h, params) => {
-            return this.renderQuantity(h, params.row);
+            return this.renderQuantity(h, params.row)
           }
         },
         {
-          title: "状态",
-          key: "state",
+          title: '状态',
+          key: 'state',
           render: (h, params) => {
             return h(
-              "p",
+              'p',
               {
                 class: {
-                  "un-pay": params.row.state == "0"
+                  'un-pay': params.row.state == '0'
                 }
               },
               this.payState[params.row.state]
-            );
+            )
           }
         },
         {
-          title: "操作",
-          key: "opt",
+          title: '操作',
+          key: 'opt',
           render: (h, params) => {
             return h(
-              "a",
+              'a',
               {
                 class: {
-                  "bill-opt": true
+                  'bill-opt': true
                 },
                 on: {
                   click: () => {
-                    this.openBillDetail(params.index);
+                    this.openBillDetail(params.index)
                   }
                 }
               },
-              "详情"
-            );
+              '详情'
+            )
           }
         }
       ],
@@ -155,36 +159,36 @@ export default {
       detailOpen: false,
       // --data
       payState: {
-        "0": "待付款",
-        "1": "已付款(充值中)",
-        "-1": "已取消",
-        "9": "充值成功",
-        "-9": "充值失败"
+        '0': '待付款',
+        '1': '已付款(充值中)',
+        '-1': '已取消',
+        '9': '充值成功',
+        '-9': '充值失败'
       },
       PAGESIZE: 10
-    };
+    }
   },
   created: function() {
-    let curPage = this.$route.query.page;
+    let curPage = this.$route.query.page
     if (curPage) {
-      this.page = curPage;
+      this.page = curPage
     }
-    this.getList();
+    this.getList()
   },
   beforeCreate() {},
   mounted: function() {
-    document.title = "团队订单 - EasyAPI";
+    document.title = '团队订单 - EasyAPI'
   },
   methods: {
     pageChange: function(page) {
-      this.page = page;
-      location.hash = this.$route.path + "?page=" + page;
-      this.getList();
+      this.page = page
+      location.hash = this.$route.path + '?page=' + page
+      this.getList()
     },
     getList: function() {
-      this.dataLoading = true;
+      this.dataLoading = true
       this.$ajax({
-        method: "GET",
+        method: 'GET',
         url: getOrderList,
         params: {
           page: this.page - 1,
@@ -193,54 +197,54 @@ export default {
       })
         .then(res => {
           if (res.data == null) {
-            this.total = 0;
-            this.tableData = [];
-            this.dataLoading = false;
-            return;
+            this.total = 0
+            this.tableData = []
+            this.dataLoading = false
+            return
           } else {
-            if (!this.total) this.total = res.data.totalElements;
-            if (res.data.content.length) this.tableData = res.data.content;
+            if (!this.total) this.total = res.data.totalElements
+            if (res.data.content.length) this.tableData = res.data.content
           }
-          this.dataLoading = false;
+          this.dataLoading = false
         })
         .catch(function(err) {
-          this.tableData = [];
+          this.tableData = []
         })
-        .then(function() {});
+        .then(function() {})
     },
     openBillDetail: function(index) {
-      this.detailOpen = true;
-      this.billDetailIndex = index;
+      this.detailOpen = true
+      this.billDetailIndex = index
     },
     detailVisible: function(o) {
       if (!o) {
-        this.detailOpen = false;
-        this.billDetailIndex = 0;
+        this.detailOpen = false
+        this.billDetailIndex = 0
       }
     },
     // render table item
     renderPrice: function(h, p, html) {
-      let htmlStr = "";
+      let htmlStr = ''
       if (p.discount > 0) {
         if (html) {
           htmlStr = `<p class="bill-reduce">¥${p.amount.toFixed(
             2
           )}<span class="past">¥${(p.amount + p.discount).toFixed(
             2
-          )}</span></p>`;
-          return htmlStr;
+          )}</span></p>`
+          return htmlStr
         } else {
           return h(
-            "p",
+            'p',
             {
               class: {
-                "bill-reduce": true
+                'bill-reduce': true
               }
             },
             [
               `¥${p.amount.toFixed(2)}`,
               h(
-                "span",
+                'span',
                 {
                   class: {
                     past: true
@@ -249,99 +253,110 @@ export default {
                 `¥${(p.amount + p.discount).toFixed(2)}`
               )
             ]
-          );
+          )
         }
       } else {
         if (html) {
-          htmlStr = `<p>¥${p.amount.toFixed(2)}</p>`;
-          return htmlStr;
+          htmlStr = `<p>¥${p.amount.toFixed(2)}</p>`
+          return htmlStr
         } else {
-          return h("p", `¥${p.amount.toFixed(2)}`);
+          return h('p', `¥${p.amount.toFixed(2)}`)
         }
       }
-      return h("p", p.amount);
     },
     renderQuantity: function(h, p, html) {
-      let str = "";
+      let str = ''
       switch (p.type) {
         case 3:
-          str = "时长1月";
-          break;
+          str = '时长1月'
+          break
         case 1:
+          break
         case 2:
+          break
         case 4:
           if (p.quantity === 0) {
-            str = p.unit || "--";
+            str = p.unit || '--'
           } else if (p.quantity > 0) {
-            str = `${p.quantity}*${p.unit || ""}`;
+            str = `${p.quantity}*${p.unit || ''}`
           }
-          break;
-        case 4:
-          str = p.quantity || "--";
-          break;
+          break
         default:
-          str = "";
-          break;
+          str = ''
+          break
       }
       if (html) {
-        return `<p>${str}</p>`;
+        return `<p>${str}</p>`
       }
-      return h("p", str);
+      return h('p', str)
     }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
 @import '../../assets/styles/color.styl';
 
-.title
+.title {
   margin-top: 20px;
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 1px solid c-border;
+}
 
-.page-nav
-  float: right
-  margin: 15px 0 40px
+.page-nav {
+  float: right;
+  margin: 15px 0 40px;
+}
 
-.row
-  height: 40px
-  line-height: 40px
-  text-align: center
-  border-right: 1px solid c-border
-  border-bottom: 1px solid c-border
-  &.row-remark
-    height: 120px
-    line-height: 120px
+.row {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-right: 1px solid c-border;
+  border-bottom: 1px solid c-border;
 
-.detail-table
-  border-top: 1px solid c-border
-  border-left: 1px solid c-border
+  &.row-remark {
+    height: 120px;
+    line-height: 120px;
+  }
+}
 
-.detail-key
-  font-weight: bold
-  background-color: c-grey
+.detail-table {
+  border-top: 1px solid c-border;
+  border-left: 1px solid c-border;
+}
+
+.detail-key {
+  font-weight: bold;
+  background-color: c-grey;
+}
 </style>
 
 <style lang="stylus">
-@import '../../assets/styles/color.styl'
+@import '../../assets/styles/color.styl';
+
 [v-cloak] {
   display: none !important;
 }
 
-.bill-opt
-  color: c-blue
-  text-decoration: underline
+.bill-opt {
+  color: c-blue;
+  text-decoration: underline;
+}
 
-.un-pay
-  color: c-red
+.un-pay {
+  color: c-red;
+}
 
-.bill-reduce
-  color: c-red
-  .past
-    margin-left: 4px
-    font-size: .85em
-    color: c-black2
-    text-decoration: line-through
+.bill-reduce {
+  color: c-red;
+
+  .past {
+    margin-left: 4px;
+    font-size: 0.85em;
+    color: c-black2;
+    text-decoration: line-through;
+  }
+}
 </style>
