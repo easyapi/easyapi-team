@@ -78,3 +78,7 @@ export const getTeamInfoUrl = `${domainUrl}/api/team/view`;
 
 //团队首页接口
 export const getHomepageTeamInfoUrl = `${domainUrl}/page/team`;
+
+
+//修改密码
+export const changePassword = `${domainUrl}/api/account/change-password`;

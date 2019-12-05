@@ -15,7 +15,8 @@ module.exports = {
     ],
     "no-unused-vars": 0,
     "vue/no-parsing-error": 0,
-    "no-unused-vars": 0
+    "no-prototype-builtins": "off",
+    "no-useless-escape": "off"
   },
   parserOptions: {
     parser: "babel-eslint"
