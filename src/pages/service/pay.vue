@@ -213,7 +213,7 @@ export default {
                 obj.price = item.price
               }
               obj.id = item.servicePriceId
-              obj.once = (obj.price / obj.num).toFixed(2)
+              obj.once = (obj.price / obj.num).toFixed(4)
               arr.push(obj)
             })
 

@@ -84,6 +84,17 @@ export default {
     padding-left: 20px;
     display: flex;
     align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 2px 7px 0 rgba(1, 1, 1, 0.1);
+
+      .service-detail {
+        .pay-btn {
+          opacity: 1;
+        }
+      }
+    }
 
     &:nth-child(4n) {
       margin-right: 0;
@@ -102,12 +113,13 @@ export default {
       justify-content: space-between;
 
       .service-name {
-        font-size: 15px;
+        font-size: 16px;
+        font-weight: bold;
         line-height: 20px;
       }
 
       .service-type {
-        font-size: 14px;
+        font-size: 12px;
         line-height: 26px;
       }
 
@@ -117,6 +129,7 @@ export default {
         border-radius: 2px;
         color: #fff;
         cursor: pointer;
+        opacity: 0;
 
         &.busy {
           background-color: #ff4a53;
