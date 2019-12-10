@@ -92,7 +92,7 @@ const user = {
           // console.log(state.userTeam);
         })
         .catch(error => {
-          console.log(error.response);
+          // console.log(error.response);
         });
     },
     // 登出
