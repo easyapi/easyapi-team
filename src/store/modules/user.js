@@ -85,14 +85,10 @@ const user = {
             commit("SET_TEAMNAME", userInfoData.team.name);
             commit("SET_TEAMIMG", userInfoData.team.img);
           }
-
           //用户团队{}
-          // console.log(userInfoData.userTeam);
           commit("SET_USERTEAM", userInfoData.userTeam);
-          // console.log(state.userTeam);
         })
         .catch(error => {
-          // console.log(error.response);
         });
     },
     // 登出
