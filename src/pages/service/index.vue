@@ -7,8 +7,18 @@
           <div>
             <div class="service-name">{{service.service.name.replace('（',"(").replace('）',")")}}</div>
             <div class="service-type">
-              <span v-if="service.service.type==2">{{service.teamService.balance}}次</span>
-              <span v-if="service.service.type==3">{{service.teamService.remainDay}}天</span>
+              <span v-if="service.service.type==2">
+                剩余
+                <span
+                  :style="{color:service.teamService.balance<=100?'#f66':'black'}"
+                >{{service.teamService.balance}}</span> 次
+              </span>
+              <span v-if="service.service.type==3">
+                剩余
+                <span
+                  :style="{color:service.teamService.remainDay<=30?'#f66':'black'}"
+                >{{service.teamService.remainDay}}</span> 天
+              </span>
             </div>
           </div>
 
@@ -133,6 +143,7 @@ export default {
 
         &.busy {
           background-color: #ff4a53;
+          opacity: 1;
         }
 
         &.normal {
