@@ -51,7 +51,6 @@ export default {
     },
     jumpPay(item) {
       let service = item.service
-      console.log(service.name)
       let query = {
         type: service.type,
         serviceId: service.serviceId,
