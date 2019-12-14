@@ -1,4 +1,4 @@
-export const domainUrl = "https://account.easyapi.com";
+export const domainUrl = "https://account-api.easyapi.com";
 
 //上传用户信息
 export const updateAccountInfo = `${domainUrl}/api/account`

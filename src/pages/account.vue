@@ -573,7 +573,7 @@ export default {
               }
             })
             let socket = new SockJS(
-              'https://account.easyapi.com/easyapi-socket'
+              'https://account-api.easyapi.com/easyapi-socket'
             )
             let stompClient = Stomp.over(socket)
             stompClient.connect({}, frame => {

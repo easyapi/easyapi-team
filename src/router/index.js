@@ -1,14 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-const Launch = () =>
-  import(/* webpackChunkName: "teams" */ "../pages/launch.vue");
+const Launch = () => import(/* webpackChunkName: "teams" */ "../pages/launch.vue");
 
-const Wrapper = () =>
-  import(/* webpackChunkName: "Wrapper" */ "../pages/Wrapper.vue");
+const Wrapper = () => import(/* webpackChunkName: "Wrapper" */ "../pages/Wrapper.vue");
 
-const Index = () =>
-  import(/* webpackChunkName: "index" */ "../pages/index.vue");
+const Index = () => import(/* webpackChunkName: "index" */ "../pages/index.vue");
 
 const Account = () => import("../pages/account.vue");
 

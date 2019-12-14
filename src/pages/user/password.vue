@@ -16,8 +16,9 @@
           </FormItem>
           <div style="text-indent:102px;color:red;font-size:12px;">*强烈建议密码同时包含数字和英文字符</div>
           <FormItem>
-            <Button class="submit-btn" type="primary" @click="changePassword()"
-              :loading="changePasswordLoading">{{submitBtnText}}</Button>
+            <Button class="submit-btn" type="primary" @click="changePassword()" :loading="changePasswordLoading">
+              {{submitBtnText}}
+            </Button>
           </FormItem>
         </Form>
       </div>
@@ -27,12 +28,12 @@
 
 <script>
   import leftNav from './components/leftNav'
-  import { changePassword } from '../../api/api.js'
+  import {changePassword} from '../../api/api.js'
+
   export default {
     name: 'edit',
     data() {
       const newPwd = (rule, value, callback) => {
-        console.log(value, rule)
         if (value === '') {
           callback(new Error('新密码不得为空'))
         } else if (value === this.passwordInfo.old) {
@@ -65,15 +66,15 @@
           newAgain: ''
         },
         passwordRule: {
-          old: [{ required: 'true', message: '原密码不得为空', trigger: 'blur' }],
-          new: [{ validator: newPwd, trigger: 'blur' }],
-          newAgain: [{ validator: newAgain, trigger: 'blur' }]
+          old: [{required: 'true', message: '原密码不得为空', trigger: 'blur'}],
+          new: [{validator: newPwd, trigger: 'blur'}],
+          newAgain: [{validator: newAgain, trigger: 'blur'}]
         },
         changePasswordLoading: false
       }
     },
     created() {
-      document.title = '基本信息 - EasyAPI'
+      document.title = '修改密码 - 个人设置 - EasyAPI'
     },
     components: {
       leftNav
@@ -86,14 +87,9 @@
         }
         this.$refs.password.validate(valid => {
           if (valid) {
-            this.$ajax
-              .post(changePassword, data)
-              .then(res => {
-                console.log(res)
-              })
-              .catch(err => {
-                console.log(err)
-              })
+            this.$ajax.post(changePassword, data).then(res => {
+            }).catch(err => {
+            })
           } else {
             this.$Message.error('Fail!')
           }
@@ -128,7 +124,7 @@
           font-size: 16px;
         }
 
-        >>>.ivu-form {
+        >>> .ivu-form {
           .ivu-form-item {
             align-items: center;
             display: flex;
@@ -167,7 +163,7 @@
           justify-content: space-between;
           margin-left: 20px;
 
-          >button {
+          > button {
             width: 100px;
             border-color: #3dc1d6;
             color: #3dc1d6;
