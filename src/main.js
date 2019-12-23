@@ -2,13 +2,12 @@ import Vue from "vue";
 import App from "./App.vue";
 import store from "./store";
 import router from "./router";
-import iView from "iview";
+import ViewUI from "view-design";
 import axios from "./api/fetch";
 import VueBus from "vue-bus";
 
 import 'core-js';
-// iview - ui
-import "iview/dist/styles/iview.css";
+import "view-design/dist/styles/iview.css";
 
 import "./assets/styles/gobal.styl";
 import "./assets/styles/a-icon-font.css";
@@ -17,7 +16,7 @@ import "./assets/styles/icomoon/style.css";
 import "./assets/styles/fontello/fontello.css";
 
 // --
-Vue.use(iView);
+Vue.use(ViewUI);
 Vue.use(VueBus);
 Vue.prototype.$ajax = axios;
 Array.prototype.rmIndex = function (index) {
@@ -57,16 +56,16 @@ Vue.filter("dateFormat", function (val) {
 /**
  * Loading Bar setting
  */
-iView.LoadingBar.config({
+ViewUI.LoadingBar.config({
   color: "#219244",
   height: 3
 });
 router.beforeEach((to, from, next) => {
-  iView.LoadingBar.start();
+  ViewUI.LoadingBar.start();
   next();
 });
 router.afterEach(route => {
-  iView.LoadingBar.finish();
+  ViewUI.LoadingBar.finish();
 });
 
 //自定义组件

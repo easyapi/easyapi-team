@@ -10,7 +10,7 @@
 * [ECMAScript 6 入门](http://es6.ruanyifeng.com/)
 * [vuex中文文档](https://vuex.vuejs.org/zh-cn/)
 * [vue-router2中文文档](https://router.vuejs.org/zh-cn/)
-* [iview组件库](https://www.iviewui.com/)
+* [ViewUI组件库](https://www.iviewui.com/)
 * [vue-cli脚手架](https://github.com/vuejs/vue-cli)
 
 ---
