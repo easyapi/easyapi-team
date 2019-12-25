@@ -14,7 +14,7 @@
     <Page
       :total="total"
       :current="Number(page)"
-      :page-size="PAGESIZE"
+      :page-size="pageSize"
       class="page-nav"
       @on-change="pageChange"
     ></Page>
@@ -155,9 +155,7 @@ export default {
       page: 1,
       dataLoading: false,
       billDetailIndex: 0,
-      // --
       detailOpen: false,
-      // --data
       payState: {
         '0': '待付款',
         '1': '已付款(充值中)',
@@ -165,7 +163,7 @@ export default {
         '9': '充值成功',
         '-9': '充值失败'
       },
-      PAGESIZE: 10
+      pageSize: 10
     }
   },
   created: function() {
@@ -192,7 +190,7 @@ export default {
         url: getOrderList,
         params: {
           page: this.page - 1,
-          size: this.PAGESIZE
+          size: this.pageSize
         }
       })
         .then(res => {

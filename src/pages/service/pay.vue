@@ -297,7 +297,6 @@ export default {
           teamId: this.$store.state.user.team.id
         }
       }).then(res => {
-        console.log(res)
         if (res.data.code == 1) {
           this.balance = res.data.content.balance
 
@@ -361,7 +360,6 @@ export default {
 
       if (ss < 10) this.clockItem += '0'
       this.clockItem += ss
-      console.log(this.clockItem)
     },
     //确定购买
     Sure() {
@@ -385,10 +383,8 @@ export default {
         }
       })
         .then(res => {
-          console.log(res)
           if (this.assignment === '支付宝') {
             this.formHtml = res.data.alipay
-            console.log(this.formHtml)
             let form = $(this.formHtml)
             form.attr('target', '_blank')
             $('#app').append(form)
@@ -442,7 +438,6 @@ export default {
       )
     }
     this.getServiceList()
-    // this.getItem()
     this.getTeamInfo()
     this.authenticationToken = 'Bearer ' + this.getCookie('authenticationToken')
   },

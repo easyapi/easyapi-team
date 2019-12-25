@@ -296,7 +296,6 @@ export default {
         }
       })
         .then(res => {
-          console.log(res)
           if (this.assignment === '支付宝') {
             this.formHtml = res.data.alipay
             console.log(this.formHtml)

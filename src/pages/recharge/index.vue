@@ -40,8 +40,6 @@ export default {
           render: (h, params) => {
             return h("p", "¥" + params.row.price);
           }
-          //   return this.renderPrice(h, params.row)
-          // }
         },
         {
           title: "渠道",
@@ -72,9 +70,7 @@ export default {
       page: 1,
       dataLoading: false,
       billDetailIndex: 0,
-      // --
       detailOpen: false,
-      // --data
       payState: {
         "0": "待付款",
         "1": "充值成功",
@@ -108,7 +104,6 @@ export default {
       })
         .then(res => {
           this.dataLoading = false;
-          console.log(res.data);
           if (res.data == null) {
             this.tableData = [];
             this.dataLoading = false;

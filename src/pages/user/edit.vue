@@ -41,7 +41,7 @@
               v-model="accountInfo.intro"
               type="textarea"
               :rows="4"
-              placeholder="Enter your e-mail"
+              placeholder="介绍一下自己"
             ></Input>
           </FormItem>
           <FormItem>
