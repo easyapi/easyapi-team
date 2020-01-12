@@ -60,12 +60,12 @@
           </div>
           <div class="payment" :class="{ state: payment === '微信支付' }" @click="stand('微信支付')">
             <span>
-              <img src="../../assets/images/wechat.png" alt style="padding-top:10px;" />
+              <img src="../../assets/images/wechat.png" alt style="padding-top:10px;"/>
             </span>
           </div>
           <div class="payment" :class="{ state: payment === '支付宝' }" @click="stand('支付宝')">
             <span>
-              <img src="../../assets/images/alipay.png" alt style="padding-top:8px;" />
+              <img src="../../assets/images/alipay.png" alt style="padding-top:8px;"/>
             </span>
           </div>
         </div>
@@ -92,13 +92,15 @@
           v-if="balance >= discount || payment !== '余额支付'"
           style="border-radius: 4px;background-color: #1cc0d6;color: #fff;font-size: 14px;"
           @click="Sure"
-        >确定购买</Button>
+        >确定购买
+        </Button>
         <Button
           v-if="balance < discount && payment == '余额支付'"
           style="border-radius: 4px;background-color: #1cc0d6;color: #fff;font-size: 14px;"
           disabled
           @click="Sure"
-        >确定购买</Button>
+        >确定购买
+        </Button>
         <span
           style="display: block;padding-top:5px;color: #888888;font-size: 12px;"
         >若在购买过程中遇到任何问题，请致电：13656171020</span>
@@ -110,62 +112,60 @@
   </div>
 </template>
 <script>
-import { ServiceList, balance, paymentMethod, Surplus } from '../../api/api'
-import Cookies from 'js-cookie'
-import $ from 'jquery'
-export default {
-  data() {
-    return {
-      purchase: false,
-      frequency: '',
-      selectMoney: '',
-      servicePriceId: '',
-      balance: '',
-      payment: '余额支付',
-      discount: '',
-      howMany: '',
-      serviceId: '',
-      teamServiceId: '',
-      onePrice: [],
-      authenticationToken: '',
-      formHtml: '',
-      price: '',
-      name: '',
-      times: '',
-      surplus: ''
-    }
-  },
-  methods: {
-    selectMoneyFn(M, servicePriceId, discount, price, times) {
-      this.selectMoney = M
-      this.servicePriceId = servicePriceId
-      this.discount = discount
-      this.price = price
-      this.times = times
-      this.surplus = this.howMany + this.times
+  import {ServiceList, balance, paymentMethod, Surplus} from '../../api/api'
+  import Cookies from 'js-cookie'
+  import $ from 'jquery'
+
+  export default {
+    data() {
+      return {
+        purchase: false,
+        frequency: '',
+        selectMoney: '',
+        servicePriceId: '',
+        balance: '',
+        payment: '余额支付',
+        discount: '',
+        howMany: '',
+        serviceId: '',
+        teamServiceId: '',
+        onePrice: [],
+        authenticationToken: '',
+        formHtml: '',
+        price: '',
+        name: '',
+        times: '',
+        surplus: ''
+      }
     },
-    stand(payment) {
-      this.payment = payment
-    },
-    //查询 服务报价列表
-    getServiceList() {
-      let second = ''
-      this.$ajax({
-        method: 'get',
-        url: ServiceList + this.serviceId,
-        headers: {
-          authorization: this.authenticationToken,
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(res => {
+    methods: {
+      selectMoneyFn(M, servicePriceId, discount, price, times) {
+        this.selectMoney = M
+        this.servicePriceId = servicePriceId
+        this.discount = discount
+        this.price = price
+        this.times = times
+        this.surplus = this.howMany + this.times
+      },
+      stand(payment) {
+        this.payment = payment
+      },
+      //查询 服务报价列表
+      getServiceList() {
+        let second = ''
+        this.$ajax.get(ServiceList + this.serviceId, {
+          headers: {
+            authorization: this.authenticationToken,
+            'Content-Type': 'application/json'
+          }
+        }).then(res => {
           if (res.data.code !== 0) {
             this.frequency = res.data.content
             this.selectMoney = res.data.content[0].times
             this.discount = res.data.content[0].discount
             this.price = res.data.content[0].price
             this.servicePriceId = res.data.content[0].servicePriceId
-            for (var i = 0; i < this.frequency.length; i++) {
+            for (let i = 0; i < this.frequency.length; i++) {
               second = (
                 (this.frequency[i].price - this.frequency[i].discount) /
                 this.frequency[i].times
@@ -173,289 +173,279 @@ export default {
               this.onePrice.push(second)
             }
           }
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error)
         })
-    },
-    //余额
-    choosePaymentMethod() {
-      this.$ajax({
-        method: 'GET',
-        url: paymentMethod,
-        headers: {
-          authorization: this.authenticationToken
-        }
-      })
-        .then(res => {
+      },
+      //余额
+      choosePaymentMethod() {
+        this.$ajax.get(paymentMethod, {
+          headers: {
+            authorization: this.authenticationToken
+          }
+        }).then(res => {
           this.balance = res.data.content.balance
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error)
         })
-    },
-    //剩余多少次
-    howMuchOfTheRest() {
-      this.$ajax({
-        method: 'get',
-        url: Surplus + '/' + this.teamServiceId,
-        headers: {
-          authorization: this.authenticationToken
-        }
-      })
-        .then(res => {
+      },
+      //剩余多少次
+      howMuchOfTheRest() {
+        this.$ajax.get(Surplus + '/' + this.teamServiceId, {
+          headers: {
+            authorization: this.authenticationToken
+          }
+        }).then(res => {
           this.howMany = res.data.balance
           this.surplus = this.frequency[0].times + this.howMany
           this.name = res.data.service.name
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error)
         })
-    },
-    //确定购买
-    Sure() {
-      this.purchase = true
-    },
-    determineThePurchase() {
-      this.$ajax({
-        method: 'post',
-        url: balance,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          authorization: this.authenticationToken
-        },
-        params: {
-          servicePriceId: this.servicePriceId,
-          payment: this.payment
-        }
-      })
-        .then(res => {
-          if (this.payment === '支付宝') {
-            this.formHtml = res.data.alipay
-            let form = $(this.formHtml)
-            form.attr('target', '_blank')
-            $('#app').append(form)
-            // const {href} = this.$router.resolve({path: '/renew/alipay', query: {"html": res.data.alipay}})
-            // this.html = res.data.result
-            // window.open(href.href, '_ blank')
-            // const div = document.createElement('div');
-            // div.innerHTML = html;
-            // document.body.appendChild(div);
-            // document.forms[0].submit();
-          } else if (this.payment === '微信支付') {
-            let weChatPayment = res.data.codeUrl
-            console.log(weChatPayment)
-            this.$Modal.confirm({
-              title: '微信扫码支付',
-              content: `<div class="wx-pay"><p class="wx-pay_amount">支付${this
-                .price -
+      },
+      //确定购买
+      Sure() {
+        this.purchase = true
+      },
+      determineThePurchase() {
+        this.$ajax({
+          method: 'post',
+          url: balance,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            authorization: this.authenticationToken
+          },
+          params: {
+            servicePriceId: this.servicePriceId,
+            payment: this.payment
+          }
+        })
+          .then(res => {
+            if (this.payment === '支付宝') {
+              this.formHtml = res.data.alipay
+              let form = $(this.formHtml)
+              form.attr('target', '_blank')
+              $('#app').append(form)
+              // const {href} = this.$router.resolve({path: '/renew/alipay', query: {"html": res.data.alipay}})
+              // this.html = res.data.result
+              // window.open(href.href, '_ blank')
+              // const div = document.createElement('div');
+              // div.innerHTML = html;
+              // document.body.appendChild(div);
+              // document.forms[0].submit();
+            } else if (this.payment === '微信支付') {
+              let weChatPayment = res.data.codeUrl
+              this.$Modal.confirm({
+                title: '微信扫码支付',
+                content: `<div class="wx-pay"><p class="wx-pay_amount">支付${this
+                  .price -
                 this
                   .discount}元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
-              onOk: () => {
-                this.getServiceList()
-                this.choosePaymentMethod()
-                this.howMuchOfTheRest()
-              }
-            })
-          }
-          this.$Message.success(res.data.message)
-        })
-        .catch(error => {
-          if (this.payment == '' || this.payment == null) {
-            this.$Message.warning('请选择和支付方式')
-          } else {
-            this.$Message.error(error.response.data.message)
-          }
-        })
+                onOk: () => {
+                  this.getServiceList()
+                  this.choosePaymentMethod()
+                  this.howMuchOfTheRest()
+                }
+              })
+            }
+            this.$Message.success(res.data.message)
+          })
+          .catch(error => {
+            if (this.payment == '' || this.payment == null) {
+              this.$Message.warning('请选择和支付方式')
+            } else {
+              this.$Message.error(error.response.data.message)
+            }
+          })
+      }
+    },
+    created() {
+      this.serviceId = this.$route.query.serviceId
+      this.teamServiceId = this.$route.query.teamServiceId
+      this.authenticationToken = 'Bearer ' + Cookies.get('authenticationToken')
+    },
+    mounted() {
+      document.title = '服务续费 - EasyAPI'
+      this.getServiceList()
+      this.choosePaymentMethod()
+      this.howMuchOfTheRest()
     }
-  },
-  created() {
-    this.serviceId = this.$route.query.serviceId
-    this.teamServiceId = this.$route.query.teamServiceId
-    this.authenticationToken = 'Bearer ' + Cookies.get('authenticationToken')
-  },
-  mounted() {
-    document.title = '服务续费 - EasyAPI'
-    this.getServiceList()
-    this.choosePaymentMethod()
-    this.howMuchOfTheRest()
   }
-}
 </script>
 <style scoped>
-.count {
-  width: 100%;
-  height: auto;
-}
+  .count {
+    width: 100%;
+    height: auto;
+  }
 
-.count .title {
-  width: 100%;
-  height: 80px;
-  background-color: #ecf1f5;
-}
+  .count .title {
+    width: 100%;
+    height: 80px;
+    background-color: #ecf1f5;
+  }
 
-.count .title span {
-  width: 1200px;
-  height: 80px;
-  line-height: 80px;
-  margin: 0 auto;
-  font-size: 18px;
-  display: block;
-  color: #000000;
-}
+  .count .title span {
+    width: 1200px;
+    height: 80px;
+    line-height: 80px;
+    margin: 0 auto;
+    font-size: 18px;
+    display: block;
+    color: #000000;
+  }
 
-.Insequence_conter {
-  width: 1200px;
-  height: auto;
-  margin: 0 auto;
-}
+  .Insequence_conter {
+    width: 1200px;
+    height: auto;
+    margin: 0 auto;
+  }
 
-.Insequence_service {
-  width: 100%;
-  height: 100px;
-  display: flex;
-  margin-top: 30px;
-}
+  .Insequence_service {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    margin-top: 30px;
+  }
 
-.Insequence_service_title {
-  width: 8%;
-  height: 100%;
-  display: block;
-  color: #323232;
-  font-size: 14px;
-}
+  .Insequence_service_title {
+    width: 8%;
+    height: 100%;
+    display: block;
+    color: #323232;
+    font-size: 14px;
+  }
 
-.Insequence_Price {
-  width: 216px;
-  height: 100px;
-  text-align: center;
-  background-color: #ffffff;
-  border-radius: 4px;
-  border: solid 1px #dfdfdf;
-  margin-left: 18px;
-  cursor: pointer;
-}
+  .Insequence_Price {
+    width: 216px;
+    height: 100px;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 4px;
+    border: solid 1px #dfdfdf;
+    margin-left: 18px;
+    cursor: pointer;
+  }
 
-.Insequence_Price:hover {
-  border: solid 1px #1bc0d5;
-}
+  .Insequence_Price:hover {
+    border: solid 1px #1bc0d5;
+  }
 
-.Insequence_Price:hover strong {
-  color: #1cc0d5;
-}
+  .Insequence_Price:hover strong {
+    color: #1cc0d5;
+  }
 
-.Insequence_Price:first-child {
-  margin-left: 0px;
-}
+  .Insequence_Price:first-child {
+    margin-left: 0px;
+  }
 
-.eaActive {
-  width: 216px;
-  height: 100px;
-  background-color: #ffffff;
-  border-radius: 4px;
-  border: solid 1px #1bc0d5;
-  position: relative;
-}
+  .eaActive {
+    width: 216px;
+    height: 100px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    border: solid 1px #1bc0d5;
+    position: relative;
+  }
 
-.eaActive p:before {
-  position: absolute;
-  left: 195px;
-  top: 79px;
-  content: ' ';
-  width: 20px;
-  height: 20px;
-  background-image: url(../../assets/images/checked.png);
-  background-size: cover;
-}
+  .eaActive p:before {
+    position: absolute;
+    left: 195px;
+    top: 79px;
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    background-image: url(../../assets/images/checked.png);
+    background-size: cover;
+  }
 
-.eaActive strong {
-  color: #1cc0d5 !important;
-}
+  .eaActive strong {
+    color: #1cc0d5 !important;
+  }
 
-.left {
-  width: 92%;
-  height: auto;
-  display: flex;
-}
+  .left {
+    width: 92%;
+    height: auto;
+    display: flex;
+  }
 
-.Insequence_Price strong {
-  font-size: 18px;
-  line-height: 30px;
-  padding-top: 20px;
-  display: block;
-  color: #323232;
-}
+  .Insequence_Price strong {
+    font-size: 18px;
+    line-height: 30px;
+    padding-top: 20px;
+    display: block;
+    color: #323232;
+  }
 
-.Insequence_Price p {
-  font-size: 14px;
-  color: #888888;
-}
+  .Insequence_Price p {
+    font-size: 14px;
+    color: #888888;
+  }
 
-.payment {
-  width: 216px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  background-color: #ffffff;
-  border: solid 1px #dfdfdf;
-  font-size: 14px;
-  color: #323232;
-  margin-left: 18px;
-  cursor: pointer;
-}
+  .payment {
+    width: 216px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: #ffffff;
+    border: solid 1px #dfdfdf;
+    font-size: 14px;
+    color: #323232;
+    margin-left: 18px;
+    cursor: pointer;
+  }
 
-.payment:first-child {
-  margin-left: 0px;
-}
+  .payment:first-child {
+    margin-left: 0px;
+  }
 
-.state {
-  width: 215px;
-  height: 50px;
-  background-color: #ffffff;
-  border-radius: 4px;
-  border: solid 1px #1bc0d5;
-  position: relative;
-}
+  .state {
+    width: 215px;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    border: solid 1px #1bc0d5;
+    position: relative;
+  }
 
-.state span:before {
-  position: absolute;
-  left: 193px;
-  top: 28px;
-  content: ' ';
-  width: 20px;
-  height: 20px;
-  background-image: url(../../assets/images/checked.png);
-  background-size: cover;
-}
+  .state span:before {
+    position: absolute;
+    left: 193px;
+    top: 28px;
+    content: ' ';
+    width: 20px;
+    height: 20px;
+    background-image: url(../../assets/images/checked.png);
+    background-size: cover;
+  }
 
-.Insequence_fl {
-  width: 100%;
-  height: 55px;
-  display: flex;
-}
+  .Insequence_fl {
+    width: 100%;
+    height: 55px;
+    display: flex;
+  }
 
-.Insequence_fa {
-  width: 100%;
-  height: 80px;
-  padding-left: 95px;
-}
+  .Insequence_fa {
+    width: 100%;
+    height: 80px;
+    padding-left: 95px;
+  }
 
-.Insequence_fa button {
-  width: 120px;
-  height: 40px;
-  text-align: center;
-}
+  .Insequence_fa button {
+    width: 120px;
+    height: 40px;
+    text-align: center;
+  }
 
-.payment_p {
-  width: 216px;
-  height: 50px;
-  line-height: 50px;
-  background-color: #eeeeee;
-  border-radius: 4px;
-  border: solid 1px #dfdfdf;
-  cursor: pointer;
-  font-size: 14px;
-  text-align: center;
-  color: #676767;
-}
+  .payment_p {
+    width: 216px;
+    height: 50px;
+    line-height: 50px;
+    background-color: #eeeeee;
+    border-radius: 4px;
+    border: solid 1px #dfdfdf;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    color: #676767;
+  }
 </style>

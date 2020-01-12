@@ -372,7 +372,7 @@ export default {
     determineThePurchase() {
       this.$ajax({
         method: 'POST',
-        url: documentRenewUrl,
+        url: balance,
         headers: {
           authorization: this.authenticationToken
         },
@@ -400,7 +400,6 @@ export default {
               cancelText: '',
               onOk: () => {
                 this.getServiceList()
-                // this.choosePaymentMethod()
                 this.getTeamInfo()
                 this.howMuchOfTheRest()
               }
