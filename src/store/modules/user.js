@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import axios from "@/api/fetch";
-import { getAccountInfo } from "@/api/api";
+import { getAccountInfo } from "@/api/account";
 
 const user = {
   state: {

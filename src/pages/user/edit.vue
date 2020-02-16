@@ -61,7 +61,7 @@
 
 <script>
   import leftNav from './components/leftNav'
-  import {updateAccountInfo} from '@/api/api'
+  import {updateAccountInfo} from '../../api/account'
   import {mapGetters} from 'vuex'
 
   export default {

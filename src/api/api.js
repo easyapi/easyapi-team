@@ -1,13 +1,5 @@
 export const domainUrl = "https://account-api.easyapi.com";
 
-//上传用户信息
-export const updateAccountInfo = `${domainUrl}/api/account`
-//获取个人信息
-export const getAccountInfo = `${domainUrl}/api/account`;
-//获取团队列表
-export const getUserTeamList = `${domainUrl}/api/user/teams`;
-//切换团队
-export const changeTeam = `${domainUrl}/api/changeTeam`;
 
 /* == 账户团队设置 ==*/
 // 查询账户信息
@@ -76,9 +68,5 @@ export const getInvoiceToken = `${domainUrl}/api/invoice/token`;
 //获取团队信息
 export const getTeamInfoUrl = `${domainUrl}/api/team/view`;
 
-//团队首页接口
-export const getHomepageTeamInfoUrl = `${domainUrl}/page/team`;
 
 
-//修改密码
-export const changePassword = `${domainUrl}/api/account/change-password`;

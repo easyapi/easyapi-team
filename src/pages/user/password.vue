@@ -28,7 +28,7 @@
 
 <script>
   import leftNav from './components/leftNav'
-  import {changePassword} from '../../api/api.js'
+  import {changePassword} from '../../api/account.js'
 
   export default {
     name: 'edit',

@@ -15,7 +15,6 @@ import "./assets/styles/a-icon-font.css";
 import "./assets/styles/icomoon/style.css";
 import "./assets/styles/fontello/fontello.css";
 
-// --
 Vue.use(ViewUI);
 Vue.use(VueBus);
 Vue.prototype.$ajax = axios;
