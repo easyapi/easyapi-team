@@ -90,7 +90,7 @@
   </div>
 </template>
 <script>
-  import {teamPage} from '../api/api'
+  import {teamPage} from '../api/page'
   import {changeTeam} from '../api/account'
   import Cookies from 'js-cookie'
   import {mapGetters} from 'vuex'
@@ -155,10 +155,7 @@
       },
       //切换默认团队
       changeTeam() {
-        this.$ajax({
-          method: 'POST',
-          url: changeTeam + '/' + this.domain
-        }).then(res => {
+        changeTeam(this.domain).then(res => {
           if (res.data.code === 1) {
             this.code = res.data.code
           }
@@ -170,9 +167,6 @@
       //团队信息
       getTeamInfo() {
         this.$ajax.get(teamPage + '/' + this.domain, {}).then(res => {
-          // if (res.data.content) {
-          //   this.team = res.data.content
-          // }
           this.teamLink = res.data.link
           this.teamButton = res.data.button
         }).catch(error => {
@@ -184,12 +178,7 @@
     mounted: function () {
       this.domain = window.location.href.split('.')[0].split('//')[1]
       document.title = '团队首页 - EasyAPI'
-
-      // if (this.authenticationToken) {
-      //   this.changeTeam()
-      // }
       if (this.domain && this.domain != '127') {
-        // this.domain = 'team';
         this.getTeamInfo()
       }
       if (this.authenticationToken) {

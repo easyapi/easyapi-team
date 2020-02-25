@@ -112,7 +112,7 @@
   </div>
 </template>
 <script>
-  import {ServiceList, balance, paymentMethod, Surplus} from '../../api/api'
+  import {ServiceList, balance, paymentMethod, Surplus} from '../../api/service'
   import Cookies from 'js-cookie'
   import $ from 'jquery'
 

@@ -1,16 +1,37 @@
-export const domainUrl = "https://account-api.easyapi.com";
+import {baseUrl} from "./api";
+import axios from "axios";
 
 //获取用户信息
-export const getAccountInfo = `${domainUrl}/api/account`;
+export const getAccountInfo = `${baseUrl}/api/account`;
 
 //获取用户团队列表
-export const getUserTeamList = `${domainUrl}/api/user/teams`;
+export const getUserTeamList = `${baseUrl}/api/user/teams`;
 
-//切换团队
-export const changeTeam = `${domainUrl}/api/changeTeam`;
+/**
+ * 切换团队
+ *
+ * @see https://www.easyai.com
+ */
+export const changeTeam = (domain) => axios.post(`${baseUrl}/api/changeTeam/${domain}`);
 
-//修改密码
-export const changePassword = `${domainUrl}/api/account/change-password`;
+/**
+ * 修改密码
+ **
+ * @see https://www.easyai.com
+ */
+export const changePassword = (data) => axios.post(`${baseUrl}/api/account/change-password`, {
+  data: {
+    data
+  }
+});
 
-//更新用户信息
-export const updateAccountInfo = `${domainUrl}/api/account`
+/**
+ * 更新用户信息
+ *
+ * @see https://www.easyai.com
+ */
+export const updateAccountInfo = (data) => axios.post(`${baseUrl}/api/account`, {
+  data: {
+    data
+  }
+});

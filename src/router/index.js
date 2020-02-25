@@ -16,6 +16,7 @@ const RechargeSuccess = () => import("../pages/recharge/success.vue");
 const Members = () => import("../pages/member/index.vue");
 
 const Services = () => import("../pages/service/index.vue");
+
 const ServicesPay = () => import("../pages/service/pay.vue");
 
 const Orders = () => import("../pages/order/index.vue");

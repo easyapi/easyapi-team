@@ -1,4 +1,4 @@
-export const domainUrl = "https://account-api.easyapi.com";
+import {baseUrl} from "./api";
 
 //团队首页接口
-export const teamPage = `${domainUrl}/page/team`;
+export const teamPage = `${baseUrl}/page/team`;

@@ -17,7 +17,9 @@ import "./assets/styles/fontello/fontello.css";
 
 Vue.use(ViewUI);
 Vue.use(VueBus);
+
 Vue.prototype.$ajax = axios;
+
 Array.prototype.rmIndex = function (index) {
   this.splice(index, 1);
   return this;

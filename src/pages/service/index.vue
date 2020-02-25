@@ -34,7 +34,7 @@
   </div>
 </template>
 <script>
-  import {getUserService} from '../../api/api'
+  import {getUserService} from '../../api/service'
 
   export default {
     data() {

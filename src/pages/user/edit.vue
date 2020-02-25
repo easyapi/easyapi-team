@@ -13,8 +13,7 @@
                   action
                   :before-upload="handleUploadImg"
                   accept="image/jpeg, image/png, image/jpg"
-                  :format="['jpg','png','jpeg']"
-                >
+                  :format="['jpg','png','jpeg']">
                   <Button size="default">选择头像</Button>
                 </Upload>
                 <div style="color:#999">你可以选择png/jpg图片（200x200）作为个人头像</div>
@@ -65,7 +64,7 @@
   import {mapGetters} from 'vuex'
 
   export default {
-    name: 'edit',
+    name: 'user-edit',
     data() {
       return {
         submitBtnText: '提交',
@@ -86,7 +85,7 @@
     methods: {
       handleSubmit() {
         this.submitLoading = true
-        this.$ajax.post(updateAccountInfo, this.accountInfo).then(res => {
+        updateAccountInfo(this.accountInfo).then(res => {
           this.submitLoading = false
         }).catch(err => {
           this.submitLoading = false

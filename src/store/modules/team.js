@@ -1,5 +1,5 @@
 import axios from "@/api/fetch";
-import { getUserTeamList, changeTeam } from "@/api/account";
+import {getUserTeamList, changeTeam} from "@/api/account";
 
 const team = {
   state: {
@@ -25,7 +25,7 @@ const team = {
   },
 
   actions: {
-    getTeamList({ commit, state }) {
+    getTeamList({commit, state}) {
       axios({
         url: getUserTeamList,
         method: "GET"
@@ -38,7 +38,7 @@ const team = {
         });
     },
     //切换团队
-    switchoverTeam({ dispatch, commit, state }, id) {
+    switchoverTeam({dispatch, commit, state}, id) {
       axios({
         url: changeTeam + "/" + id,
         method: "PUT"

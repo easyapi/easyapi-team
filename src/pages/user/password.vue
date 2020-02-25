@@ -31,7 +31,7 @@
   import {changePassword} from '../../api/account.js'
 
   export default {
-    name: 'edit',
+    name: 'user-password',
     data() {
       const newPwd = (rule, value, callback) => {
         if (value === '') {
@@ -40,7 +40,6 @@
           callback(new Error('新密码不得与旧密码相同'))
         } else {
           if (this.passwordInfo.newAgain !== '') {
-            // 对第二个密码框单独验证
             this.$refs.password.validateField('newAgain')
           }
           callback()
@@ -87,7 +86,7 @@
         }
         this.$refs.password.validate(valid => {
           if (valid) {
-            this.$ajax.post(changePassword, data).then(res => {
+            changePassword(data).then(res => {
             }).catch(err => {
             })
           } else {

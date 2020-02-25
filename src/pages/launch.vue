@@ -31,100 +31,101 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { changeTeam } from "../api/api";
+  import {mapGetters} from "vuex";
+  import {changeTeam} from "../api/api";
 
-export default {
-  name: "Launch",
-  data: function() {
-    return {
-      teams: [],
-      dataLoading: false
-    };
-  },
-  computed: {
-    ...mapGetters(["teamList"])
-  },
-  created: function() {},
-  methods: {
-    newTeam: function() {
-      this.$router.push("/new");
+  export default {
+    name: "Launch",
+    data: function () {
+      return {
+        teams: [],
+        dataLoading: false
+      };
     },
-    changeTeam(id) {
-      this.$ajax({
-        url: changeTeam + "/" + id,
-        method: "PUT"
-      }).then(res => {
-        this.$router.push("/");
-      });
+    computed: {
+      ...mapGetters(["teamList"])
+    },
+    created: function () {
+    },
+    methods: {
+      newTeam: function () {
+        this.$router.push("/new");
+      },
+      changeTeam(id) {
+        this.$ajax({
+          url: changeTeam + "/" + id,
+          method: "PUT"
+        }).then(res => {
+          this.$router.push("/");
+        });
+      }
+    },
+    mounted() {
+      document.title = "选择团队 - EasyAPI";
     }
-  },
-  mounted() {
-    document.title = "选择团队 - EasyAPI";
-  }
-};
+  };
 </script>
 
 <style lang="stylus" scoped>
-@import '../assets/styles/color'
+  @import '../assets/styles/color'
 
-.tips
-  padding: 20px 0
-  background-color: c-blue-light
+  .tips
+    padding: 20px 0
+    background-color: c-blue-light
 
-.team-list
-  margin-top: 20px
+  .team-list
+    margin-top: 20px
 
-.team
-  float: left
-  padding: 10px
-  width: (100 / 4) %
-  cursor: pointer
-  .team-body
-    display: block
-    height: 120px
-    line-height 120px
-    border: 1px solid c-blue
-    text-align: center
-    &:hover
-      background-color: c-background-dark
-    a, p
-      color: c-blue
+  .team
+    float: left
+    padding: 10px
+    width: (100 / 4) %
+    cursor: pointer
+    .team-body
+      display: block
+      height: 120px
+      line-height 120px
+      border: 1px solid c-blue
+      text-align: center
+      &:hover
+        background-color: c-background-dark
+      a, p
+        color: c-blue
 
-  .new-team
-    position: relative
-    top: 4px
-    &:before
-      display: inline-block
-      content: '\e808'
-      position: absolute
-      left: 50%
-      top: -16px
-      margin-left: -7px
-      font-family: "fontello"
-      font-size: 14px
+    .new-team
+      position: relative
+      top: 4px
+      &:before
+        display: inline-block
+        content: '\e808'
+        position: absolute
+        left: 50%
+        top: -16px
+        margin-left: -7px
+        font-family: "fontello"
+        font-size: 14px
 
-.n-row
-  margin-bottom: 20px
-  .l-k
-    max-width: 60px
-  .r-v
-    width: calc(100% - 60px)
+  .n-row
+    margin-bottom: 20px
+    .l-k
+      max-width: 60px
+    .r-v
+      width: calc(100% - 60px)
 
-.spin-icon-load
-.spin-icon-load {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+  .spin-icon-load
+  .spin-icon-load {
+    animation: spin 1s linear infinite;
   }
-  50% {
-    transform: rotate(180deg);
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
 </style>

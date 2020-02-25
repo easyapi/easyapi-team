@@ -95,10 +95,7 @@
       body.addEventListener(
         'click',
         e => {
-          if (
-            e.target.id === 'showTeamInfo' ||
-            e.target.className === 'team-icon'
-          ) {
+          if (e.target.id === 'showTeamInfo' || e.target.className === 'team-icon') {
             this.isActive = false
             this.showTeamInfo = !this.showTeamInfo
           } else if (e.target.id === 'showPersonage') {

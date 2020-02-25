@@ -9,7 +9,7 @@
       :loading="dataLoading"
     ></Table>
     <p v-if="!tableData.length" style="text-align: center">
-      <img src="../../assets/images/no-data.png" alt />
+      <img src="../../assets/images/no-data.png" alt/>
     </p>
     <Page
       :total="total"
@@ -80,281 +80,283 @@
 </template>
 
 <script>
-import { getOrderList } from '../../api/api'
+  import {getOrderList} from '../../api/order'
 
-export default {
-  name: 'Bill',
-  components: {},
-  data: function() {
-    return {
-      tableHead: [
-        {
-          title: '日期',
-          key: 'addTime'
-        },
-        {
-          title: '订单号',
-          key: 'no'
-        },
-        {
-          title: '服务名称',
-          key: 'name'
-        },
-        {
-          title: '金额',
-          key: 'amount',
-          render: (h, params) => {
-            return this.renderPrice(h, params.row)
+  export default {
+    name: 'Bill',
+    components: {},
+    data: function () {
+      return {
+        tableHead: [
+          {
+            title: '日期',
+            key: 'addTime'
+          },
+          {
+            title: '订单号',
+            key: 'no'
+          },
+          {
+            title: '服务名称',
+            key: 'name'
+          },
+          {
+            title: '金额',
+            key: 'amount',
+            render: (h, params) => {
+              return this.renderPrice(h, params.row)
+            }
+          },
+          {
+            title: '计量',
+            key: 'account',
+            render: (h, params) => {
+              return this.renderQuantity(h, params.row)
+            }
+          },
+          {
+            title: '状态',
+            key: 'state',
+            render: (h, params) => {
+              return h(
+                'p',
+                {
+                  class: {
+                    'un-pay': params.row.state == '0'
+                  }
+                },
+                this.payState[params.row.state]
+              )
+            }
+          },
+          {
+            title: '操作',
+            key: 'opt',
+            render: (h, params) => {
+              return h(
+                'a',
+                {
+                  class: {
+                    'bill-opt': true
+                  },
+                  on: {
+                    click: () => {
+                      this.openBillDetail(params.index)
+                    }
+                  }
+                },
+                '详情'
+              )
+            }
           }
+        ],
+        tableData: [],
+        total: null,
+        page: 1,
+        dataLoading: false,
+        billDetailIndex: 0,
+        detailOpen: false,
+        payState: {
+          '0': '待付款',
+          '1': '已付款(充值中)',
+          '-1': '已取消',
+          '9': '充值成功',
+          '-9': '充值失败'
         },
-        {
-          title: '计量',
-          key: 'account',
-          render: (h, params) => {
-            return this.renderQuantity(h, params.row)
+        pageSize: 10
+      }
+    },
+    created: function () {
+      let curPage = this.$route.query.page
+      if (curPage) {
+        this.page = curPage
+      }
+      this.getList()
+    },
+    beforeCreate() {
+    },
+    mounted: function () {
+      document.title = '团队订单 - EasyAPI'
+    },
+    methods: {
+      pageChange: function (page) {
+        this.page = page
+        location.hash = this.$route.path + '?page=' + page
+        this.getList()
+      },
+      getList: function () {
+        this.dataLoading = true
+        this.$ajax({
+          method: 'GET',
+          url: getOrderList,
+          params: {
+            page: this.page - 1,
+            size: this.pageSize
           }
-        },
-        {
-          title: '状态',
-          key: 'state',
-          render: (h, params) => {
+        })
+          .then(res => {
+            if (res.data == null) {
+              this.total = 0
+              this.tableData = []
+              this.dataLoading = false
+              return
+            } else {
+              if (!this.total) this.total = res.data.totalElements
+              if (res.data.content.length) this.tableData = res.data.content
+            }
+            this.dataLoading = false
+          })
+          .catch(function (err) {
+            this.tableData = []
+          })
+          .then(function () {
+          })
+      },
+      openBillDetail: function (index) {
+        this.detailOpen = true
+        this.billDetailIndex = index
+      },
+      detailVisible: function (o) {
+        if (!o) {
+          this.detailOpen = false
+          this.billDetailIndex = 0
+        }
+      },
+      // render table item
+      renderPrice: function (h, p, html) {
+        let htmlStr = ''
+        if (p.discount > 0) {
+          if (html) {
+            htmlStr = `<p class="bill-reduce">¥${p.amount.toFixed(
+              2
+            )}<span class="past">¥${(p.amount + p.discount).toFixed(
+              2
+            )}</span></p>`
+            return htmlStr
+          } else {
             return h(
               'p',
               {
                 class: {
-                  'un-pay': params.row.state == '0'
+                  'bill-reduce': true
                 }
               },
-              this.payState[params.row.state]
+              [
+                `¥${p.amount.toFixed(2)}`,
+                h(
+                  'span',
+                  {
+                    class: {
+                      past: true
+                    }
+                  },
+                  `¥${(p.amount + p.discount).toFixed(2)}`
+                )
+              ]
             )
           }
-        },
-        {
-          title: '操作',
-          key: 'opt',
-          render: (h, params) => {
-            return h(
-              'a',
-              {
-                class: {
-                  'bill-opt': true
-                },
-                on: {
-                  click: () => {
-                    this.openBillDetail(params.index)
-                  }
-                }
-              },
-              '详情'
-            )
-          }
-        }
-      ],
-      tableData: [],
-      total: null,
-      page: 1,
-      dataLoading: false,
-      billDetailIndex: 0,
-      detailOpen: false,
-      payState: {
-        '0': '待付款',
-        '1': '已付款(充值中)',
-        '-1': '已取消',
-        '9': '充值成功',
-        '-9': '充值失败'
-      },
-      pageSize: 10
-    }
-  },
-  created: function() {
-    let curPage = this.$route.query.page
-    if (curPage) {
-      this.page = curPage
-    }
-    this.getList()
-  },
-  beforeCreate() {},
-  mounted: function() {
-    document.title = '团队订单 - EasyAPI'
-  },
-  methods: {
-    pageChange: function(page) {
-      this.page = page
-      location.hash = this.$route.path + '?page=' + page
-      this.getList()
-    },
-    getList: function() {
-      this.dataLoading = true
-      this.$ajax({
-        method: 'GET',
-        url: getOrderList,
-        params: {
-          page: this.page - 1,
-          size: this.pageSize
-        }
-      })
-        .then(res => {
-          if (res.data == null) {
-            this.total = 0
-            this.tableData = []
-            this.dataLoading = false
-            return
+        } else {
+          if (html) {
+            htmlStr = `<p>¥${p.amount.toFixed(2)}</p>`
+            return htmlStr
           } else {
-            if (!this.total) this.total = res.data.totalElements
-            if (res.data.content.length) this.tableData = res.data.content
+            return h('p', `¥${p.amount.toFixed(2)}`)
           }
-          this.dataLoading = false
-        })
-        .catch(function(err) {
-          this.tableData = []
-        })
-        .then(function() {})
-    },
-    openBillDetail: function(index) {
-      this.detailOpen = true
-      this.billDetailIndex = index
-    },
-    detailVisible: function(o) {
-      if (!o) {
-        this.detailOpen = false
-        this.billDetailIndex = 0
-      }
-    },
-    // render table item
-    renderPrice: function(h, p, html) {
-      let htmlStr = ''
-      if (p.discount > 0) {
-        if (html) {
-          htmlStr = `<p class="bill-reduce">¥${p.amount.toFixed(
-            2
-          )}<span class="past">¥${(p.amount + p.discount).toFixed(
-            2
-          )}</span></p>`
-          return htmlStr
-        } else {
-          return h(
-            'p',
-            {
-              class: {
-                'bill-reduce': true
-              }
-            },
-            [
-              `¥${p.amount.toFixed(2)}`,
-              h(
-                'span',
-                {
-                  class: {
-                    past: true
-                  }
-                },
-                `¥${(p.amount + p.discount).toFixed(2)}`
-              )
-            ]
-          )
         }
-      } else {
-        if (html) {
-          htmlStr = `<p>¥${p.amount.toFixed(2)}</p>`
-          return htmlStr
-        } else {
-          return h('p', `¥${p.amount.toFixed(2)}`)
+      },
+      renderQuantity: function (h, p, html) {
+        let str = ''
+        switch (p.type) {
+          case 3:
+            str = '时长1月'
+            break
+          case 1:
+            break
+          case 2:
+            break
+          case 4:
+            if (p.quantity === 0) {
+              str = p.unit || '--'
+            } else if (p.quantity > 0) {
+              str = `${p.quantity}*${p.unit || ''}`
+            }
+            break
+          default:
+            str = ''
+            break
         }
+        if (html) {
+          return `<p>${str}</p>`
+        }
+        return h('p', str)
       }
-    },
-    renderQuantity: function(h, p, html) {
-      let str = ''
-      switch (p.type) {
-        case 3:
-          str = '时长1月'
-          break
-        case 1:
-          break
-        case 2:
-          break
-        case 4:
-          if (p.quantity === 0) {
-            str = p.unit || '--'
-          } else if (p.quantity > 0) {
-            str = `${p.quantity}*${p.unit || ''}`
-          }
-          break
-        default:
-          str = ''
-          break
-      }
-      if (html) {
-        return `<p>${str}</p>`
-      }
-      return h('p', str)
     }
   }
-}
 </script>
 
 <style lang="stylus" scoped>
-@import '../../assets/styles/color.styl';
+  @import '../../assets/styles/color.styl';
 
-.title {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid c-border;
-}
-
-.page-nav {
-  float: right;
-  margin: 15px 0 40px;
-}
-
-.row {
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-right: 1px solid c-border;
-  border-bottom: 1px solid c-border;
-
-  &.row-remark {
-    height: 120px;
-    line-height: 120px;
+  .title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid c-border;
   }
-}
 
-.detail-table {
-  border-top: 1px solid c-border;
-  border-left: 1px solid c-border;
-}
+  .page-nav {
+    float: right;
+    margin: 15px 0 40px;
+  }
 
-.detail-key {
-  font-weight: bold;
-  background-color: c-grey;
-}
+  .row {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-right: 1px solid c-border;
+    border-bottom: 1px solid c-border;
+
+    &.row-remark {
+      height: 120px;
+      line-height: 120px;
+    }
+  }
+
+  .detail-table {
+    border-top: 1px solid c-border;
+    border-left: 1px solid c-border;
+  }
+
+  .detail-key {
+    font-weight: bold;
+    background-color: c-grey;
+  }
 </style>
 
 <style lang="stylus">
-@import '../../assets/styles/color.styl';
+  @import '../../assets/styles/color.styl';
 
-[v-cloak] {
-  display: none !important;
-}
-
-.bill-opt {
-  color: c-blue;
-  text-decoration: underline;
-}
-
-.un-pay {
-  color: c-red;
-}
-
-.bill-reduce {
-  color: c-red;
-
-  .past {
-    margin-left: 4px;
-    font-size: 0.85em;
-    color: c-black2;
-    text-decoration: line-through;
+  [v-cloak] {
+    display: none !important;
   }
-}
+
+  .bill-opt {
+    color: c-blue;
+    text-decoration: underline;
+  }
+
+  .un-pay {
+    color: c-red;
+  }
+
+  .bill-reduce {
+    color: c-red;
+
+    .past {
+      margin-left: 4px;
+      font-size: 0.85em;
+      color: c-black2;
+      text-decoration: line-through;
+    }
+  }
 </style>
