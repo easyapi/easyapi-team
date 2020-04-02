@@ -121,7 +121,7 @@
   </div>
 </template>
 <script>
-  import {ServiceList, balance, paymentMethod, Surplus} from '../../api/api'
+  import {ServiceList, balance, paymentMethod, Surplus} from '../../api/service'
   import calcudate from 'calcudate'
   import Cookies from 'js-cookie'
   import $ from 'jquery'
@@ -169,11 +169,7 @@
       //查询 服务报价列表
       getServiceList() {
         let second = ''
-        this.$ajax.get(ServiceList + "/" + this.serviceId, {
-          headers: {
-            authorization: this.authenticationToken
-          }
-        }).then(res => {
+        this.$ajax.get(ServiceList + "/" + this.serviceId, {}).then(res => {
           if (res.data.code !== 0) {
             this.frequency = res.data.content
             this.price = res.data.content[0].price
@@ -194,11 +190,7 @@
       },
       //余额
       choosePaymentMethod() {
-        this.$ajax.get(paymentMethod, {
-          headers: {
-            authorization: this.authenticationToken
-          }
-        }).then(res => {
+        this.$ajax.get(paymentMethod, {}).then(res => {
           this.balance = res.data.content.balance
         }).catch(error => {
           console.log(error)
@@ -206,11 +198,7 @@
       },
       //剩余多少日期
       howMuchOfTheRest() {
-        this.$ajax.get(Surplus + '/' + this.teamServiceId, {
-          headers: {
-            authorization: this.authenticationToken
-          }
-        }).then(res => {
+        this.$ajax.get(Surplus + '/' + this.teamServiceId, {}).then(res => {
           let now = ''
           if (res.data.endTime && res.data.endTime >= this.clockItem) {
             this.howMany = res.data.endTime.split(' ')[0]
@@ -264,9 +252,6 @@
       },
       determineThePurchase() {
         this.$ajax.post(balance, {
-          headers: {
-            authorization: this.authenticationToken
-          },
           params: {
             servicePriceId: this.servicePriceId,
             payment: this.payment

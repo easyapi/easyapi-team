@@ -4,19 +4,19 @@ import {baseUrl} from "./api";
 export const ServiceList = `https://api2.easyapi.com/console/servicePrice`;
 
 //查询 服务报价列表GET
-export const docPrice = `${baseUrl}/api/team/document/price`;
+export const docPrice = `https://api2.easyapi.com/api/team/document/price`;
 
 //续购服务POST
-export const balance = `${baseUrl}/console/servicePrice/continueBuy`;
+export const balance = `https://api2.easyapi.com/console/servicePrice/continueBuy`;
 
 //查询团队的财务数据GET
-export const paymentMethod = `${baseUrl}/console/money/mine`;
+export const paymentMethod = `https://api2.easyapi.com/console/money/mine`;
 
 //团队服务详情 GET 获取秘钥信息GET
-export const Surplus = `${baseUrl}/console/teamService`;
+export const Surplus = `https://api2.easyapi.com/console/teamService`;
 
 //文档续费
-export const documentRenewUrl = `${baseUrl}/api/team/document/renew`;
+export const documentRenewUrl = `https://api2.easyapi.com/api/team/document/renew`;
 
 //获取用户服务列表
 export const getUserService = `https://api2.easyapi.com/console/user/services`;

@@ -10,7 +10,7 @@ axios.interceptors.request.use(
         location.href = "https://account.easyapi.com/login"; // 如果没有authenticationToken存在
       }
     }
-    config.headers.authorization = "Bearer " + Cookies.get("authenticationToken");
+    config.headers.Authorization = "Bearer " + Cookies.get("authenticationToken");
     return config;
   },
   function (error) {

@@ -12,7 +12,7 @@ export const getUserTeamList = `${baseUrl}/api/user/teams`;
  *
  * @see https://www.easyai.com
  */
-export const changeTeam = (domain) => axios.post(`${baseUrl}/api/changeTeam/${domain}`);
+export const changeTeam = (url) => axios.post(`${baseUrl}/api/changeTeam/${url}`);
 
 /**
  * 修改密码

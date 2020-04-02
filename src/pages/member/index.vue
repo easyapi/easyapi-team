@@ -288,7 +288,6 @@
 
       // 设置权限设置
       setMemberType: function () {
-        console.log(this.members[this.memberSelect]);
         this.$ajax({
           method: "PUT",
           url: setMemberType,

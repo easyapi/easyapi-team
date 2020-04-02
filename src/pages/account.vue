@@ -396,7 +396,6 @@
           }
         })
           .then(res => {
-            //console.log(res)
             this.members = res.data.content
           })
           .catch(err => {
