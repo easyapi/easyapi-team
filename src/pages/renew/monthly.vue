@@ -23,15 +23,11 @@
             "
           >
             <strong v-if="price.month < 12">
-              {{ price.month }}月&nbsp;&nbsp;￥{{
-              price.price - price.discount
-              }}
+              {{ price.month }}月&nbsp;&nbsp;￥{{ price.price - price.discount}}
             </strong>
             <p v-if="price.month < 12">￥{{ onePrice[i] }}/月</p>
             <strong v-if="price.month >= 12">
-              {{ price.month / 12 }}年&nbsp;&nbsp;￥{{
-              price.price - price.discount
-              }}
+              {{ price.month / 12 }}年&nbsp;&nbsp;￥{{ price.price - price.discount}}
             </strong>
             <p v-if="price.month >= 12">￥{{ onePrice[i] }}/月</p>
           </div>

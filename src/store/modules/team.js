@@ -29,30 +29,26 @@ const team = {
       axios({
         url: getUserTeamList,
         method: "GET"
-      })
-        .then(res => {
-          commit("SET_TEAMLIST", res.data.content);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      }).then(res => {
+        commit("SET_TEAMLIST", res.data.content);
+      }).catch(error => {
+        console.log(error);
+      });
     },
     //切换团队
     switchoverTeam({dispatch, commit, state}, id) {
       axios({
         url: changeTeam + "/" + id,
         method: "PUT"
-      })
-        .then(res => {
-          if (res.data.code === 1) {
-            dispatch("GetUserInfo");
-            location.hash = "";
-            location.reload();
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      }).then(res => {
+        if (res.data.code === 1) {
+          dispatch("GetUserInfo");
+          location.hash = "";
+          location.reload();
+        }
+      }).catch(error => {
+        console.log(error);
+      });
     }
   }
 };

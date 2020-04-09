@@ -251,9 +251,7 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
   import {
-    getTeamUserList,
     getAccountMoney,
     getCaptcha,
     moneyWarn,
@@ -262,6 +260,7 @@
     transferTeam,
     checkTeamUrl
   } from '../api/api'
+  import {getTeamUserList} from '../api/team'
   import {getQiniuToken,} from '../api/qiniu'
   import {getInvoiceToken,} from '../api/invoice'
   import {aliPayApi, wxPayApi,} from '../api/pay'
@@ -303,8 +302,6 @@
         rechargeType: 1,
         rechargeAmount: 100,
 
-        // dialog control
-        //recharge
         recharge: false,
         apiRecharge: false,
 
@@ -355,7 +352,6 @@
     computed: {},
     created: function () {
       this.$store.dispatch('GetUserInfo')
-      //console.log(this.$store.state)
       this.obtainInvoiceToken()
       this.getTeamInfo()
       if ((this.role = this.$store.state.user.userTeam.type)) {
@@ -363,22 +359,8 @@
       }
     },
     mounted: function () {
-      //console.log(this.propMembers)
       this.obtainInvoiceToken()
       document.title = '团队账户 - EasyAPI'
-      //add SockJS script's src
-      // let sockjs = document.createElement('script')
-      // sockjs.setAttribute(
-      //   'src',
-      //   'https://cdn.bootcss.com/sockjs-client/1.0.0/sockjs.min.js'
-      // )
-      // let stomp = document.createElement('script')
-      // stomp.setAttribute(
-      //   'src',
-      //   'https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js'
-      // )
-      // $('#app').append(sockjs)
-      // $('#app').append(stomp)
       if (this.$store.state.user.team.id) {
         this.getTeamUserList()
       }
@@ -386,20 +368,9 @@
     methods: {
       // 获取成员列表
       getTeamUserList: function () {
-        this.$ajax({
-          method: 'GET',
-          url: getTeamUserList,
-          params: {
-            teamId: this.$store.state.user.team.id,
-            page: 0,
-            size: 100
-          }
-        })
-          .then(res => {
-            this.members = res.data.content
-          })
-          .catch(err => {
-          })
+        getTeamUserList(this.$store.state.user.team.id).then(res => {
+          this.members = res.data.content;
+        });
       },
       //获取发票Token
       obtainInvoiceToken() {
@@ -428,7 +399,6 @@
       //生成二维码
       QRcode: function () {
         var teamId = this.$store.state.user.team.id
-        //console.log(teamId)
         let encryption = md5('' + teamId)
         this.picture =
           'https://fapiao-h5.easyapi.com?taxNumber=91320211MA1WML8X6T&accessToken=' +
@@ -708,7 +678,6 @@
           }
         })
           .then(res => {
-            //console.log(res)
             if (res.data.code) {
               this.$Message.success('转让成功!')
               this.teamTransfer = false

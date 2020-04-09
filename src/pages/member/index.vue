@@ -135,12 +135,12 @@
 
 <script>
   import {
-    getTeamUserList,
     setMemberType,
     memberInvitedInfo,
     addMember,
     delMember
   } from "../../api/api";
+  import {getTeamUserList} from "../../api/team";
 
   export default {
     name: "Members",
@@ -191,21 +191,10 @@
       }
     },
     methods: {
-      // 获取成员列表
       getTeamUserList: function () {
-        if (this.$store.state.user.team.id) {
-          this.$ajax.get(getTeamUserList, {
-            params: {
-              teamId: this.$store.state.user.team.id,
-              page: 0,
-              size: 100
-            }
-          }).then(res => {
-            this.members = res.data.content;
-          }).catch(err => {
-          }).then(function () {
-          });
-        }
+        getTeamUserList(this.$store.state.user.team.id).then(res => {
+          this.members = res.data.content;
+        });
       },
 
       // 成员设置弹窗
@@ -219,14 +208,16 @@
         this.memberSetDialog = true;
         this.permision = this.members[this.memberSelect].type;
         this.getMemberInvite(this.members[i].user.id);
-      },
+      }
+      ,
       memberSDVisible: function (show) {
         if (!show) {
           this.memberSetDialog = false;
           this.inviter = "";
           this.hasInviter = true;
         }
-      },
+      }
+      ,
       closeMemberSD: function (resetSelect = true) {
         this.memberSetDialog = false;
         setTimeout(() => {
@@ -234,7 +225,8 @@
           this.hasInviter = true;
           if (resetSelect) this.memberSelect = null;
         }, 200);
-      },
+      }
+      ,
 
       // 获取成员被邀请信息
       getMemberInvite: function (id) {
@@ -252,39 +244,47 @@
             this.hasInviter = false;
           }
         });
-      },
+      }
+      ,
 
       // 确认删除按钮
       confirmClick: function () {
         this.confirmDelMember = true;
         this.closeMemberSD(false);
-      },
+      }
+      ,
 
       // 确认移除弹窗
       delSDVisible: function (show) {
         if (!show) this.closeDelSD();
-      },
+      }
+      ,
       closeDelSD: function () {
         this.confirmDelMember = false;
-      },
+      }
+      ,
 
       // 添加新成员
       newMember: function () {
         this.newMemberSet = true;
-      },
+      }
+      ,
       newMemberSDVisible: function (show) {
         if (!show) this.newMemberSet = false;
-      },
+      }
+      ,
       closeNewSD: function () {
         this.newMemberSet = false;
         this.$refs["newMemberList"].resetFields();
-      },
+      }
+      ,
       appendMember: function () {
         this.newMemberList.items.push({
           userName: "",
           type: "成员"
         });
-      },
+      }
+      ,
 
       // 设置权限设置
       setMemberType: function () {
@@ -305,7 +305,8 @@
           this.closeMemberSD();
         }).then(function () {
         });
-      },
+      }
+      ,
 
       // 删除成员
       delMember: function () {
@@ -322,7 +323,8 @@
         }).then(function () {
           this.closeDelSD();
         });
-      },
+      }
+      ,
 
       // 添加新成员
       confirmNewMember: function () {
@@ -367,7 +369,8 @@
         });
       }
     }
-  };
+  }
+  ;
 </script>
 
 <style lang="stylus" scoped>
