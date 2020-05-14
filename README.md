@@ -82,7 +82,7 @@ npm run build --report
 
 ## 命名规范
 
-* 使用kebab-case（短横线）命名方式
+* 页面使用kebab-case（短横线）命名方式
 * 图片资源采用的命名规范
 * CSS命名规范
 * 常规名称命名方案，参见EasyAPI中英文翻译
