@@ -4,8 +4,7 @@
       <h3>账户余额</h3>
       <div class="m">
         <p class="amount">
-          {{ accountGolbalInfo.balance.toFixed(2)
-          }}
+          {{ accountGolbalInfo.balance.toFixed(2)}}
           <span class="amount-unit">元</span>
         </p>
         <router-link to="/recharges">充值列表</router-link>
@@ -39,7 +38,7 @@
               :disabled="!needMoneyWarn"
               size="small"
               v-model="moneyWarnSize"
-            ></Input>
+            />
             <p class="_unit">元</p>
           </div>
         </div>
@@ -107,7 +106,7 @@
       <Row>
         <Col class="bottom-10 top-5" span="4">充值金额:</Col>
         <Col class="bottom-10 top-5" span="20">
-          <Input class="pay-amount" v-model="rechargeAmount" placeholder="请输入充值金额"></Input>
+          <Input class="pay-amount" v-model="rechargeAmount" placeholder="请输入充值金额"/>
         </Col>
         <Col class="bottom-10 top-5" span="4">支付方式:</Col>
         <Col class="bottom-10 top-5" span="20">
@@ -137,7 +136,7 @@
               </div>
             </Col>
           </Row>
-          <p class="top-20 bottom-5 tips">如果有问题, 请发送邮件刀leida@easyapi.com处理。 谢谢您的支持</p>
+          <p class="top-20 bottom-5 tips">如果有问题, 请发送邮件到leida@easyapi.com处理。 谢谢您的支持</p>
           <ea-button class="top-20 recharge-btn bottom-5" text="立即支付" @click="payNow"/>
         </Col>
       </Row>
