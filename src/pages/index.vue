@@ -314,7 +314,7 @@
 
   .business-details {
     width: 285px;
-    height: 337px;
+    height: 347px;
     background-color: #ffffff;
     border: solid 1px #dddddd;
     margin-right: 20px;
@@ -359,7 +359,7 @@
     font-size: 14px;
     left: 50%;
     position: absolute;
-    bottom: 5px;
+    bottom: 15px;
     transform: translateX(-50%);
   }
 
