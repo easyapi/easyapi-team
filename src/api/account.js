@@ -30,8 +30,4 @@ export const changePassword = (data) => axios.post(`${baseUrl}/api/account/chang
  *
  * @see https://www.easyai.com
  */
-export const updateAccountInfo = (data) => axios.post(`${baseUrl}/api/account`, {
-  data: {
-    data
-  }
-});
+export const updateAccountInfo = (data) => axios.put(`${baseUrl}/api/account`, data);
