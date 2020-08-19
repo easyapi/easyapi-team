@@ -7,9 +7,7 @@
             <img :src="team.img" alt style="width:24px;height: 24px;border-radius: 20px"/>
           </span>
           <span style="padding-left: 10px;" v-if="team.name">
-            {{
-            team.name
-            }}
+            {{team.name}}
           </span>
         </div>
         <div class="team-head-left" v-if="authenticationToken">

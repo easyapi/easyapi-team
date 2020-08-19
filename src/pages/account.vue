@@ -8,7 +8,6 @@
           <span class="amount-unit">元</span>
         </p>
         <router-link to="/recharges">充值列表</router-link>
-        <!--<router-link class="invoice" :to="'https://team.easyapi.com/?invoice&accessToken=' + this.Itoken">索取发票</router-link>-->
         <span class="invoice" @click="jumpInvoice">索取发票</span>
         <span class="invoiceQR" @mouseenter="showCode" @mouseleave="hideCode">
           <img src="../assets/images/scan.png" alt/>
@@ -274,7 +273,7 @@
     data: function () {
       return {
         members: this.propMembers,
-        Itoken: '',
+        fapiaoToken: '',
         picture: '',
         accountGolbalInfo: {
           balance: 0,
@@ -351,14 +350,14 @@
     computed: {},
     created: function () {
       this.$store.dispatch('GetUserInfo')
-      this.obtainInvoiceToken()
+      this.getInvoiceToken()
       this.getTeamInfo()
       if ((this.role = this.$store.state.user.userTeam.type)) {
         this.role = this.$store.state.user.userTeam.type
       }
     },
     mounted: function () {
-      this.obtainInvoiceToken()
+      this.getInvoiceToken()
       document.title = '团队账户 - EasyAPI'
       if (this.$store.state.user.team.id) {
         this.getTeamUserList()
@@ -372,24 +371,24 @@
         });
       },
       //获取发票Token
-      obtainInvoiceToken() {
+      getInvoiceToken() {
         this.$ajax({
           method: 'get',
           url: getInvoiceToken
         }).then(res => {
           if (res.data.code == 1) {
-            this.Itoken = res.data.content
+            this.fapiaoToken = res.data.content
             this.QRcode()
           }
         })
       },
       //跳转发票
       jumpInvoice() {
-        var teamId = this.$store.state.user.team.id
+        let teamId = this.$store.state.user.team.id
         let encryption = md5('' + teamId)
         window.open(
           'https://fapiao-user-center-web.easyapi.com/?taxNumber=91320211MA1WML8X6T&accessToken=' +
-          this.Itoken +
+          this.fapiaoToken +
           '&' +
           'username=' +
           encryption.toUpperCase()
@@ -401,7 +400,7 @@
         let encryption = md5('' + teamId)
         this.picture =
           'https://fapiao-h5.easyapi.com?taxNumber=91320211MA1WML8X6T&accessToken=' +
-          this.Itoken +
+          this.fapiaoToken +
           '%26username=' +
           encryption.toUpperCase()
       },
