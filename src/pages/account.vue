@@ -7,18 +7,20 @@
           {{ accountGolbalInfo.balance.toFixed(2)}}
           <span class="amount-unit">元</span>
         </p>
+        <router-link to="" class="account-detail">账户明细</router-link>
         <router-link to="/recharges">充值列表</router-link>
         <span class="invoice" @click="jumpInvoice">索取发票</span>
-        <span class="invoiceQR" @mouseenter="showCode" @mouseleave="hideCode">
-          <img src="../assets/images/scan.png" alt/>
-          <div class="Code-picture" :class="codeShow?'code-show':'code-hide'" v-if="codeHas">
-            <img
+         <Poptip placement="top" trigger="hover">
+           <img class="invoiceQR" src="../assets/images/scan.png" alt/>
+           <div slot="title" class="Code-title">手机端索取发票</div>
+           <div class="Code-picture" slot="content">
+              <img
               :src="'http://qr.topscan.com/api.php?text=' + picture"
               alt
               style="width: 100px;height: 100px"
-            />
-          </div>
-        </span>
+              />
+            </div>
+        </Poptip>
       </div>
       <ea-button class="team-btn" text="账户充值" @click="toRecharge"/>
     </section>
@@ -338,7 +340,8 @@
         captchaUse: false,
         codeShow: false,
         codeHas: false,
-        timer: null
+        timer: null,
+        visible:false
       }
     },
     watch: {
@@ -855,24 +858,9 @@
       ttSDVisible: function (v) {
         if (!v) this.teamTransfer = false
       },
-      showCode() {
-        this.codeHas = true
-        let timer = setTimeout(() => {
-          this.codeShow = true
-          timer = null
-          clearTimeout(timer)
-        }, 100)
-        clearTimeout(this.timer)
-        this.timer = null
+      open(){
+        this.visible = true;
       },
-      hideCode() {
-        this.codeShow = false
-        this.timer = setTimeout(() => {
-          this.codeHas = false
-          this.timer = null
-          clearTimeout(this.timer)
-        }, 300)
-      }
     }
   }
 </script>
@@ -1085,29 +1073,25 @@
   }
 
   .invoice {
-    color: red;
+    color: #2d8cf0;
     cursor: pointer;
     padding-left: 10px;
   }
-
+  .account-detail{
+    margin-right:10px;
+  }
+  .Code-title{
+    text-align:center;
+    font-size:14px;
+  }
   .Code-picture {
-    width: 120px;
-    height: 120px;
-    padding: 10px;
-    border: 1px solid #dddddd;
-    position: absolute;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
-    background-color: #ffffff;
-    opacity: 0;
+    text-align: center
   }
 
   .invoiceQR {
     cursor: pointer;
     margin-left: 10px;
-    position: relative;
+    vertical-align:middle;
   }
 
   .code-show {

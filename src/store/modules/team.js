@@ -37,10 +37,7 @@ const team = {
     },
     //切换团队
     switchoverTeam({dispatch, commit, state}, id) {
-      axios({
-        url: changeTeam + "/" + id,
-        method: "PUT"
-      }).then(res => {
+      changeTeam(id).then(res=>{
         if (res.data.code === 1) {
           dispatch("GetUserInfo");
           location.hash = "";

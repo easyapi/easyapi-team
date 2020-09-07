@@ -31,6 +31,7 @@
               <h2 class="lrPading-20">切换团队：</h2>
               <div class="ea-team-list-box lrPading-20">
                 <a
+                  href="JavaScript:void(0)"
                   class="ea-team-item"
                   v-for="(item, index) in teamList"
                   v-bind:key="index"
