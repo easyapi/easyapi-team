@@ -17,16 +17,16 @@
 </template>
 
 <script>
-  import {getRechargeList} from "../../../api/api";
+  import {getBillList} from "../../../api/bill";
 
   export default {
-    name: "RechargeList",
+    name: "BillList",
     components: {},
     data: function () {
       return {
         tableHead: [
           {
-            title: "日期",
+            title: "交易时间",
             key: "addTime"
           },
           {
@@ -34,15 +34,35 @@
             key: "no"
           },
           {
+            title: "类型",
+            key: "type"
+          },
+          {
+            title: "付款方式",
+            key: "payment"
+          },
+          {
             title: "金额",
             key: "price",
             render: (h, params) => {
-              return h("p", "¥" + params.row.price);
+              if (params.row.type == "消费") {
+                return h("p", "-" + "¥" + params.row.outlay);
+              } else {
+                return h("p", "+" + "¥" + params.row.receive);
+              }
+
             }
           },
           {
-            title: "渠道",
-            key: "payment"
+            title: "余额",
+            key: "balance",
+            render: (h, params) => {
+              return h("p", "¥" + params.row.balance);
+            }
+          },
+          {
+            title: "备注",
+            key: "remark"
           },
           {
             title: "状态",
@@ -59,10 +79,6 @@
               );
             }
           },
-          {
-            title: "备注",
-            key: "remark"
-          }
         ],
         tableData: [],
         total: null,
@@ -96,30 +112,26 @@
         location.hash = this.$route.path + "?page=" + page;
         this.getList();
       },
-      getList: function () {
+      getList: function (page) {
         this.dataLoading = true;
-        this.$ajax({
-          method: "GET",
-          url: getRechargeList,
-          params: {
-            page: this.page - 1,
-            size: this.pageSize
+        let params = {
+          page: this.page - 1,
+          size: this.pageSize
+        }
+        getBillList(params).then(res => {
+          this.dataLoading = false;
+          if (res.data == null) {
+            this.total = 0
+            this.tableData = [];
+            this.dataLoading = false;
+          } else {
+            if (!this.total) this.total = res.data.totalElements
+            if (res.data.content.length) this.tableData = res.data.content;
           }
+        }).catch(function (err) {
+          this.dataLoading = false;
+          console.log(err);
         })
-          .then(res => {
-            this.dataLoading = false;
-            if (res.data == null) {
-              this.tableData = [];
-              this.dataLoading = false;
-            } else {
-              if (!this.total) this.total = res.data.totalElements
-              if (res.data.content.length) this.tableData = res.data.content;
-            }
-          })
-          .catch(function (err) {
-            this.dataLoading = false;
-            console.log(err);
-          });
       }
     },
     watch: {
@@ -131,8 +143,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../../assets/styles/color.styl'
-
+  @import '../../../assets/styles/color.styl';
   .page-nav
     float: right
     margin: 15px 0 40px

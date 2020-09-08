@@ -116,8 +116,8 @@
         this.$store.dispatch('Logout')
         window.location.href = 'https://account.easyapi.com/login'
       },
-      changeTeam(id) {
-        this.$store.dispatch('switchoverTeam', id)
+      changeTeam(teamId) {
+        this.$store.dispatch('switchoverTeam', teamId)
       }
     },
     watch: {

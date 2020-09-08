@@ -13,3 +13,11 @@ export const getTeamUserList = (teamId) => axios.get(`${baseUrl}/api/team/users`
     size: 100
   }
 });
+
+
+/**
+ * 切换默认团队
+ *
+ * @see https://www.easyai.com
+ */
+export const changeTeam = (teamId) => axios.put(`${baseUrl}/api/team/${teamId}/change`);

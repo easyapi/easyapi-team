@@ -1,5 +1,6 @@
 import axios from "@/api/fetch";
-import {getUserTeamList, changeTeam} from "@/api/account";
+import {getUserTeamList} from "@/api/account";
+import {changeTeam} from "@/api/team";
 
 const team = {
   state: {
@@ -36,8 +37,8 @@ const team = {
       });
     },
     //切换团队
-    switchoverTeam({dispatch, commit, state}, id) {
-      changeTeam(id).then(res=>{
+    switchoverTeam({dispatch, commit, state}, teamId) {
+      changeTeam(teamId).then(res => {
         if (res.data.code === 1) {
           dispatch("GetUserInfo");
           location.hash = "";

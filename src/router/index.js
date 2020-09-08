@@ -130,7 +130,7 @@ export default new Router({
       path: "/user/password",
       name: "user-password",
       component: UserPassword
-    },
+    }
 
   ]
 });

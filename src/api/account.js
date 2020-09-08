@@ -7,12 +7,6 @@ export const getAccountInfo = `${baseUrl}/api/account`;
 //获取用户团队列表
 export const getUserTeamList = `${baseUrl}/api/user/teams`;
 
-/**
- * 切换团队
- *
- * @see https://www.easyai.com
- */
-export const changeTeam = (id) => axios.post(`${baseUrl}/api/changeTeam/${id}`);
 
 /**
  * 修改密码
