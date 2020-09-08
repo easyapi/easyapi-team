@@ -6,4 +6,6 @@ import axios from "axios";
  *
  * @see https://www.easyai.com
  */
-export const getBillList = (params) => axios.post(`${baseUrl}/api/bills`);
+export const getBillList = (params) => axios.get(`${baseUrl}/api/bills`,{
+    params
+});

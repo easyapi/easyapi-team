@@ -164,6 +164,7 @@
         this.servicePriceId = servicePriceId
         this.price = price
         if (this.type == 3) {
+          console.log(this.dateAgain,22222222)
           this.date = this.addMonth(this.dateAgain, num)
         }
         if (this.type == 2) {
@@ -198,6 +199,7 @@
           params: {serviceId: this.serviceId}
         })
           .then(res => {
+            console.log(res,1111111111)
             if (res.data.code !== 0) {
               let arr = []
               res.data.content.forEach(item => {
@@ -371,16 +373,11 @@
         this.$ajax({
           method: 'POST',
           url: balance,
-          headers: {
-            authorization: this.authenticationToken
-          },
-          params: {
-            month: this.selectMoney,
-            price: this.price,
+          data: {
+            servicePriceId:this.servicePriceId,
             payment: this.assignment
           }
-        })
-          .then(res => {
+        }).then(res => {
             if (this.assignment === '支付宝') {
               this.formHtml = res.data.alipay
               let form = $(this.formHtml)
@@ -404,12 +401,11 @@
               })
             }
             this.$Message.success(res.data.message)
-          })
-          .catch(error => {
+          }).catch(error => {
             if (this.assignment == '' || this.assignment == null) {
               this.$Message.warning('请选择和支付方式')
             } else {
-              this.$Message.error(error.response.data.message)
+              this.$Message.error(error.data.message)
             }
           })
       },

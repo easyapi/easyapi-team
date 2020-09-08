@@ -52,6 +52,7 @@
         })
       },
       jumpPay(item) {
+        console.log(item,3333333)
         let service = item.service
         let query = {
           type: service.type,

@@ -1,6 +1,5 @@
 <template>
-  <div class="m-wrapper">
-    <h4 class="title">充值记录</h4>
+  <div>
     <Table
       stripe
       :columns="tableHead"
@@ -10,7 +9,7 @@
     <Page
       :total="total"
       :current="Number(page)"
-      :page-size="10"
+      :page-size="pageSize"
       class="page-nav"
       @on-change="pageChange"
     ></Page>
@@ -18,16 +17,16 @@
 </template>
 
 <script>
-import { getRechargeList } from "../../api/api";
+import { getBillList } from "../../../api/bill";
 
 export default {
-  name: "Recharges",
+  name: "Unsettled",
   components: {},
   data: function() {
     return {
       tableHead: [
         {
-          title: "日期",
+          title: "交易时间",
           key: "addTime"
         },
         {
@@ -35,15 +34,35 @@ export default {
           key: "no"
         },
         {
+          title: "类型",
+          key: "type"
+        },
+        {
+          title:"付款方式",
+          key: "payment"
+        },
+        {
           title: "金额",
           key: "price",
           render: (h, params) => {
-            return h("p", "¥" + params.row.price);
+            if(params.row.type == "消费"){
+              return h("p","-"+ "¥" + params.row.outlay);
+            }else{
+              return h("p","+"+"¥" + params.row.receive);
+            }
+            
           }
         },
         {
-          title: "渠道",
-          key: "payment"
+          title: "余额",
+          key: "balance",
+          render: (h, params) => {
+            return h("p", "¥" + params.row.balance);
+          }
+        },
+         {
+          title: "备注",
+          key: "remark"
         },
         {
           title: "状态",
@@ -59,11 +78,7 @@ export default {
               this.payState[params.row.state]
             );
           }
-        },
-        {
-          title: "备注",
-          key: "remark"
-        }
+        },    
       ],
       tableData: [],
       total: null,
@@ -77,7 +92,8 @@ export default {
         "-1": "已取消",
         "9": "充值成功",
         "-9": "充值失败"
-      }
+      },
+      pageSize: 10
     };
   },
   created: function() {
@@ -98,23 +114,24 @@ export default {
     },
     getList: function(page) {
       this.dataLoading = true;
-      this.$ajax({
-        method: "GET",
-        url: getRechargeList
-      })
-        .then(res => {
+      let params = {
+            page: this.page - 1,
+            size: this.pageSize
+        }
+      getBillList(params).then(res=>{   
           this.dataLoading = false;
           if (res.data == null) {
+            this.total = 0
             this.tableData = [];
             this.dataLoading = false;
           } else {
+            if (!this.total) this.total = res.data.totalElements
             if (res.data.content.length) this.tableData = res.data.content;
-          }
-        })
-        .catch(function(err) {
+          }     
+        }).catch(function(err) {
           this.dataLoading = false;
           console.log(err);
-        });
+        })
     }
   },
   watch: {
@@ -126,14 +143,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../../assets/styles/color.styl';
-
-.title
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid c-border;
-
+@import '../../../assets/styles/color.styl';
 .page-nav
   float: right
   margin: 15px 0 40px

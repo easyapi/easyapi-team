@@ -9,7 +9,7 @@ const Index = () => import(/* webpackChunkName: "index" */ "../pages/index.vue")
 
 const Account = () => import("../pages/account.vue");
 
-const Recharges = () => import("../pages/recharge/index.vue");
+const Bill = () => import("../pages/bill/index.vue");
 
 const RechargeSuccess = () => import("../pages/recharge/success.vue");
 
@@ -58,9 +58,9 @@ export default new Router({
           component: Account
         },
         {
-          path: "recharges",
-          name: "Recharges",
-          component: Recharges
+          path: "bill",
+          name: "bill",
+          component:Bill
         },
         {
           path: "services",

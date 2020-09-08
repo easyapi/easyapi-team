@@ -180,6 +180,7 @@
     },
     methods: {
       pageChange: function (page) {
+        console.log(page,333333333333)  
         this.page = page
         location.hash = this.$route.path + '?page=' + page
         this.getList()

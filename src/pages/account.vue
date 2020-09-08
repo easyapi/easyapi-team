@@ -7,8 +7,8 @@
           {{ accountGolbalInfo.balance.toFixed(2)}}
           <span class="amount-unit">元</span>
         </p>
-        <router-link to="" class="account-detail">账户明细</router-link>
-        <router-link to="/recharges">充值列表</router-link>
+        <router-link to="/bill">账户明细</router-link>
+        <!-- <router-link to="/bill">充值列表</router-link> -->
         <span class="invoice" @click="jumpInvoice">索取发票</span>
          <Poptip placement="top" trigger="hover">
            <img class="invoiceQR" src="../assets/images/scan.png" alt/>
@@ -190,7 +190,6 @@
           </Select>
         </Col>
       </Row>
-
       <ea-button class="close-btn top-10 bottom-5" text="确认转让" @click="confirmTransferTeam"/>
     </ea-dialog>
 
@@ -274,7 +273,7 @@
     props: ['propMembers'],
     data: function () {
       return {
-        members: this.propMembers,
+        members:[],
         fapiaoToken: '',
         picture: '',
         accountGolbalInfo: {
@@ -362,14 +361,13 @@
     mounted: function () {
       this.getInvoiceToken()
       document.title = '团队账户 - EasyAPI'
-      if (this.$store.state.user.team.id) {
-        this.getTeamUserList()
-      }
+      this.getTeamUserList()
     },
     methods: {
       // 获取成员列表
       getTeamUserList: function () {
-        getTeamUserList(this.$store.state.user.team.id).then(res => {
+         getTeamUserList(this.$store.state.user.team.id).then(res => {
+           console.log(res,333) 
           this.members = res.data.content;
         });
       },
@@ -1076,9 +1074,6 @@
     color: #2d8cf0;
     cursor: pointer;
     padding-left: 10px;
-  }
-  .account-detail{
-    margin-right:10px;
   }
   .Code-title{
     text-align:center;

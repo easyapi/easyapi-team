@@ -7,7 +7,7 @@ export const ServiceList = `https://api2.easyapi.com/console/servicePrice`;
 export const docPrice = `https://api2.easyapi.com/api/team/document/price`;
 
 //续购服务POST
-export const balance = `https://api2.easyapi.com/console/servicePrice/continueBuy`;
+export const balance = `https://api2.easyapi.com/console/service/buy`;
 
 //查询团队的财务数据GET
 export const paymentMethod = `https://api2.easyapi.com/console/money/mine`;
