@@ -2,10 +2,10 @@
   <div class="m-wrapper">
     <Tabs active-key="bill" :animated="false">
       <Tab-pane label="账户明细" key="bill">
-        <Unsettled></Unsettled>
+        <BillList></BillList>
       </Tab-pane>
       <Tab-pane label="充值记录" key="recharge">
-        <Recharge></Recharge>
+        <RechargeList></RechargeList>
       </Tab-pane>
     </Tabs>
   </div>

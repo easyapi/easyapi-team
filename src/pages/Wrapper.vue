@@ -12,14 +12,11 @@
     </div>
     <nav>
       <ul class="m-wrapper menu grid">
-        <li :class="{ active: $route.name === 'Account' }">
+        <li :class="{ active: $route.name === 'Account' || $route.name === 'Bills'}">
           <router-link to="/account">账户</router-link>
         </li>
         <li :class="{ active: $route.name === 'Members' }">
           <router-link to="/members">成员</router-link>
-        </li>
-        <li :class="{ active: $route.name.indexOf('Services')!=-1 }">
-          <router-link to="/services">服务</router-link>
         </li>
         <li :class="{ active: $route.name === 'Orders' }">
           <router-link to="/orders">订单</router-link>

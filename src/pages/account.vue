@@ -10,16 +10,16 @@
         <router-link to="/bill">账户明细</router-link>
         <!-- <router-link to="/bill">充值列表</router-link> -->
         <span class="invoice" @click="jumpInvoice">索取发票</span>
-        <Poptip placement="top" trigger="hover">
-          <img class="invoiceQR" src="../assets/images/scan.png" alt/>
-          <div slot="title" class="Code-title">手机端索取发票</div>
-          <div class="Code-picture" slot="content">
-            <img
+         <Poptip placement="top" trigger="hover">
+           <img class="invoiceQR" src="../assets/images/scan.png" alt/>
+           <div slot="title" class="Code-title">手机端索取发票</div>
+           <div class="Code-picture" slot="content">
+              <img
               :src="'http://qr.topscan.com/api.php?text=' + picture"
               alt
               style="width: 100px;height: 100px"
-            />
-          </div>
+              />
+            </div>
         </Poptip>
       </div>
       <ea-button class="team-btn" text="账户充值" @click="toRecharge"/>
@@ -273,7 +273,7 @@
     props: ['propMembers'],
     data: function () {
       return {
-        members: [],
+        members:[],
         fapiaoToken: '',
         picture: '',
         accountGolbalInfo: {
@@ -340,7 +340,7 @@
         codeShow: false,
         codeHas: false,
         timer: null,
-        visible: false
+        visible:false
       }
     },
     watch: {
@@ -366,8 +366,8 @@
     methods: {
       // 获取成员列表
       getTeamUserList: function () {
-        getTeamUserList(this.$store.state.user.team.id).then(res => {
-          console.log(res, 333)
+         getTeamUserList(this.$store.state.user.team.id).then(res => {
+           console.log(res,333) 
           this.members = res.data.content;
         });
       },
@@ -856,7 +856,7 @@
       ttSDVisible: function (v) {
         if (!v) this.teamTransfer = false
       },
-      open() {
+      open(){
         this.visible = true;
       },
     }
@@ -1075,12 +1075,10 @@
     cursor: pointer;
     padding-left: 10px;
   }
-
-  .Code-title {
-    text-align: center;
-    font-size: 14px;
+  .Code-title{
+    text-align:center;
+    font-size:14px;
   }
-
   .Code-picture {
     text-align: center
   }
@@ -1088,7 +1086,7 @@
   .invoiceQR {
     cursor: pointer;
     margin-left: 10px;
-    vertical-align: middle;
+    vertical-align:middle;
   }
 
   .code-show {

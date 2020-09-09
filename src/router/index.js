@@ -15,9 +15,7 @@ const RechargeSuccess = () => import("../pages/recharge/success.vue");
 
 const Members = () => import("../pages/member/index.vue");
 
-const Services = () => import("../pages/service/index.vue");
-
-const ServicesPay = () => import("../pages/service/pay.vue");
+const ServicePay = () => import("../pages/service/pay.vue");
 
 const Orders = () => import("../pages/order/index.vue");
 
@@ -59,18 +57,13 @@ export default new Router({
         },
         {
           path: "bill",
-          name: "bill",
+          name: "Bills",
           component:Bill
         },
         {
-          path: "services",
-          name: "Services",
-          component: Services
-        },
-        {
-          path: "services/pay",
-          name: "ServicesPay",
-          component: ServicesPay
+          path: "service/pay",
+          name: "ServicePay",
+          component: ServicePay
         },
         {
           path: "members",
