@@ -10,16 +10,16 @@
         <router-link to="/bill">账户明细</router-link>
         <!-- <router-link to="/bill">充值列表</router-link> -->
         <span class="invoice" @click="jumpInvoice">索取发票</span>
-         <Poptip placement="top" trigger="hover">
-           <img class="invoiceQR" src="../assets/images/scan.png" alt/>
-           <div slot="title" class="Code-title">手机端索取发票</div>
-           <div class="Code-picture" slot="content">
-              <img
-              :src="'http://qr.topscan.com/api.php?text=' + picture"
+        <Poptip placement="top" trigger="hover">
+          <img class="invoiceQR" src="../assets/images/scan.png" alt/>
+          <div slot="title" class="Code-title">手机端索取发票</div>
+          <div class="Code-picture" slot="content">
+            <img
+              :src="'https://qr.topscan.com/api.php?text=' + picture"
               alt
               style="width: 100px;height: 100px"
-              />
-            </div>
+            />
+          </div>
         </Poptip>
       </div>
       <ea-button class="team-btn" text="账户充值" @click="toRecharge"/>
@@ -261,7 +261,7 @@
   } from '../api/api'
   import {getTeamUserList} from '../api/team'
   import {getQiniuToken,} from '../api/qiniu'
-  import {getInvoiceToken,} from '../api/invoice'
+  import {getInvoiceToken} from '../api/invoice'
   import {aliPayApi, wxPayApi,} from '../api/pay'
   import $ from 'jquery'
   import md5 from 'js-md5'
@@ -273,7 +273,7 @@
     props: ['propMembers'],
     data: function () {
       return {
-        members:[],
+        members: [],
         fapiaoToken: '',
         picture: '',
         accountGolbalInfo: {
@@ -340,7 +340,7 @@
         codeShow: false,
         codeHas: false,
         timer: null,
-        visible:false
+        visible: false
       }
     },
     watch: {
@@ -366,44 +366,31 @@
     methods: {
       // 获取成员列表
       getTeamUserList: function () {
-         getTeamUserList(this.$store.state.user.team.id).then(res => {
-           console.log(res,333) 
+        getTeamUserList(this.$store.state.user.team.id).then(res => {
+          console.log(res, 333)
           this.members = res.data.content;
         });
       },
       //获取发票Token
       getInvoiceToken() {
-        this.$ajax({
-          method: 'get',
-          url: getInvoiceToken
-        }).then(res => {
+        let encryption = md5('' + this.$store.state.user.team.id);
+        getInvoiceToken(encryption.toUpperCase()).then(res => {
           if (res.data.code == 1) {
             this.fapiaoToken = res.data.content
-            this.QRcode()
+            this.qrCode()
           }
         })
       },
       //跳转发票
       jumpInvoice() {
-        let teamId = this.$store.state.user.team.id
-        let encryption = md5('' + teamId)
         window.open(
           'https://fapiao-user-center-web.easyapi.com/?taxNumber=91320211MA1WML8X6T&accessToken=' +
-          this.fapiaoToken +
-          '&' +
-          'username=' +
-          encryption.toUpperCase()
+          this.fapiaoToken
         )
       },
       //生成二维码
-      QRcode: function () {
-        var teamId = this.$store.state.user.team.id
-        let encryption = md5('' + teamId)
-        this.picture =
-          'https://fapiao-h5.easyapi.com?taxNumber=91320211MA1WML8X6T&accessToken=' +
-          this.fapiaoToken +
-          '%26username=' +
-          encryption.toUpperCase()
+      qrCode: function () {
+        this.picture = 'https://fapiao-h5.easyapi.com?taxNumber=91320211MA1WML8X6T&accessToken=' + this.fapiaoToken;
       },
       getTeamInfo: function () {
         if (!this.$store.state.user.team) {
@@ -856,7 +843,7 @@
       ttSDVisible: function (v) {
         if (!v) this.teamTransfer = false
       },
-      open(){
+      open() {
         this.visible = true;
       },
     }
@@ -1075,10 +1062,12 @@
     cursor: pointer;
     padding-left: 10px;
   }
-  .Code-title{
-    text-align:center;
-    font-size:14px;
+
+  .Code-title {
+    text-align: center;
+    font-size: 14px;
   }
+
   .Code-picture {
     text-align: center
   }
@@ -1086,7 +1075,7 @@
   .invoiceQR {
     cursor: pointer;
     margin-left: 10px;
-    vertical-align:middle;
+    vertical-align: middle;
   }
 
   .code-show {

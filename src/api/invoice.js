@@ -1,11 +1,14 @@
 import {baseUrl} from "./api";
+import axios from "axios";
+
 
 /**
  * 获取发票Token
+ *
+ * @see https://www.easyai.com
  */
-export const getInvoiceToken = `${baseUrl}/api/invoice/token`;
-
-/**
- * 获取团队信息
- */
-export const getTeamInfoUrl = `${baseUrl}/api/team/view`;
+export const getInvoiceToken = (username) => axios.get(`${baseUrl}/invoice/access-token`, {
+  params: {
+    username: username
+  }
+});
