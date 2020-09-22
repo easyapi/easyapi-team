@@ -181,6 +181,10 @@
       },
 
       newTeam: function () {
+        if(this.url == ""){
+          this.$Message.warning("请输入团队URL");
+          return;
+        }
         this.$ajax({
           method: 'POST',
           url: teamUrl,
