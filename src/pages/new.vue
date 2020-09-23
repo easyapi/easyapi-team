@@ -95,6 +95,7 @@
   const qiNiuFileDomain = 'https://qiniu.easyapi.com'
 
   import {teamUrl, checkTeamUrl} from '../api/api'
+  import {getQiniuToken} from '../api/qiniu'
   import $ from 'jquery'
 
   export default {
@@ -129,8 +130,8 @@
       }
     },
     created: function () {
-      this.getQiniu().then(tokenRes => {
-        this.uploadToken = JSON.parse(tokenRes).upToken
+      this.getQiniu().then(res => {
+        this.uploadToken = res.data.content.upToken
       })
     },
     mounted: function () {
@@ -161,19 +162,17 @@
             url: checkTeamUrl,
             method: 'get',
             params: _data
+          }).then(res => {
+            if (res.data.code == 1) {
+              resolve('团队URL可用')
+            } else {
+              reject('团队URL已存在')
+            }
+          }).catch(err => {
+            if (err.responseJSON.code == -1 || err.responseJSON.message == '该编码已存在') {
+              reject('团队URL已存在')
+            }
           })
-            .then(res => {
-              if (res.data.code == 1) {
-                resolve('团队URL可用')
-              } else {
-                reject('团队URL已存在')
-              }
-            })
-            .catch(err => {
-              if (err.responseJSON.code == -1 || err.responseJSON.message == '该编码已存在') {
-                reject('团队URL已存在')
-              }
-            })
         })
       },
 
