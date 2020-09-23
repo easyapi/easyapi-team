@@ -3,7 +3,7 @@
     <header class="title">新建团队</header>
     <main>
       <Row class="team-icon_row">
-        <Col span="4" class="key">团队图标:</Col>
+        <Col span="4" class="key">团队图标：</Col>
         <Col span="20">
           <div class="gird">
             <img class="team-logo" src="../assets/images/team-logo.png" alt/>
@@ -31,16 +31,16 @@
         </Col>
       </Row>
       <Row>
-        <Col span="4" class="key">团队名称:</Col>
+        <Col span="4" class="key">团队名称：</Col>
         <Col span="20">
-          <Input v-model="name" placeholder="例如: 帮趣网络"></Input>
+          <Input v-model="name" placeholder="例如：帮趣网络"/>
         </Col>
       </Row>
       <Row>
-        <Col span="4" class="key">团队URL:</Col>
+        <Col span="4" class="key">团队URL：</Col>
         <Col span="20">
           <Input placeholder="团队URL" @on-blur="checkUrl" @on-focus="cleanUrl" v-model="url">
-            <span slot="prepend">https://</span>
+            <span slot="prepend">https：//</span>
             <span slot="append">.easyapi.com</span>
           </Input>
           <p v-if="baseUrlOccupy">
@@ -49,13 +49,13 @@
         </Col>
       </Row>
       <Row>
-        <Col span="4" class="key">团队介绍:</Col>
+        <Col span="4" class="key">团队介绍：</Col>
         <Col span="20">
-          <Input v-model="des" placeholder="请一句话介绍团队"></Input>
+          <Input v-model="des" placeholder="请一句话介绍团队"/>
         </Col>
       </Row>
       <Row>
-        <Col span="4" class="key">行业选择:</Col>
+        <Col span="4" class="key">行业选择：</Col>
         <Col span="20">
           <Select v-model="industry" size="small">
             <Option v-for="item in industries" :value="item" :key="item">
@@ -94,7 +94,7 @@
 <script>
   const qiNiuFileDomain = 'https://qiniu.easyapi.com'
 
-  import {teamUrl, checkTeamUrl, getQiniuToken} from '../api/api'
+  import {teamUrl, checkTeamUrl} from '../api/api'
   import $ from 'jquery'
 
   export default {
@@ -170,10 +170,7 @@
               }
             })
             .catch(err => {
-              if (
-                err.responseJSON.code == -1 ||
-                err.responseJSON.message == '该编码已存在'
-              ) {
+              if (err.responseJSON.code == -1 || err.responseJSON.message == '该编码已存在') {
                 reject('团队URL已存在')
               }
             })
@@ -181,7 +178,7 @@
       },
 
       newTeam: function () {
-        if(this.url == ""){
+        if (this.url == "") {
           this.$Message.warning("请输入团队URL");
           return;
         }
@@ -228,7 +225,7 @@
       //获取七牛token
       getQiniu: function () {
         return new Promise((resolve, reject) => {
-          $.get(getQiniuToken, res => {
+          getQiniuToken().then(res => {
             resolve(res)
           })
         })

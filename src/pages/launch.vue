@@ -32,7 +32,7 @@
 
 <script>
   import {mapGetters} from "vuex";
-  import {changeTeam} from "../api/api";
+  import {changeTeam} from "../api/team";
 
   export default {
     name: "Launch",
@@ -51,11 +51,8 @@
       newTeam: function () {
         this.$router.push("/new");
       },
-      changeTeam(id) {
-        this.$ajax({
-          url: changeTeam + "/" + id,
-          method: "PUT"
-        }).then(res => {
+      changeTeam(teamId) {
+        changeTeam(teamId).then(res => {
           this.$router.push("/");
         });
       }

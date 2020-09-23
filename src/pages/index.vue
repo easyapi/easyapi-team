@@ -89,7 +89,7 @@
 </template>
 <script>
   import {teamPage} from '../api/page'
-  import {changeTeam} from '../api/account'
+  import {changeTeam} from '../api/team'
   import Cookies from 'js-cookie'
   import {mapGetters} from 'vuex'
 
@@ -150,17 +150,6 @@
 
       quitLogin() {
         this.$store.dispatch('Logout')
-      },
-      //切换默认团队
-      changeTeam() {
-        changeTeam(this.domain).then(res => {
-          if (res.data.code === 1) {
-            this.code = res.data.code
-          }
-        }).catch(error => {
-          console.log(error)
-          //如果返回400，则按钮显示前往我的团队
-        })
       },
       //团队信息
       getTeamInfo() {

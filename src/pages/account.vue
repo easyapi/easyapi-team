@@ -260,7 +260,7 @@
     checkTeamUrl
   } from '../api/api'
   import {getTeamUserList} from '../api/team'
-  import {getQiniuToken,} from '../api/qiniu'
+  import {getQiniuToken} from '../api/qiniu'
   import {getInvoiceToken} from '../api/invoice'
   import {aliPayApi, wxPayApi,} from '../api/pay'
   import $ from 'jquery'
@@ -764,16 +764,14 @@
           data: {
             username: email
           }
+        }).then(res => {
+          if (res.data.code === 1) {
+            this.$Message.success('验证码发送成功，请查收')
+            this.captchaUse = true
+          }
+        }).catch(error => {
+          this.$Message.error(error.response.data.message)
         })
-          .then(res => {
-            if (res.data.code === 1) {
-              this.$Message.success('验证码发送成功，请查收')
-              this.captchaUse = true
-            }
-          })
-          .catch(error => {
-            this.$Message.error(error.response.data.message)
-          })
       },
 
       // 解散团队
@@ -821,7 +819,7 @@
       //获取七牛token
       getQiniu: function () {
         return new Promise((resolve, reject) => {
-          $.get(getQiniuToken, res => {
+          getQiniuToken().then(res => {
             resolve(res)
           })
         })

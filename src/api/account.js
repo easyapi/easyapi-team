@@ -1,11 +1,20 @@
 import {baseUrl} from "./api";
 import axios from "axios";
 
-//获取用户信息
-export const getAccountInfo = `${baseUrl}/api/account`;
+/**
+ * 获取用户信息
+ **
+ * @see https://www.easyai.com
+ */
+export const getAccountInfo = () => axios.get(`${baseUrl}/api/account`);
 
-//获取用户团队列表
-export const getUserTeamList = `${baseUrl}/api/user/teams`;
+
+/**
+ * 获取用户团队列表
+ **
+ * @see https://www.easyai.com
+ */
+export const getUserTeamList = () => axios.get(`${baseUrl}/api/user/teams`);
 
 
 /**

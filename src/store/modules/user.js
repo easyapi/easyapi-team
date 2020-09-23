@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import axios from "@/api/fetch";
-import { getAccountInfo } from "@/api/account";
+import {getAccountInfo} from "@/api/account";
 
 const user = {
   state: {
@@ -61,38 +61,33 @@ const user = {
 
   actions: {
     // 用户名登录
-    LoginByUsername({ commit }, userInfo) {
+    LoginByUsername({commit}, userInfo) {
     },
     // 获取用户信息
-    GetUserInfo({ commit, state }) {
-      axios({
-        method: "GET",
-        url: getAccountInfo
-      })
-        .then(res => {
-          let userInfoData = res.data;
-          commit("SET_ACCOUNTINFO", userInfoData);
-          commit("SET_USERID", userInfoData.id);
-          commit("SET_USERNAME", userInfoData.username);
-          commit("SET_NICKNAME", userInfoData.nickname);
-          commit("SET_PHOTO", userInfoData.photo);
-          commit("SET_MOBILE", userInfoData.mobile);
-          commit("SET_EMAIL", userInfoData.email);
-          if (userInfoData.team) {
-            //团队信息{}，包括：name，img，id。。
-            commit("SET_TEAM", userInfoData.team);
-            //团队信息具体信息
-            commit("SET_TEAMNAME", userInfoData.team.name);
-            commit("SET_TEAMIMG", userInfoData.team.img);
-          }
-          //用户团队{}
-          commit("SET_USERTEAM", userInfoData.userTeam);
-        })
-        .catch(error => {
-        });
+    GetUserInfo({commit, state}) {
+      getAccountInfo().then(res => {
+        let userInfoData = res.data;
+        commit("SET_ACCOUNTINFO", userInfoData);
+        commit("SET_USERID", userInfoData.id);
+        commit("SET_USERNAME", userInfoData.username);
+        commit("SET_NICKNAME", userInfoData.nickname);
+        commit("SET_PHOTO", userInfoData.photo);
+        commit("SET_MOBILE", userInfoData.mobile);
+        commit("SET_EMAIL", userInfoData.email);
+        if (userInfoData.team) {
+          //团队信息{}，包括：name，img，id。。
+          commit("SET_TEAM", userInfoData.team);
+          //团队信息具体信息
+          commit("SET_TEAMNAME", userInfoData.team.name);
+          commit("SET_TEAMIMG", userInfoData.team.img);
+        }
+        //用户团队{}
+        commit("SET_USERTEAM", userInfoData.userTeam);
+      }).catch(error => {
+      });
     },
     // 登出
-    Logout({ commit, state }) {
+    Logout({commit, state}) {
       Cookies.remove("authenticationToken");
     }
   }

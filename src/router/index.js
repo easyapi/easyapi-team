@@ -58,7 +58,7 @@ export default new Router({
         {
           path: "bill",
           name: "Bills",
-          component:Bill
+          component: Bill
         },
         {
           path: "service/pay",

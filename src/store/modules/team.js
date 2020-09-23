@@ -27,10 +27,7 @@ const team = {
 
   actions: {
     getTeamList({commit, state}) {
-      axios({
-        url: getUserTeamList,
-        method: "GET"
-      }).then(res => {
+      getUserTeamList().then(res => {
         commit("SET_TEAMLIST", res.data.content);
       }).catch(error => {
         console.log(error);
