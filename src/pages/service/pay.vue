@@ -130,7 +130,6 @@
         serviceId: '',
         teamServiceId: '',
         onePrice: [],
-        authenticationToken: '',
         price: 0,
         dateMonth: '',
         dueTime: '',
@@ -164,7 +163,6 @@
         this.servicePriceId = servicePriceId
         this.price = price
         if (this.type == 3) {
-          console.log(this.dateAgain,22222222)
           this.date = this.addMonth(this.dateAgain, num)
         }
         if (this.type == 2) {
@@ -194,12 +192,11 @@
           method: 'get',
           url: ServiceList,
           headers: {
-            authorization: this.authenticationToken
+            authorization: 'Bearer ' + this.getCookie('authenticationToken')
           },
           params: {serviceId: this.serviceId}
         })
           .then(res => {
-            console.log(res,1111111111)
             if (res.data.code !== 0) {
               let arr = []
               res.data.content.forEach(item => {
@@ -240,32 +237,30 @@
           method: 'get',
           url: ServiceList,
           headers: {
-            authorization: this.authenticationToken
+            authorization: 'Bearer ' + this.getCookie('authenticationToken')
           },
           params: {serviceId: this.serviceId}
-        })
-          .then(res => {
-            if (res.data.code !== 0) {
-              let arr = []
-              Object.keys(res.data.content).forEach(function (key) {
-                let obj = {}
-                obj.month = key
-                obj.price = res.data.content[key]
-                arr.push(obj)
-              })
+        }).then(res => {
+          if (res.data.code !== 0) {
+            let arr = []
+            Object.keys(res.data.content).forEach(function (key) {
+              let obj = {}
+              obj.month = key
+              obj.price = res.data.content[key]
+              arr.push(obj)
+            })
 
-              this.frequency = arr
-              // this.servicePriceId = res.data.content[0].servicePriceId
-              for (let v of this.frequency) {
-                second = (v.price / v.month).toFixed(2)
-                this.onePrice.push(second)
-              }
-              this.howMuchOfTheRest()
+            this.frequency = arr
+            // this.servicePriceId = res.data.content[0].servicePriceId
+            for (let v of this.frequency) {
+              second = (v.price / v.month).toFixed(2)
+              this.onePrice.push(second)
             }
-          })
-          .catch(error => {
-            console.log(error)
-          })
+            this.howMuchOfTheRest()
+          }
+        }).catch(error => {
+          console.log(error)
+        })
       },
       //余额
       choosePaymentMethod() {
@@ -273,15 +268,13 @@
           method: 'get',
           url: paymentMethod,
           headers: {
-            authorization: this.authenticationToken
+            authorization: 'Bearer ' + this.getCookie('authenticationToken')
           }
+        }).then(res => {
+          this.balance = res.data.content.balance
+        }).catch(error => {
+          console.log(error)
         })
-          .then(res => {
-            this.balance = res.data.content.balance
-          })
-          .catch(error => {
-            console.log(error)
-          })
       },
       dateFormat(date) {
         let y = date.getFullYear()
@@ -334,7 +327,6 @@
       //当前时间
       getItem() {
         var currentTime = new Date()
-        console.log(currentTime.toLocaleString())
         var year = currentTime.getFullYear() //年
         var month = currentTime.getMonth() + 1 //月
         var day = currentTime.getDate() //日
@@ -374,44 +366,40 @@
           method: 'POST',
           url: balance,
           data: {
-            servicePriceId:this.servicePriceId,
+            servicePriceId: this.servicePriceId,
             payment: this.assignment
           }
         }).then(res => {
-            if (this.assignment === '支付宝') {
-              this.formHtml = res.data.alipay
-              let form = $(this.formHtml)
-              form.attr('target', '_blank')
-              $('#app').append(form)
-            } else if (this.assignment === '微信支付') {
-              let weChatPayment = res.data.codeUrl
-              this.$Modal.confirm({
-                title: '微信扫码支付',
-                content: `<div class="wx-pay"><p class="wx-pay_amount">支付${this
-                  .price -
-                this
-                  .discount}元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
-                okText: '',
-                cancelText: '',
-                onOk: () => {
-                  this.getServiceList()
-                  this.getTeamInfo()
-                  this.howMuchOfTheRest()
-                }
-              })
-            }
-            this.$Message.success(res.data.message)
-          }).catch(error => {
-            if (this.assignment == '' || this.assignment == null) {
-              this.$Message.warning('请选择和支付方式')
-            } else {
-              this.$Message.error(error.data.message)
-            }
-          })
+          if (this.assignment === '支付宝') {
+            this.formHtml = res.data.alipay
+            let form = $(this.formHtml)
+            form.attr('target', '_blank')
+            $('#app').append(form)
+          } else if (this.assignment === '微信支付') {
+            let weChatPayment = res.data.codeUrl
+            this.$Modal.confirm({
+              title: '微信扫码支付',
+              content: `<div class="wx-pay"><p class="wx-pay_amount">支付${this.price - this.discount}元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
+              okText: '',
+              cancelText: '',
+              onOk: () => {
+                this.getServiceList()
+                this.getTeamInfo()
+                this.howMuchOfTheRest()
+              }
+            })
+          }
+          this.$Message.success(res.data.message)
+        }).catch(error => {
+          if (this.assignment == '' || this.assignment == null) {
+            this.$Message.warning('请选择和支付方式')
+          } else {
+            this.$Message.error(error.data.message)
+          }
+        })
       },
       getCookie(name) {
-        var arr,
-          reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
+        var arr, reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
         if ((arr = document.cookie.match(reg))) return arr[2]
         else return null
       }
@@ -432,14 +420,11 @@
       }
       this.getServiceList()
       this.getTeamInfo()
-      this.authenticationToken = 'Bearer ' + this.getCookie('authenticationToken')
     },
     mounted() {
       document.title = '服务续费 - EasyAPI'
-
-      // this.choosePaymentMethod()
-    },
-    watch: {}
+      this.choosePaymentMethod()
+    }
   }
 </script>
 <style scoped>
