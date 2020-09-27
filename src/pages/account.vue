@@ -352,7 +352,6 @@
     computed: {},
     created: function () {
       this.$store.dispatch('GetUserInfo')
-      this.getInvoiceToken()
       this.getTeamInfo()
       if ((this.role = this.$store.state.user.userTeam.type)) {
         this.role = this.$store.state.user.userTeam.type
@@ -367,7 +366,6 @@
       // 获取成员列表
       getTeamUserList: function () {
         getTeamUserList(this.$store.state.user.team.id).then(res => {
-          console.log(res, 333)
           this.members = res.data.content;
         });
       },
@@ -377,20 +375,18 @@
         getInvoiceToken(encryption.toUpperCase()).then(res => {
           if (res.data.code == 1) {
             this.fapiaoToken = res.data.content
-            this.qrCode()
           }
         })
       },
       //跳转发票
       jumpInvoice() {
-        window.open(
-          'https://fapiao-user-center-web.easyapi.com/?taxNumber=91320211MA1WML8X6T&accessToken=' +
-          this.fapiaoToken
-        )
+        this.getInvoiceToken();
+        window.open('https://fapiao-user-center-web.easyapi.com/?accessToken=' + this.fapiaoToken)
       },
       //生成二维码
       qrCode: function () {
-        this.picture = 'https://fapiao-h5.easyapi.com?taxNumber=91320211MA1WML8X6T&accessToken=' + this.fapiaoToken;
+        this.getInvoiceToken();
+        this.picture = 'https://fapiao-h5.easyapi.com?accessToken=' + this.fapiaoToken;
       },
       getTeamInfo: function () {
         if (!this.$store.state.user.team) {

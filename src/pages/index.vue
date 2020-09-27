@@ -29,7 +29,7 @@
 
         <div class="team-head-left" v-if="!authenticationToken">
           <a
-            href="https://account.easyapi.com"
+            href="https://account.easyapi.com/login"
             style="color: #fff;font-size: 14px;line-height: 50px;padding-right:20px;"
           >登录</a>
           <a
