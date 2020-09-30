@@ -5,6 +5,7 @@ import router from "./router";
 import ViewUI from "view-design";
 import axios from "./api/fetch";
 import VueBus from "vue-bus";
+import infiniteScroll from "vue-infinite-scroll"
 
 import 'core-js';
 import "view-design/dist/styles/iview.css";
@@ -17,6 +18,7 @@ import "./assets/styles/fontello/fontello.css";
 
 Vue.use(ViewUI);
 Vue.use(VueBus);
+Vue.use(infiniteScroll)
 
 Vue.prototype.$ajax = axios;
 

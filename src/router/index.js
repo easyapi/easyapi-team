@@ -9,6 +9,8 @@ const Index = () => import(/* webpackChunkName: "index" */ "../pages/index.vue")
 
 const Account = () => import("../pages/account.vue");
 
+const Notification = () => import("../pages/notification.vue");
+
 const Bill = () => import("../pages/bill/index.vue");
 
 const RechargeSuccess = () => import("../pages/recharge/success.vue");
@@ -80,6 +82,10 @@ export default new Router({
     {
       path: "/launch",
       component: Launch
+    },
+    {
+      path: "/notification",
+      component: Notification
     },
     {
       path: "/new",

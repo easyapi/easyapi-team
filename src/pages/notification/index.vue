@@ -6,7 +6,6 @@
     <div class="notification">
       <div class="title"></div>
       <div id="appdnot">
-
         <dl>
           <dt>
             <img src="https://qiniu.easyapi.com/2015/1/0/1423382895789!icon.jpg">

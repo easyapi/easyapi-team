@@ -11,6 +11,9 @@
     <div class="h-right clearfix">
       <div class="fr menu-box">
         <div class="current-team-box">
+          <a id="showInform" :class="{ active: showInform }" @click="gotoInform">
+            <span class="inform"></span>
+          </a>
           <a id="showTeamInfo" :class="{ active: showTeamInfo }">
             <span class="team-icon"></span>
           </a>
@@ -69,78 +72,77 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
-  import Cookies from 'js-cookie'
+  import { mapGetters } from "vuex";
+  import Cookies from "js-cookie";
 
   export default {
-    name: 'Header',
-    data: function () {
+    name: "Header",
+    data: function() {
       return {
         inBack: false,
         userInfo: [],
         isActive: false,
         showTeamInfo: false,
-        authenticationToken: Cookies.get('authenticationToken')
-      }
+        showInform:false,
+        authenticationToken: Cookies.get("authenticationToken")
+      };
     },
     computed: {
-      ...mapGetters(['photo', 'team', 'teamName', 'teamImg', 'teamList'])
+      ...mapGetters(["photo", "team", "teamName", "teamImg", "teamList"])
     },
-    created: function () {
-      if (this.$route.path.indexOf('/back/') < 0) {
-        this.inBack = false
+    created: function() {
+      if (this.$route.path.indexOf("/back/") < 0) {
+        this.inBack = false;
       } else {
-        this.inBack = true
+        this.inBack = true;
       }
-      let body = document.querySelector('body')
+      let body = document.querySelector("body");
       body.addEventListener(
-        'click',
+        "click",
         e => {
-          if (e.target.id === 'showTeamInfo' || e.target.className === 'team-icon') {
-            this.isActive = false
-            this.showTeamInfo = !this.showTeamInfo
-          } else if (e.target.id === 'showPersonage') {
-            this.isActive = !this.isActive
-            this.showTeamInfo = false
+          if (e.target.id === "showTeamInfo" || e.target.className === "team-icon") {
+            this.isActive = false;
+            this.showTeamInfo = !this.showTeamInfo;
+          } else if (e.target.id === "showPersonage") {
+            this.isActive = !this.isActive;
+            this.showTeamInfo = false;
           } else {
-            this.showTeamInfo = false
-            this.isActive = false
+            this.showTeamInfo = false;
+            this.isActive = false;
           }
         },
         false
-      )
+      );
     },
 
     methods: {
       quitLogin() {
-        this.$store.dispatch('Logout')
-        window.location.href = 'https://account.easyapi.com/login'
+        this.$store.dispatch("Logout");
+        window.location.href = "https://account.easyapi.com/login";
       },
       changeTeam(teamId) {
-        if(this.$store.state.user.team.id == teamId){
-          this.$Message.warning("当前正处于该团队请选择别的团队")
-        }else{
-          this.$store.dispatch('switchoverTeam', teamId)
-        }
-        
+        this.$store.dispatch("switchoverTeam", teamId);
+      },
+      gotoInform(){
+        this.$router.push({path:"/notification"})
       }
     },
     watch: {
-      $route: function () {
-        if (this.$route.path.indexOf('/back/') < 0) {
-          this.inBack = false
+      $route: function() {
+        if (this.$route.path.indexOf("/back/") < 0) {
+          this.inBack = false;
         } else {
-          this.inBack = true
+          this.inBack = true;
         }
       }
     },
     mounted() {
       if (this.authenticationToken) {
-        this.$store.dispatch('GetUserInfo')
-        this.$store.dispatch('getTeamList')
+        this.$store.dispatch("GetUserInfo");
+        this.$store.dispatch("getTeamList");
       }
     }
-  }
+  };
 </script>
 
 <style lang="stylus">
@@ -306,6 +308,14 @@
 
         &:hover {
           background-color: #19B7CB;
+        }
+
+        .inform {
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          background: url('../assets/images/inform.png') no-repeat;
+          background-size: cover;
         }
 
         .team-icon {
