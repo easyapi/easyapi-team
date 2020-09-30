@@ -94,7 +94,8 @@
 <script>
   const qiNiuFileDomain = 'https://qiniu.easyapi.com'
 
-  import {teamUrl, checkTeamUrl} from '../api/api'
+  import {teamUrl} from '../api/api'
+  import {checkTeamUrl} from '../api/team'
   import {getQiniuToken} from '../api/qiniu'
   import $ from 'jquery'
 
@@ -155,14 +156,7 @@
 
       checkTeamUrl(success, fail) {
         return new Promise((resolve, reject) => {
-          let _data = {
-            url: this.baseUrl
-          }
-          this.$ajax({
-            url: checkTeamUrl,
-            method: 'get',
-            params: _data
-          }).then(res => {
+          checkTeamUrl(this.baseUrl).then(res => {
             if (res.data.code == 1) {
               resolve('团队URL可用')
             } else {

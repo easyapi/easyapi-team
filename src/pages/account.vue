@@ -256,10 +256,9 @@
     moneyWarn,
     teamUrl,
     quitTeam,
-    transferTeam,
-    checkTeamUrl
+    transferTeam
   } from '../api/api'
-  import {getTeamUserList} from '../api/team'
+  import {getTeamUserList, checkTeamUrl} from '../api/team'
   import {getQiniuToken} from '../api/qiniu'
   import {getInvoiceToken} from '../api/invoice'
   import {aliPayApi, wxPayApi,} from '../api/pay'
@@ -621,29 +620,20 @@
 
       checkTeamUrl(success, fail) {
         return new Promise((resolve, reject) => {
-          let _data = {
-            url: this.baseUrl
-          }
-          this.$ajax({
-            url: checkTeamUrl,
-            method: 'get',
-            params: _data
+          checkTeamUrl(this.baseUrl).then(res => {
+            if (res.data.code == 1) {
+              resolve('团队URL可用')
+            } else {
+              reject('团队URL已存在')
+            }
+          }).catch(err => {
+            if (
+              err.responseJSON.code == -1 ||
+              err.responseJSON.message == '该编码已存在'
+            ) {
+              reject('团队URL已存在')
+            }
           })
-            .then(res => {
-              if (res.data.code == 1) {
-                resolve('团队URL可用')
-              } else {
-                reject('团队URL已存在')
-              }
-            })
-            .catch(err => {
-              if (
-                err.responseJSON.code == -1 ||
-                err.responseJSON.message == '该编码已存在'
-              ) {
-                reject('团队URL已存在')
-              }
-            })
         })
       },
 

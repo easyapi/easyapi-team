@@ -9,8 +9,6 @@ export const teamUrl = `${baseUrl}/api/team`;
 export const quitTeam = `${baseUrl}/api/team/#id#/exit`;
 // 转让团队
 export const transferTeam = `${baseUrl}/api/team/#id#/transfer`;
-// 检查团队URL
-export const checkTeamUrl = `${baseUrl}/api/team/checkUrl`;
 // 充值预警
 export const moneyWarn = `${baseUrl}/api/money`;
 
