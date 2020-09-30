@@ -117,7 +117,12 @@
         window.location.href = 'https://account.easyapi.com/login'
       },
       changeTeam(teamId) {
-        this.$store.dispatch('switchoverTeam', teamId)
+        if(this.$store.state.user.team.id == teamId){
+          this.$Message.warning("当前正处于该团队请选择别的团队")
+        }else{
+          this.$store.dispatch('switchoverTeam', teamId)
+        }
+        
       }
     },
     watch: {

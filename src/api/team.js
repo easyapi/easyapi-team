@@ -31,8 +31,6 @@ export const changeTeam = (teamId) => axios.put(`${baseUrl}/api/team/${teamId}/c
  */
 export const checkTeamUrl = (url) => axios.get(`${baseUrl}/api/team/checkUrl`, {
   params: {
-    teamId: teamId,
-    page: 0,
-    size: 100
+    url:url
   }
 });
