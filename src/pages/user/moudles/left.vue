@@ -13,7 +13,7 @@
 </template>
 <script>
   export default {
-    name: 'leftNav',
+    name: 'left',
     data() {
       return {
         tabs: [
