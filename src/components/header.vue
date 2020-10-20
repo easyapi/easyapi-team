@@ -11,6 +11,9 @@
     <div class="h-right clearfix">
       <div class="fr menu-box">
         <div class="current-team-box">
+          <a id="showCalendar" :class="{ active: showCalendar }" @click="gotoCalendar">
+            <span class="calendar"></span>
+          </a>
           <a id="showInform" :class="{ active: showInform }" @click="gotoInform">
             <span class="inform"></span>
           </a>
@@ -84,6 +87,7 @@
         isActive: false,
         showTeamInfo: false,
         showInform:false,
+        showCalendar:false,
         authenticationToken: Cookies.get("authenticationToken")
       };
     },
@@ -122,6 +126,9 @@
       },
       changeTeam(teamId) {
         this.$store.dispatch("switchoverTeam", teamId);
+      },
+      gotoCalendar(){
+        this.$router.push({path:"/event"})
       },
       gotoInform(){
         this.$router.push({path:"/notification"})
@@ -308,6 +315,14 @@
 
         &:hover {
           background-color: #19B7CB;
+        }
+
+        .calendar{
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          background: url('../assets/images/calendar.png') no-repeat;
+          background-size: cover;
         }
 
         .inform {

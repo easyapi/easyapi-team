@@ -11,6 +11,8 @@ const Account = () => import("../pages/account.vue");
 
 const Notification = () => import("../pages/notification.vue");
 
+const Event = () => import("../pages/event/index.vue");
+
 const Bill = () => import("../pages/bill/index.vue");
 
 const RechargeSuccess = () => import("../pages/recharge/success.vue");
@@ -86,6 +88,10 @@ export default new Router({
     {
       path: "/notification",
       component: Notification
+    },
+    {
+      path: "/event",
+      component: Event
     },
     {
       path: "/new",
