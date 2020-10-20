@@ -64,7 +64,7 @@
             <img id="showPersonage" :src="photo" alt/>
           </a>
           <div :class="{ active: isActive }" class="ea-DropdownMenu">
-            <a href="https://account.easyapi.com/notification/" target="_blank">我的通知</a>
+            <a href="https://team.easyapi.com/notification" target="_blank">我的通知</a>
             <a href="https://team.easyapi.com/user/edit" target="_blank">个人设置</a>
             <a href="https://account.easyapi.com/logout">退出</a>
           </div>
@@ -75,26 +75,26 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+  import {mapGetters} from "vuex";
   import Cookies from "js-cookie";
 
   export default {
     name: "Header",
-    data: function() {
+    data: function () {
       return {
         inBack: false,
         userInfo: [],
         isActive: false,
         showTeamInfo: false,
-        showInform:false,
-        showCalendar:false,
+        showInform: false,
+        showCalendar: false,
         authenticationToken: Cookies.get("authenticationToken")
       };
     },
     computed: {
       ...mapGetters(["photo", "team", "teamName", "teamImg", "teamList"])
     },
-    created: function() {
+    created: function () {
       if (this.$route.path.indexOf("/back/") < 0) {
         this.inBack = false;
       } else {
@@ -127,15 +127,15 @@
       changeTeam(teamId) {
         this.$store.dispatch("switchoverTeam", teamId);
       },
-      gotoCalendar(){
-        this.$router.push({path:"/event"})
+      gotoCalendar() {
+        this.$router.push({path: "/event"})
       },
-      gotoInform(){
-        this.$router.push({path:"/notification"})
+      gotoInform() {
+        this.$router.push({path: "/notification"})
       }
     },
     watch: {
-      $route: function() {
+      $route: function () {
         if (this.$route.path.indexOf("/back/") < 0) {
           this.inBack = false;
         } else {
@@ -317,7 +317,7 @@
           background-color: #19B7CB;
         }
 
-        .calendar{
+        .calendar {
           display: inline-block;
           width: 35px;
           height: 35px;

@@ -1,4 +1,3 @@
-import axios from "@/api/fetch";
 import {getUserTeamList} from "@/api/account";
 import {changeTeam} from "@/api/team";
 
@@ -11,16 +10,16 @@ const team = {
   },
 
   mutations: {
-    SET_CURRENTTEAM: (state, currentTeam) => {
+    SET_CURRENT_TEAM: (state, currentTeam) => {
       state.currentTeam = currentTeam;
     },
-    SET_TTEAMNAME: (state, teamName) => {
+    SET_TTEAM_NAME: (state, teamName) => {
       state.teamName = teamName;
     },
-    SET_TTEAMAVATAR: (state, teamAvatar) => {
+    SET_TTEAM_AVATAR: (state, teamAvatar) => {
       state.teamAvatar = teamAvatar;
     },
-    SET_TEAMLIST: (state, teamList) => {
+    SET_TEAM_LIST: (state, teamList) => {
       state.teamList = teamList;
     }
   },
@@ -28,10 +27,8 @@ const team = {
   actions: {
     getTeamList({commit, state}) {
       getUserTeamList().then(res => {
-        commit("SET_TEAMLIST", res.data.content);
-      }).catch(error => {
-        console.log(error);
-      });
+        commit("SET_TEAM_LIST", res.data.content);
+      })
     },
     //切换团队
     switchoverTeam({dispatch, commit, state}, teamId) {
@@ -41,9 +38,7 @@ const team = {
           location.hash = "";
           location.reload();
         }
-      }).catch(error => {
-        console.log(error);
-      });
+      })
     }
   }
 };
