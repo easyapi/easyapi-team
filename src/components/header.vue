@@ -53,7 +53,6 @@
                 type="info"
                 class="ea-info-btn"
                 to="https://team.easyapi.com/new"
-                target="_blank"
               >创建新团队
               </Button>
             </div>
@@ -61,11 +60,11 @@
         </div>
         <div class="user-avatar">
           <a>
-            <img id="showPersonage" :src="photo" alt/>
+            <img id="showPersonage" :src="photo" alt/>t
           </a>
           <div :class="{ active: isActive }" class="ea-DropdownMenu">
-            <a href="https://team.easyapi.com/notification" target="_blank">我的通知</a>
-            <a href="https://team.easyapi.com/user/edit" target="_blank">个人设置</a>
+            <router-link to="/notification">我的通知</router-link>
+            <router-link to="/user/edit">个人设置</router-link>
             <a href="https://account.easyapi.com/logout">退出</a>
           </div>
         </div>
