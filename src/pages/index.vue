@@ -44,7 +44,7 @@
         <p class="team-content-la" v-if="team != null && team !== ''">{{ team.description }}</p>
         <p class="team-content-le">提供API文档管理、测试、监控、网关、第三方接口服务</p>
         <p class="team-content-btn">
-          <a :href="teamLink || '/new'">{{ teamButton || "创建团队" }}</a>
+          <a :href="button.link || '/new'">{{ button.button || "创建团队" }}</a>
         </p>
       </div>
     </div>
@@ -97,11 +97,8 @@
     name: 'Index',
     data: function () {
       return {
+        button: {"button": "", "link": ""},
         showTeamInfo: false,
-        domain: '',
-        code: '',
-        teamLink: '',
-        teamButton: '',
         authenticationToken: Cookies.get('authenticationToken')
       }
     },
@@ -152,10 +149,9 @@
         this.$store.dispatch('Logout')
       },
       //团队信息
-      getTeamInfo() {
-        this.$ajax.get(teamPage + '/' + this.domain, {}).then(res => {
-          this.teamLink = res.data.link
-          this.teamButton = res.data.button
+      getTeamInfo(domain) {
+        this.$ajax.get(teamPage + '/' + domain, {}).then(res => {
+          this.button = res.data
         }).catch(error => {
           console.log(error)
         })
@@ -163,10 +159,10 @@
     },
     watch: {},
     mounted: function () {
-      this.domain = window.location.href.split('.')[0].split('//')[1]
+      let domain = window.location.href.split('.')[0].split('//')[1]
       document.title = '团队首页 - EasyAPI'
-      if (this.domain && this.domain != '127') {
-        this.getTeamInfo()
+      if (domain && domain != '127') {
+        this.getTeamInfo(domain)
       }
       if (this.authenticationToken) {
         this.$store.dispatch('GetUserInfo')
