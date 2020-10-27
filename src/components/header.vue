@@ -121,7 +121,7 @@
     methods: {
       quitLogin() {
         this.$store.dispatch("Logout");
-        window.location.href = "https://account.easyapi.com/login";
+        window.location.href = "https://account.easyapi.com/login?from=https://team.easyapi.com";
       },
       changeTeam(teamId) {
         this.$store.dispatch("switchoverTeam", teamId);

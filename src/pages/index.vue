@@ -29,7 +29,7 @@
 
         <div class="team-head-left" v-if="!authenticationToken">
           <a
-            href="https://account.easyapi.com/login"
+            href="https://account.easyapi.com/login?from=https://team.easyapi.com"
             style="color: #fff;font-size: 14px;line-height: 50px;padding-right:20px;"
           >登录</a>
           <a
@@ -141,7 +141,7 @@
             this.$router.push('/new')
           }
         } else {
-          location.href = 'https://account.easyapi.com/login'
+          location.href = 'https://account.easyapi.com/login?from=https://team.easyapi.com'
         }
       },
 
