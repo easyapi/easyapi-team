@@ -56,7 +56,7 @@
           </div>
           <div class="payment" :class="{ state: assignment === '微信支付' }" @click="stand('微信支付')">
             <span>
-              <img src="../../assets/images/wechat.png" alt style="padding-top:10px;"/>
+              <img src="../../assets/images/wxpay.png" alt style="padding-top:10px;"/>
             </span>
           </div>
           <div class="payment" :class="{ state: assignment === '支付宝' }" @click="stand('支付宝')">

@@ -62,10 +62,8 @@ npm run build --report
   │      ├── account        #账户
   │      ├── bill           #订单
   │      └── members        #成员
-  │       
   ├── router             
   │   └── index.js          #路由
-  │
   ├── service
   │   ├── apiList.js        #api列表
   │   └── fetch.js          #ajax封装

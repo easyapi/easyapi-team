@@ -65,11 +65,15 @@
             @click="stand('微信支付')"
           >
             <span>
+<<<<<<< HEAD
               <img
                 src="../../assets/images/wechat.png"
                 alt
                 style="padding-top: 10px"
               />
+=======
+              <img src="../../assets/images/wxpay.png" alt style="padding-top:10px;"/>
+>>>>>>> fc4b2a73f7d4523cb82e75b10eba153d26500377
             </span>
           </div>
           <div

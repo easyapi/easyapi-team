@@ -7,7 +7,7 @@ axios.interceptors.request.use(
   function (config) {
     if (config.url.indexOf("/page/team") == -1) {
       if (!Cookies.get("authenticationToken")) {
-        location.href = "https://account.easyapi.com/login"; // 如果没有authenticationToken存在
+        location.href = "https://account.easyapi.com/login?from=https://team.easyapi.com"; // 如果没有authenticationToken存在
       }
     }
     config.headers.Authorization = "Bearer " + Cookies.get("authenticationToken");
@@ -37,7 +37,7 @@ axios.interceptors.response.use(
     }
     if (error.response.data.code === -9) {
       // 处理-9用户信息不存在
-      window.location.href = "https://account.easyapi.com/login";
+      window.location.href = "https://account.easyapi.com/login?from=https://team.easyapi.com";
     } else if (error.response.data.code === -8) {
       // 处理-8无团队信息
       window.location.href = "https://team.easyapi.com";

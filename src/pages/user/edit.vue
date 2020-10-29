@@ -59,7 +59,7 @@
 </template>
 
 <script>
-  import leftNav from './components/leftNav'
+  import leftNav from './moudles/left'
   import {updateAccountInfo} from '../../api/account'
   import {mapGetters} from 'vuex'
 

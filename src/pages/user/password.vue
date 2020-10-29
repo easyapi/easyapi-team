@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import leftNav from './components/leftNav'
+  import leftNav from './moudles/left'
   import {changePassword} from '../../api/account.js'
 
   export default {
