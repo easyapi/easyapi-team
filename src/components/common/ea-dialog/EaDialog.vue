@@ -13,61 +13,59 @@
 </template>
 
 <script>
-  export default {
-    name: "EaDialog",
+export default {
+  name: "EaDialog",
 
-    props: {
-      open: {
-        type: Boolean,
-        default: false
-      },
-
-      title: {
-        type: String,
-        default: ""
-      },
-
-      maskClosable: {
-        type: Boolean,
-        default: false
-      },
-
-      width: String
+  props: {
+    open: {
+      type: Boolean,
+      default: false,
     },
 
-    data() {
-      return {
-        visible: false
-      };
+    title: {
+      type: String,
+      default: "",
     },
 
-    watch: {
-      open() {
-        this.visible = this.open;
-      }
+    maskClosable: {
+      type: Boolean,
+      default: false,
     },
 
-    computed: {},
+    width: String,
+  },
 
-    methods: {
-      visibleChange(status) {
-        this.$emit("visibleChange", status);
-      }
+  data() {
+    return {
+      visible: false,
+    };
+  },
+
+  watch: {
+    open() {
+      this.visible = this.open;
     },
+  },
 
-    mounted() {
+  computed: {},
+
+  methods: {
+    visibleChange(status) {
+      this.$emit("visibleChange", status);
     },
+  },
 
-    destroyed() {
-    }
-  };
+  mounted() {},
+
+  destroyed() {},
+};
 </script>
 
 <style lang="stylus">
-  .ivu-modal-footer
-    border-top: none
-    padding: 0
+// .ivu-modal-footer
+//   border-top: none
+//   padding: 0
 
-  .ea-dialog-wrap .ivu-modal
-    top: 30%
+// .ea-dialog-wrap .ivu-modal
+// top: 30%
 </style>
