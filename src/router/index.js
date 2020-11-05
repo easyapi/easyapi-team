@@ -19,17 +19,13 @@ const RechargeSuccess = () => import("../pages/recharge/success.vue");
 
 const Members = () => import("../pages/member/index.vue");
 
-const ServicePay = () => import("../pages/service/pay.vue");
-
 const Orders = () => import("../pages/order/index.vue");
 
 const New = () => import("../pages/new.vue");
 
 const NewSuccess = () => import("../pages/new-success.vue");
 
-const RenewCount = () => import("../pages/renew/count.vue");
-
-const RenewMonthly = () => import("../pages/renew/monthly.vue");
+const RenewService = () => import("../pages/renew/service.vue");
 
 const RenewAlipay = () => import("../pages/renew/alipay.vue");
 
@@ -63,11 +59,6 @@ export default new Router({
           path: "bill",
           name: "Bills",
           component: Bill
-        },
-        {
-          path: "service/pay",
-          name: "ServicePay",
-          component: ServicePay
         },
         {
           path: "members",
@@ -107,14 +98,9 @@ export default new Router({
       component: RechargeSuccess
     },
     {
-      path: "/renew/count",
-      name: "renew-count",
-      component: RenewCount
-    },
-    {
-      path: "/renew/monthly",
-      name: "renew-monthly",
-      component: RenewMonthly
+      path: "/renew/service",
+      name: "renew-service",
+      component: RenewService
     },
     {
       path: "/renew/alipay",
