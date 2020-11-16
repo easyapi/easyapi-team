@@ -111,6 +111,7 @@
 
   .eventbox {
     padding: 40px;
+    width: 1200px;
   }
 
   .mr {
@@ -174,5 +175,4 @@
   }
 </style>
 <style lang="scss">
-
 </style>
