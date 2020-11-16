@@ -56,28 +56,27 @@
 </template>
 
 <script>
-  import { getEventList } from "../../api/event";
+  import {getEventList} from "../../api/event";
 
   export default {
     name: "Event",
-    data: function() {
+    data: function () {
       return {
         showPro: false,
         showMem: false,
         eventListArray: []
       };
     },
-    created: function() {
+    created: function () {
 
     },
-    mounted: function() {
+    mounted: function () {
       document.title = "团队动态 - EasyAPI";
       this.getEventList();
     },
     methods: {
       getEventList() {
         getEventList().then(res => {
-          console.log(res);
           if (res.data.code == 1) {
             this.eventListArray = res.data.content;
           }
@@ -132,7 +131,7 @@
   }
 
   .event_info {
-  margin-right: 3px;
+    margin-right: 3px;
     color: #999999;
   }
 

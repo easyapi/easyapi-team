@@ -37,7 +37,6 @@
     },
     mounted() {
       document.title = "消息通知 - EasyAPI";
-      // this.getNotificationList();
       window.addEventListener("scroll", this.lazyLoading); // 滚动到底部，再加载的处理事件
       getNotificationList().then((res) => {
         this.notificationListArray = res.data.content;
@@ -52,14 +51,11 @@
           //事件处理
           getNotificationList().then((res) => {
             if (this.k > res.data.content.length - 1) {
-              console.log(this.notificationListArray);
-              console.log("数据加载完毕");
               this.k = this.list.length - 1;
             } else {
               this.notificationListArray.push(res.data.content[this.k]);
             }
             this.k++;
-            console.log(this.k);
           });
         }
       },

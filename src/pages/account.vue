@@ -274,7 +274,7 @@
         </Col>
         <Col class="bottom-10 top-5" span="8">团队名称:</Col>
         <Col class="bottom-10 top-5" span="16">
-          <Input v-model="teamName" placeholder="请输入团队名称"></Input>
+          <Input v-model="teamName" placeholder="请输入团队名称"/>
         </Col>
         <Col class="bottom-10 top-5" span="8">行业类别:</Col>
         <Col class="bottom-10 top-5" span="16">
@@ -300,7 +300,7 @@
         </Col>
         <Col class="bottom-10 top-5" span="8">一句话描述:</Col>
         <Col class="bottom-10 top-5" span="16">
-          <Input v-model="teamDes" placeholder="请输入团队描述"></Input>
+          <Input v-model="teamDes" placeholder="请输入团队描述"/>
         </Col>
       </Row>
 
@@ -334,7 +334,7 @@
         v-model="captcha"
         :disabled="!captchaUse"
         placeholder="请输入验证码"
-      ></Input>
+      />
       <ea-button
         class="close-btn top-10 bottom-5"
         text="解散团队"

@@ -151,31 +151,23 @@
     },
     methods: {
       selectMoneyFn(M, servicePriceId, discount, price, month) {
-        let now = ''
+        let now = '';
         if (this.howMany) {
           now = new Date(this.howMany)
         } else {
           now = new Date()
         }
-        this.selectMoney = M
-        this.price = price
-        this.dateMonth = Number(month)
-        this.dueTime = calcudate
-          .add(now)
-          .months(this.dateMonth)
-          .toLocaleDateString()
-        console.log(price)
-        console.log(month)
-        console.log(this.howMany)
-        console.log(now)
-        console.log(new Date('2019-08-03'))
+        this.selectMoney = M;
+        this.price = price;
+        this.dateMonth = Number(month);
+        this.dueTime = calcudate.add(now).months(this.dateMonth).toLocaleDateString();
       },
       stand(pay) {
         this.assignment = pay
       },
       //查询 服务报价列表
       getServiceList() {
-        let second = ''
+        let second = '';
         this.$ajax({
           method: 'get',
           url: ServiceList,
@@ -186,15 +178,15 @@
           if (res.data.code !== 0) {
             let arr = []
             Object.keys(res.data.content).forEach(function (key) {
-              let obj = {}
-              obj.month = key
-              obj.price = res.data.content[key]
+              let obj = {};
+              obj.month = key;
+              obj.price = res.data.content[key];
               arr.push(obj)
-            })
+            });
 
-            this.frequency = arr
+            this.frequency = arr;
             for (let v of this.frequency) {
-              second = (v.price / v.month).toFixed(2)
+              second = (v.price / v.month).toFixed(2);
               this.onePrice.push(second)
             }
             this.howMuchOfTheRest()
@@ -248,7 +240,6 @@
       //当前时间
       getItem() {
         var currentTime = new Date()
-        console.log(currentTime.toLocaleString())
         var year = currentTime.getFullYear() //年
         var month = currentTime.getMonth() + 1 //月
         var day = currentTime.getDate() //日

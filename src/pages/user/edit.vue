@@ -21,19 +21,19 @@
             </div>
           </FormItem>
           <FormItem label="账号" prop="username">
-            <Input v-model="accountInfo.username" placeholder disabled></Input>
+            <Input v-model="accountInfo.username" placeholder disabled/>
           </FormItem>
           <FormItem label="昵称" prop="nickname">
-            <Input v-model="accountInfo.nickname" placeholder="请输入昵称"></Input>
+            <Input v-model="accountInfo.nickname" placeholder="请输入昵称"/>
           </FormItem>
           <FormItem label="手机号码" prop="mobile">
-            <Input v-model="accountInfo.mobile" placeholder="请输入手机号码"></Input>
+            <Input v-model="accountInfo.mobile" placeholder="请输入手机号码"/>
           </FormItem>
           <FormItem label="常用语言" prop="language">
-            <Input v-model="accountInfo.language" placeholder="例如：Java、Ruby、Objective-C"></Input>
+            <Input v-model="accountInfo.language" placeholder="例如：Java、Ruby、Objective-C"/>
           </FormItem>
           <FormItem label="目前职业" prop="profession">
-            <Input v-model="accountInfo.profession" placeholder="例如：Java工程师，iOS工程师，Android工程师"></Input>
+            <Input v-model="accountInfo.profession" placeholder="例如：Java工程师，iOS工程师，Android工程师"/>
           </FormItem>
           <FormItem label="个人介绍" prop="intro">
             <Input
@@ -41,7 +41,7 @@
               type="textarea"
               :rows="4"
               placeholder="介绍一下自己"
-            ></Input>
+            />
           </FormItem>
           <FormItem>
             <Button

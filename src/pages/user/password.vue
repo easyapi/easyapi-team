@@ -6,13 +6,13 @@
         <div class="user-base-info-title">修改密码</div>
         <Form ref="password" :label-width="102" :rules="passwordRule" :model="passwordInfo">
           <FormItem label="原密码" prop="old">
-            <Input v-model="passwordInfo.old" type="password"></Input>
+            <Input v-model="passwordInfo.old" type="password"/>
           </FormItem>
           <FormItem label="新密码" prop="new">
-            <Input v-model="passwordInfo.new" type="password"></Input>
+            <Input v-model="passwordInfo.new" type="password"/>
           </FormItem>
           <FormItem label="确认新密码" prop="newAgain">
-            <Input v-model="passwordInfo.newAgain" type="password"></Input>
+            <Input v-model="passwordInfo.newAgain" type="password"/>
           </FormItem>
           <div style="text-indent:102px;color:red;font-size:12px;">*强烈建议密码同时包含数字和英文字符</div>
           <FormItem>
