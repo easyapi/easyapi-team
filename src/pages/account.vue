@@ -611,9 +611,9 @@
         let s = this.needMoneyWarn ? this.moneyWarnSize : 0;
         this.$ajax({
           method: "PUT",
-          url: moneyWarn,
+          url: moneyWarn+"/"+this.accountGolbalInfo.id,
           data: {
-            id: this.accountGolbalInfo.id,
+            id:this.accountGolbalInfo.id,
             warningBalance: s,
           },
           json: true,
