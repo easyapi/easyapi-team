@@ -1,7 +1,16 @@
 import {baseUrl} from "./api";
 
-// 支付宝支付
-export const aliPayApi = `${baseUrl}/api/alipay/recharge`;
 
-// 微信支付
-export const wxPayApi = `${baseUrl}/api/wxpay/recharge`;
+/**
+ * 支付宝支付
+ *
+ * @see https://www.easyai.com
+ */
+export const alipay = (price) => axios.get(`${baseUrl}/api/alipay/recharge`, {price: price});
+
+/**
+ * 微信支付
+ *
+ * @see https://www.easyai.com
+ */
+export const wxpay = (price) => axios.get(`${baseUrl}/api/wxpay/recharge`, {price: price});

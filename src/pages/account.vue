@@ -11,7 +11,7 @@
         <!-- <router-link to="/bill">充值列表</router-link> -->
         <span class="invoice" @click="jumpInvoice">索取发票</span>
         <Poptip placement="top" trigger="hover">
-          <img class="invoiceQR" src="../assets/images/scan.png" alt />
+          <img class="invoiceQR" src="../assets/images/scan.png" alt/>
           <div slot="title" class="Code-title">手机端索取发票</div>
           <div class="Code-picture" slot="content">
             <img
@@ -22,7 +22,7 @@
           </div>
         </Poptip>
       </div>
-      <ea-button class="team-btn" text="账户充值" @click="toRecharge" />
+      <ea-button class="team-btn" text="账户充值" @click="toRecharge"/>
     </section>
     <section>
       <h3>余额预警</h3>
@@ -56,7 +56,7 @@
       <div class="m">
         <div class="team-info grid">
           <div class="team-icon">
-            <img :src="accountGolbalInfo.team.img + '!icon.jpg'" alt />
+            <img :src="accountGolbalInfo.team.img + '!icon.jpg'" alt/>
           </div>
           <div>
             <ul class="team-info_list">
@@ -87,7 +87,7 @@
       <div class="m">
         <p>
           所有者: {{ accountGolbalInfo.team.user.nickname }} &nbsp;&nbsp;{{
-            accountGolbalInfo.team.user.username
+          accountGolbalInfo.team.user.username
           }}
         </p>
         <p class="tip">
@@ -156,7 +156,7 @@
                 @click="setRechargeType(1)"
                 :class="['zf-type', { 'p-active': rechargeType == 1 }]"
               >
-                <img class="zfb" src="../assets/images/alipay.png" alt />
+                <img class="zfb" src="../assets/images/alipay.png" alt/>
               </div>
             </Col>
             <Col span="8" class="type-wrapper">
@@ -164,7 +164,7 @@
                 @click="setRechargeType(2)"
                 :class="['zf-type', { 'p-active': rechargeType == 2 }]"
               >
-                <img class="wxzf" src="../assets/images/wxpay.png" alt />
+                <img class="wxzf" src="../assets/images/wxpay.png" alt/>
               </div>
             </Col>
             <Col span="8" class="type-wrapper">
@@ -172,7 +172,7 @@
                 @click="setRechargeType(3)"
                 :class="['zf-type', { 'p-active': rechargeType == 3 }]"
               >
-                <img class="api-zf" src="../assets/images/apipay.png" alt />
+                <img class="api-zf" src="../assets/images/apipay.png" alt/>
               </div>
             </Col>
           </Row>
@@ -206,7 +206,7 @@
             <p>
               请您，使用支付宝
               <span class="t-blue">单笔转账到支付宝账户接口</span>
-              <br />对我们的公司帐号leida@daoqun.net, 进行转账
+              <br/>对我们的公司帐号leida@daoqun.net, 进行转账
             </p>
           </Col>
         </Row>
@@ -218,7 +218,7 @@
             <p>
               转账成功后，请调用我们的
               <span class="t-blue">支付宝转账确认接口</span>
-              <br />如果传递的支付宝订单号正确，则自动为您充值到帐号上。
+              <br/>如果传递的支付宝订单号正确，则自动为您充值到帐号上。
             </p>
           </Col>
         </Row>
@@ -240,7 +240,7 @@
               v-for="item in members"
               :value="item.user.username"
               :key="item.userTeamId"
-              >{{ item.user.nickname }}
+            >{{ item.user.nickname }}
             </Option>
           </Select>
         </Col>
@@ -263,7 +263,7 @@
         <Col class="bottom-10 top-5" span="8">团队Logo:</Col>
         <Col class="bottom-10 top-5" span="16">
           <div class="ti-img">
-            <img :src="teamIcon" alt />
+            <img :src="teamIcon" alt/>
             <input
               type="file"
               name="teamIcon"
@@ -326,7 +326,8 @@
         placeholder="请输入邮箱以获取验证码"
       >
         <Button class="capt-btn" slot="append" @click="getCaptcha"
-          >获取验证码</Button
+        >获取验证码
+        </Button
         >
       </Input>
       <Input
@@ -345,214 +346,204 @@
 </template>
 
 <script>
-import {
-  getAccountMoney,
-  getCaptcha,
-  moneyWarn,
-  teamUrl,
-  quitTeam,
-  transferTeam,
-} from "../api/api";
-import { getTeamUserList, checkTeamUrl } from "../api/team";
-import { getQiniuToken } from "../api/qiniu";
-import { getInvoiceToken } from "../api/invoice";
-import { aliPayApi, wxPayApi } from "../api/pay";
-import $ from "jquery";
-import md5 from "js-md5";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+  import {
+    getAccountMoney,
+    getCaptcha,
+    moneyWarn,
+    teamUrl,
+    quitTeam,
+    transferTeam,
+  } from "../api/api";
+  import {getTeamUserList, checkTeamUrl} from "../api/team";
+  import {getQiniuToken} from "../api/qiniu";
+  import {getInvoiceToken} from "../api/invoice";
+  import {alipay, wxpay} from "../api/pay";
+  import $ from "jquery";
+  import md5 from "js-md5";
+  import SockJS from "sockjs-client";
+  import Stomp from "stompjs";
 
-export default {
-  name: "Account",
-  props: ["propMembers"],
-  data: function () {
-    return {
-      members: [],
-      fapiaoToken: "",
-      picture: "",
-      accountGolbalInfo: {
-        balance: 0,
-        team: {
-          img: "",
-          name: "",
-          url: "",
-          description: "",
-          industry: "",
-          user: {
-            nickname: "",
-            username: "",
+  export default {
+    name: "Account",
+    props: ["propMembers"],
+    data: function () {
+      return {
+        members: [],
+        fapiaoToken: "",
+        picture: "",
+        accountGolbalInfo: {
+          balance: 0,
+          team: {
+            img: "",
+            name: "",
+            url: "",
+            description: "",
+            industry: "",
+            user: {
+              nickname: "",
+              username: "",
+            },
           },
         },
+        // 帐号角色
+        role: "",
+
+        // 充值预警
+        needMoneyWarn: false,
+        moneyWarnSize: 0,
+
+        //充值
+        rechargeType: 1,
+        rechargeAmount: 100,
+
+        recharge: false,
+        apiRecharge: false,
+
+        // team-info
+        teamInfoChange: false,
+        teamIcon: "",
+        teamName: "",
+        teamType: "",
+        teamUrl: "",
+        newTeamUrl: "",
+        teamDes: "",
+        industries: [
+          "互联网",
+          "新媒体",
+          "技术与服务",
+          "娱乐",
+          "生活服务",
+          "教育",
+          "制造业",
+          "家具建材",
+          "金融服务",
+          "旅行与交通",
+          "通讯",
+          "医疗健康",
+          "文化与设计",
+          "其他",
+        ],
+
+        // team-transfer
+        teamTransfer: false,
+        transferMember: "",
+
+        // team-close
+        teamClose: false,
+        email: "",
+        captcha: "",
+        captchaUse: false,
+        codeShow: false,
+        codeHas: false,
+        timer: null,
+        visible: false,
+      };
+    },
+    watch: {
+      "$store.state.user.userTeam": function () {
+        this.getTeamInfo();
+        this.role = this.$store.state.user.userTeam.type;
       },
-      // 帐号角色
-      role: "",
-
-      // 充值预警
-      needMoneyWarn: false,
-      moneyWarnSize: 0,
-
-      //充值
-      rechargeType: 1,
-      rechargeAmount: 100,
-
-      recharge: false,
-      apiRecharge: false,
-
-      // team-info
-      teamInfoChange: false,
-      teamIcon: "",
-      teamName: "",
-      teamType: "",
-      teamUrl: "",
-      newTeamUrl:"",
-      teamDes: "",
-      industries: [
-        "互联网",
-        "新媒体",
-        "技术与服务",
-        "娱乐",
-        "生活服务",
-        "教育",
-        "制造业",
-        "家具建材",
-        "金融服务",
-        "旅行与交通",
-        "通讯",
-        "医疗健康",
-        "文化与设计",
-        "其他",
-      ],
-
-      // team-transfer
-      teamTransfer: false,
-      transferMember: "",
-
-      // team-close
-      teamClose: false,
-      email: "",
-      captcha: "",
-      captchaUse: false,
-      codeShow: false,
-      codeHas: false,
-      timer: null,
-      visible: false,
-    };
-  },
-  watch: {
-    "$store.state.user.userTeam": function () {
+    },
+    computed: {},
+    created: function () {
+      this.$store.dispatch("GetUserInfo");
       this.getTeamInfo();
-      this.role = this.$store.state.user.userTeam.type;
-    },
-  },
-  computed: {},
-  created: function () {
-    this.$store.dispatch("GetUserInfo");
-    this.getTeamInfo();
-    if ((this.role = this.$store.state.user.userTeam.type)) {
-      this.role = this.$store.state.user.userTeam.type;
-    }
-  },
-  mounted: function () {
-    this.getInvoiceToken();
-    document.title = "团队账户 - EasyAPI";
-    this.getTeamUserList();
-  },
-  methods: {
-    // 获取成员列表
-    getTeamUserList: function () {
-      getTeamUserList(this.$store.state.user.team.id).then((res) => {
-        this.members = res.data.content;
-      });
-    },
-    //获取发票Token
-    getInvoiceToken() {
-      let encryption = md5("" + this.$store.state.user.team.id);
-      getInvoiceToken(encryption.toUpperCase()).then((res) => {
-        if (res.data.code == 1) {
-          this.fapiaoToken = res.data.content;
-        }
-      });
-    },
-    //跳转发票
-    jumpInvoice() {
-      this.getInvoiceToken();
-      window.open(
-        "https://fapiao-user-center-web.easyapi.com/?accessToken=" +
-          this.fapiaoToken
-      );
-    },
-    //生成二维码
-    qrCode: function () {
-      this.getInvoiceToken();
-      this.picture =
-        "https://fapiao-h5.easyapi.com?accessToken=" + this.fapiaoToken;
-    },
-    getTeamInfo: function () {
-      if (!this.$store.state.user.team) {
-        return;
+      if ((this.role = this.$store.state.user.userTeam.type)) {
+        this.role = this.$store.state.user.userTeam.type;
       }
-      this.$ajax({
-        method: "GET",
-        url: getAccountMoney,
-        params: {
-          teamId: this.$store.state.user.team.id,
-        },
-      }).then((res) => {
-        if (res.data.code == 1) {
-          this.accountGolbalInfo = res.data.content;
-          // 设置预警值
-          if (res.data.content.warningBalance > 0) {
-            this.moneyWarnSize = res.data.content.warningBalance;
-            this.needMoneyWarn = true;
-          } else {
-            this.needMoneyWarn = false;
+    },
+    mounted: function () {
+      this.getInvoiceToken();
+      document.title = "团队账户 - EasyAPI";
+      this.getTeamUserList();
+    },
+    methods: {
+      // 获取成员列表
+      getTeamUserList: function () {
+        getTeamUserList(this.$store.state.user.team.id).then((res) => {
+          this.members = res.data.content;
+        });
+      },
+      //获取发票Token
+      getInvoiceToken() {
+        let encryption = md5("" + this.$store.state.user.team.id);
+        getInvoiceToken(encryption.toUpperCase()).then((res) => {
+          if (res.data.code == 1) {
+            this.fapiaoToken = res.data.content;
           }
+        });
+      },
+      //跳转发票
+      jumpInvoice() {
+        this.getInvoiceToken();
+        window.open(
+          "https://fapiao-user-center-web.easyapi.com/?accessToken=" +
+          this.fapiaoToken
+        );
+      },
+      //生成二维码
+      qrCode: function () {
+        this.getInvoiceToken();
+        this.picture =
+          "https://fapiao-h5.easyapi.com?accessToken=" + this.fapiaoToken;
+      },
+      getTeamInfo: function () {
+        if (!this.$store.state.user.team) {
+          return;
         }
-      });
-    },
+        this.$ajax({
+          method: "GET",
+          url: getAccountMoney,
+          params: {
+            teamId: this.$store.state.user.team.id,
+          },
+        }).then((res) => {
+          if (res.data.code == 1) {
+            this.accountGolbalInfo = res.data.content;
+            // 设置预警值
+            if (res.data.content.warningBalance > 0) {
+              this.moneyWarnSize = res.data.content.warningBalance;
+              this.needMoneyWarn = true;
+            } else {
+              this.needMoneyWarn = false;
+            }
+          }
+        });
+      },
 
-    // 账户充值
-    toRecharge: function () {
-      this.recharge = true;
-    },
+      // 账户充值
+      toRecharge: function () {
+        this.recharge = true;
+      },
 
-    // 选择充值方式
-    setRechargeType: function (type) {
-      this.rechargeType = type;
-    },
+      // 选择充值方式
+      setRechargeType: function (type) {
+        this.rechargeType = type;
+      },
 
-    // 立即支付
-    payNow: function () {
-      switch (this.rechargeType) {
-        // 支付宝
-        case 1:
-          this.aliPay();
-          break;
-        // 微信支付
-        case 2:
-          this.wxPay();
-          break;
-        case 3:
-          this.recharge = false;
-          this.apiRecharge = true;
-          break;
-      }
-    },
+      // 立即支付
+      payNow: function () {
+        switch (this.rechargeType) {
+          case 1:
+            this.aliPay();// 支付宝
+            break;
+          case 2:
+            this.wxpay();// 微信支付
+            break;
+          case 3:
+            this.recharge = false;
+            this.apiRecharge = true;
+            break;
+        }
+      },
 
-    aliPay: function () {
-      if (!this.rechargeAmount) {
-        this.$Message.error("请输入充值金额");
-        return;
-      }
-      this.$ajax({
-        method: "GET",
-        url: aliPayApi,
-        params: {
-          price: Number(this.rechargeAmount),
-        },
-      })
-        .then((res) => {
-          console.log(res);
+      aliPay: function () {
+        if (!this.rechargeAmount) {
+          this.$Message.error("请输入充值金额");
+          return;
+        }
+        alipay(Number(this.rechargeAmount)).then((res) => {
           if (res.data.code) {
             let html = res.data.alipay;
             let form = $(html);
@@ -571,42 +562,17 @@ export default {
               },
             });
           }
-        })
-        .catch((err) => {
+        }).catch((err) => {
           this.$Message.error("接口错误，请稍后再试");
         });
-    },
-    openAliyun() {
-      return new Promise((resolve, reject) => {
-        this.$ajax({
-          method: "GET",
-          url: aliPayApi,
-          params: {
-            price: Number(this.rechargeAmount),
-          },
-        })
-          .then((res) => {
-            resolve(res);
-          })
-          .catch(function (err) {
-            reject(err);
-          });
-      });
-    },
-    wxPay: function () {
-      let _that = this;
-      if (!this.rechargeAmount) {
-        this.$Message.error("请输入充值金额");
-        return;
-      }
-      this.$ajax({
-        method: "GET",
-        url: wxPayApi,
-        params: {
-          price: Number(this.rechargeAmount),
-        },
-      })
-        .then((res) => {
+      },
+      wxpay: function () {
+        let _that = this;
+        if (!this.rechargeAmount) {
+          this.$Message.error("请输入充值金额");
+          return;
+        }
+        wxpay(Number(this.rechargeAmount)).then((res) => {
           if (res.data.code === 1) {
             let url = res.data.codeUrl;
             this.recharge = false;
@@ -635,539 +601,534 @@ export default {
               );
             });
           }
-        })
-        .catch((err) => {
+        }).catch((err) => {
           this.$Message.error("接口错误，请稍后再试");
         });
-    },
+      },
 
-    // 设置余额预警
-    setMoneyWarn: function () {
-      let s = this.needMoneyWarn ? this.moneyWarnSize : 0;
-      this.$ajax({
-        method: "PUT",
-        url: moneyWarn,
-        data: {
-          id: this.accountGolbalInfo.id,
-          warningBalance: s,
-        },
-        json: true,
-      })
-        .then((res) => {
-          if (res.data.code === 1) {
-            this.$Message.success("余额预警设置成功!");
-          }
+      // 设置余额预警
+      setMoneyWarn: function () {
+        let s = this.needMoneyWarn ? this.moneyWarnSize : 0;
+        this.$ajax({
+          method: "PUT",
+          url: moneyWarn,
+          data: {
+            id: this.accountGolbalInfo.id,
+            warningBalance: s,
+          },
+          json: true,
         })
-        .catch(function (err) {
-          this.$Message.success("余额预警设置失败!");
-        });
-    },
-
-    // 展开修改团队信息
-    toTeamChange: function () {
-      this.teamInfoChange = true;
-      this.teamIcon = this.accountGolbalInfo.team.img;
-      this.teamName = this.accountGolbalInfo.team.name;
-      this.teamType = this.accountGolbalInfo.team.industry;
-      this.teamUrl = this.accountGolbalInfo.team.url;
-      this.newTeamUrl = this.accountGolbalInfo.team.url;
-      this.teamDes = this.accountGolbalInfo.team.description;
-    },
-    // 修改团队
-    changeTeamInfo: function () {
-      //console.log(this.teamType)
-      this.$ajax({
-        method: "PUT",
-        url: `${teamUrl}/${this.$store.state.user.team.id}`,
-        data: {
-          name: this.teamName,
-          img: this.teamIcon,
-          url: this.teamUrl,
-          description: this.teamDes,
-          industry: this.teamType,
-        },
-        json: true,
-      })
-        .then((res) => {
-          //console.log(res)
-          if (res.data.code) {
-            this.$Message.success("修改成功!");
-            setTimeout(() => {
-              location.reload();
-            }, 1000);
-          }
-        })
-        .catch(function (err) {
-          this.teamInfoChange = false;
-          this.$Message.success("修改失败!");
-        });
-    },
-
-    // 检查团队URL是否合法
-    async checkUrl() {
-      if (this.teamUrl == this.newTeamUrl) {
-        return;
-      }
-      await this.checkTeamUrl().catch((err) => {
-        this.urlOccupy = true;
-        this.$Message.error("团队URL已经被占用");
-      });
-    },
-
-    checkTeamUrl(success, fail) {
-      return new Promise((resolve, reject) => {
-        checkTeamUrl(this.teamUrl)
           .then((res) => {
-            if (res.data.code == 1) {
-              resolve("团队URL可用");
-            } else {
-              reject("团队URL已存在");
+            if (res.data.code === 1) {
+              this.$Message.success("余额预警设置成功!");
             }
           })
-          .catch((err) => {
-            if (
-              err.responseJSON.code == -1 ||
-              err.responseJSON.message == "该编码已存在"
-            ) {
-              reject("团队URL已存在");
-            }
+          .catch(function (err) {
+            this.$Message.success("余额预警设置失败!");
           });
-      });
-    },
+      },
 
-    // 转让团队
-    confirmTransferTeam: function () {
-      let user = this.$store.state.user;
-      //console.log(user)
-      // //console.log(this.team.id)
-      this.$ajax({
-        method: "put",
-        url: transferTeam.replace("#id#", user.team.id),
-        data: {
-          username: this.transferMember,
-        },
-      })
-        .then((res) => {
-          if (res.data.code) {
-            this.$Message.success("转让成功!");
-            this.teamTransfer = false;
-            this.getTeamInfo();
-          }
-        })
-        .catch(function (err) {
-          this.$Message.error("修改失败!");
-        });
-    },
-
-    //上传图片
-    uploadImg: function (e) {
-      this.$loadingStart();
-
-      let f = e.target.files[0];
-      $("#teamIcon").val();
-      this.getQiniu().then((tokenRes) => {
-        const qiNiuFileDomain = "https://qiniu.easyapi.com";
-        //
-        let res = JSON.parse(tokenRes);
-        let token = res.upToken;
-        //start to upload
-        var xhr = new XMLHttpRequest();
-
-        xhr.open("POST", "https://upload.qiniu.com/", true);
-
-        var formData, startDate;
-
-        formData = new FormData();
-        formData.append("token", token);
-        formData.append("file", f);
-        formData.append("key", `${new Date().getTime()}`);
-
-        // var taking
-
-        xhr.upload.addEventListener(
-          "progress",
-          (evt) => {
-            // if (evt.lengthComputable) {
-            //     var nowDate = new Date().getTime();
-            //     taking = nowDate - startDate;
-            //     var x = (evt.loaded) / 1024;
-            //     var y = taking / 1000;
-            //     var uploadSpeed = (x / y);
-            //     var formatSpeed;
-            //     if (uploadSpeed > 1024) {
-            //         formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
-            //     } else {
-            //         formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
-            //     }
-            //     var percentComplete = Math.round(evt.loaded * 100 / evt.total);
-            //     progressbar.progressbar("value", percentComplete);
-            //     // console && //console.log(percentComplete, ",", formatSpeed);
+      // 展开修改团队信息
+      toTeamChange: function () {
+        this.teamInfoChange = true;
+        this.teamIcon = this.accountGolbalInfo.team.img;
+        this.teamName = this.accountGolbalInfo.team.name;
+        this.teamType = this.accountGolbalInfo.team.industry;
+        this.teamUrl = this.accountGolbalInfo.team.url;
+        this.newTeamUrl = this.accountGolbalInfo.team.url;
+        this.teamDes = this.accountGolbalInfo.team.description;
+      },
+      // 修改团队
+      changeTeamInfo: function () {
+        this.$ajax({
+          method: "PUT",
+          url: `${teamUrl}/${this.$store.state.user.team.id}`,
+          data: {
+            name: this.teamName,
+            img: this.teamIcon,
+            url: this.teamUrl,
+            description: this.teamDes,
+            industry: this.teamType,
           },
-          false
-        );
-
-        xhr.onreadystatechange = (response) => {
-          if (
-            xhr.readyState == 4 &&
-            xhr.status == 200 &&
-            xhr.responseText != ""
-          ) {
-            let res = JSON.parse(response.currentTarget.response);
-            //console.log('upload', res)
-            this.$loadingEnd();
-            this.teamIcon = `${qiNiuFileDomain}/${res.key}`;
-          } else if (xhr.status != 200 && xhr.responseText) {
-            this.$loadingEnd();
-          }
-        };
-
-        startDate = new Date().getTime();
-
-        xhr.send(formData);
-      });
-    },
-
-    // 解散团队-获取验证码
-    getCaptcha: function () {
-      let email = this.email.trim();
-      if (!email) {
-        this.$Message.error("请输入邮箱");
-        return;
-      }
-      if (
-        !/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(
-          email
-        )
-      ) {
-        this.$Message.error("邮箱格式错误");
-        return;
-      }
-      this.$ajax({
-        method: "POST",
-        url: getCaptcha,
-        data: {
-          username: email,
-        },
-      })
-        .then((res) => {
-          if (res.data.code === 1) {
-            this.$Message.success("验证码发送成功，请查收");
-            this.captchaUse = true;
-          }
+          json: true,
         })
-        .catch((error) => {
-          this.$Message.error(error.response.data.message);
-        });
-    },
-
-    // 解散团队
-    delTeam: function () {
-      let user = this.$store.state.user;
-      this.$ajax({
-        method: "DELETE",
-        url: `${teamUrl}/${user.team.id}`,
-        data: {
-          code: this.captcha,
-        },
-      }).then((res) => {
-        if (res.data.code === 1) {
-          this.$Message.success("解散成功");
-          this.$store.dispatch("GetUserInfo");
-          this.$router.replace("/launch");
-        }
-      });
-    },
-
-    // 退出团队
-    quitTeam: function () {
-      this.$Modal.confirm({
-        title: "提示",
-        content: "确定退出该团队？",
-        onOk: () => {
-          this.$ajax({
-            method: "GET",
-            url: quitTeam.replace("#id#", this.$store.state.user.team.id),
-            params: {
-              code: this.captcha,
-            },
-          }).then((res) => {
-            if (res.data.code === 1) {
-              this.$Message.success("解散成功");
-              this.$router.replace("/launch");
+          .then((res) => {
+            if (res.data.code) {
+              this.$Message.success("修改成功!");
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
             }
+          })
+          .catch(function (err) {
+            this.teamInfoChange = false;
+            this.$Message.success("修改失败!");
           });
-        },
-        onCancel: () => {},
-      });
-    },
+      },
 
-    //获取七牛token
-    getQiniu: function () {
-      return new Promise((resolve, reject) => {
-        getQiniuToken().then((res) => {
-          resolve(res);
+      // 检查团队URL是否合法
+      async checkUrl() {
+        if (this.teamUrl == this.newTeamUrl) {
+          return;
+        }
+        await this.checkTeamUrl().catch((err) => {
+          this.urlOccupy = true;
+          this.$Message.error("团队URL已经被占用");
         });
-      });
-    },
+      },
 
-    // dialog callback
-    rcSDVisible: function (v) {
-      if (!v) this.recharge = false;
+      checkTeamUrl(success, fail) {
+        return new Promise((resolve, reject) => {
+          checkTeamUrl(this.teamUrl)
+            .then((res) => {
+              if (res.data.code == 1) {
+                resolve("团队URL可用");
+              } else {
+                reject("团队URL已存在");
+              }
+            })
+            .catch((err) => {
+              if (
+                err.responseJSON.code == -1 ||
+                err.responseJSON.message == "该编码已存在"
+              ) {
+                reject("团队URL已存在");
+              }
+            });
+        });
+      },
+
+      // 转让团队
+      confirmTransferTeam: function () {
+        let user = this.$store.state.user;
+        this.$ajax({
+          method: "put",
+          url: transferTeam.replace("#id#", user.team.id),
+          data: {
+            username: this.transferMember,
+          },
+        })
+          .then((res) => {
+            if (res.data.code) {
+              this.$Message.success("转让成功!");
+              this.teamTransfer = false;
+              this.getTeamInfo();
+            }
+          })
+          .catch(function (err) {
+            this.$Message.error("修改失败!");
+          });
+      },
+
+      //上传图片
+      uploadImg: function (e) {
+        this.$loadingStart();
+
+        let f = e.target.files[0];
+        $("#teamIcon").val();
+        this.getQiniu().then((tokenRes) => {
+          const qiNiuFileDomain = "https://qiniu.easyapi.com";
+          //
+          let res = JSON.parse(tokenRes);
+          let token = res.upToken;
+          //start to upload
+          var xhr = new XMLHttpRequest();
+
+          xhr.open("POST", "https://upload.qiniu.com/", true);
+
+          var formData, startDate;
+
+          formData = new FormData();
+          formData.append("token", token);
+          formData.append("file", f);
+          formData.append("key", `${new Date().getTime()}`);
+
+          // var taking
+
+          xhr.upload.addEventListener(
+            "progress",
+            (evt) => {
+              // if (evt.lengthComputable) {
+              //     var nowDate = new Date().getTime();
+              //     taking = nowDate - startDate;
+              //     var x = (evt.loaded) / 1024;
+              //     var y = taking / 1000;
+              //     var uploadSpeed = (x / y);
+              //     var formatSpeed;
+              //     if (uploadSpeed > 1024) {
+              //         formatSpeed = (uploadSpeed / 1024).toFixed(2) + "Mb\/s";
+              //     } else {
+              //         formatSpeed = uploadSpeed.toFixed(2) + "Kb\/s";
+              //     }
+              //     var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+              //     progressbar.progressbar("value", percentComplete);
+              //     // console && //console.log(percentComplete, ",", formatSpeed);
+            },
+            false
+          );
+
+          xhr.onreadystatechange = (response) => {
+            if (
+              xhr.readyState == 4 &&
+              xhr.status == 200 &&
+              xhr.responseText != ""
+            ) {
+              let res = JSON.parse(response.currentTarget.response);
+              this.$loadingEnd();
+              this.teamIcon = `${qiNiuFileDomain}/${res.key}`;
+            } else if (xhr.status != 200 && xhr.responseText) {
+              this.$loadingEnd();
+            }
+          };
+
+          startDate = new Date().getTime();
+
+          xhr.send(formData);
+        });
+      },
+
+      // 解散团队-获取验证码
+      getCaptcha: function () {
+        let email = this.email.trim();
+        if (!email) {
+          this.$Message.error("请输入邮箱");
+          return;
+        }
+        if (
+          !/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(
+            email
+          )
+        ) {
+          this.$Message.error("邮箱格式错误");
+          return;
+        }
+        this.$ajax({
+          method: "POST",
+          url: getCaptcha,
+          data: {
+            username: email,
+          },
+        })
+          .then((res) => {
+            if (res.data.code === 1) {
+              this.$Message.success("验证码发送成功，请查收");
+              this.captchaUse = true;
+            }
+          })
+          .catch((error) => {
+            this.$Message.error(error.response.data.message);
+          });
+      },
+
+      // 解散团队
+      delTeam: function () {
+        let user = this.$store.state.user;
+        this.$ajax({
+          method: "DELETE",
+          url: `${teamUrl}/${user.team.id}`,
+          data: {
+            code: this.captcha,
+          },
+        }).then((res) => {
+          if (res.data.code === 1) {
+            this.$Message.success("解散成功");
+            this.$store.dispatch("GetUserInfo");
+            this.$router.replace("/launch");
+          }
+        });
+      },
+
+      // 退出团队
+      quitTeam: function () {
+        this.$Modal.confirm({
+          title: "提示",
+          content: "确定退出该团队？",
+          onOk: () => {
+            this.$ajax({
+              method: "GET",
+              url: quitTeam.replace("#id#", this.$store.state.user.team.id),
+              params: {
+                code: this.captcha,
+              },
+            }).then((res) => {
+              if (res.data.code === 1) {
+                this.$Message.success("解散成功");
+                this.$router.replace("/launch");
+              }
+            });
+          },
+          onCancel: () => {
+          },
+        });
+      },
+
+      //获取七牛token
+      getQiniu: function () {
+        return new Promise((resolve, reject) => {
+          getQiniuToken().then((res) => {
+            resolve(res);
+          });
+        });
+      },
+
+      // dialog callback
+      rcSDVisible: function (v) {
+        if (!v) this.recharge = false;
+      },
+      arSDVisible: function (v) {
+        if (!v) this.apiRecharge = false;
+      },
+      tcSDVisible: function (v) {
+        if (!v) this.teamClose = false;
+      },
+      tiSDVisible: function (v) {
+        if (!v) this.teamInfoChange = false;
+      },
+      ttSDVisible: function (v) {
+        if (!v) this.teamTransfer = false;
+      },
+      open() {
+        this.visible = true;
+      },
     },
-    arSDVisible: function (v) {
-      if (!v) this.apiRecharge = false;
-    },
-    tcSDVisible: function (v) {
-      if (!v) this.teamClose = false;
-    },
-    tiSDVisible: function (v) {
-      if (!v) this.teamInfoChange = false;
-    },
-    ttSDVisible: function (v) {
-      if (!v) this.teamTransfer = false;
-    },
-    open() {
-      this.visible = true;
-    },
-  },
-};
+  };
 </script>
 
 <style lang="stylus" scoped>
-@import '../assets/styles/color.styl';
+  @import '../assets/styles/color.styl';
 
-.m-wrapper {
-  max-width: 960px;
-  padding: 50px 0;
-}
-
-a {
-  color: #2d8cf0;
-}
-
-section {
-  position: relative;
-  padding: 20px 40px;
-  border: 1px solid c-border;
-  margin-bottom: 20px;
-
-  h3 {
-    margin-bottom: 15px;
-    font-weight: bold;
-    font-size: 16px;
+  .m-wrapper {
+    max-width: 960px;
+    padding: 50px 0;
   }
 
-  .m {
-    width: 70%;
-    font-size: 14px;
+  a {
+    color: #2d8cf0;
+  }
+
+  section {
     position: relative;
-  }
+    padding: 20px 40px;
+    border: 1px solid c-border;
+    margin-bottom: 20px;
 
-  .tip {
-    margin-top: 15px;
-    color: c-black2;
-    font-size: 0.9em;
-  }
-}
+    h3 {
+      margin-bottom: 15px;
+      font-weight: bold;
+      font-size: 16px;
+    }
 
-.amount {
-  margin-bottom: 5px;
-  color: #ff890f;
-  font-size: 40px;
-  font-weight: 500;
-
-  .amount-unit {
-    margin-left: 10px;
-    color: c-black;
-    font-size: 1rem;
-  }
-}
-
-.warn-row {
-  margin-bottom: 20px;
-
-  .warn-row__key, .warn-row__v, ._unit {
-    float: left;
-  }
-
-  .warn-row__v, .warn-row__key {
-    margin-right: 10px;
-    line-height: 25px;
-  }
-
-  .warn-input {
-    float: left;
-    width: 50px;
-    margin-right: 5px;
-  }
-}
-
-.team-btn {
-  position: absolute;
-  right: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.team-icon {
-  float: left;
-  height: 75px;
-  width: 75px;
-
-  img {
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
-    background-color: c-grey;
-  }
-}
-
-.team-info_list {
-  margin-left: 110px;
-  line-height: 22px;
-
-  li {
-    &:before {
-      content: '';
+    .m {
+      width: 70%;
+      font-size: 14px;
       position: relative;
-      display: inline-block;
-      height: 4px;
-      width: 4px;
-      top: -2px;
-      margin-right: 6px;
-      background: c-blue;
-      border-radius: 50%;
+    }
+
+    .tip {
+      margin-top: 15px;
+      color: c-black2;
+      font-size: 0.9em;
     }
   }
-}
 
-// team close dialog
-.ti-img {
-  position: relative;
-  height: 40px;
-  width: 40px;
-  cursor: pointer;
+  .amount {
+    margin-bottom: 5px;
+    color: #ff890f;
+    font-size: 40px;
+    font-weight: 500;
 
-  img {
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
-    background-color: c-grey;
+    .amount-unit {
+      margin-left: 10px;
+      color: c-black;
+      font-size: 1rem;
+    }
   }
 
-  #teamIcon {
+  .warn-row {
+    margin-bottom: 20px;
+
+    .warn-row__key, .warn-row__v, ._unit {
+      float: left;
+    }
+
+    .warn-row__v, .warn-row__key {
+      margin-right: 10px;
+      line-height: 25px;
+    }
+
+    .warn-input {
+      float: left;
+      width: 50px;
+      margin-right: 5px;
+    }
+  }
+
+  .team-btn {
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    opacity: 0;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
   }
-}
 
-.captcha {
-  width: 50%;
-}
+  .team-icon {
+    float: left;
+    height: 75px;
+    width: 75px;
 
-.capt-btn {
-  background-color: c-white;
-  color: c-blue;
-  border: 1px solid c-border;
-}
+    img {
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      background-color: c-grey;
+    }
+  }
 
-.close-btn {
-  width: 100%;
-}
+  .team-info_list {
+    margin-left: 110px;
+    line-height: 22px;
 
-.pay-amount {
-  width: 31%;
-}
+    li {
+      &:before {
+        content: '';
+        position: relative;
+        display: inline-block;
+        height: 4px;
+        width: 4px;
+        top: -2px;
+        margin-right: 6px;
+        background: c-blue;
+        border-radius: 50%;
+      }
+    }
+  }
 
-.type-wrapper {
-  padding-right: 10px;
-}
+  // team close dialog
+  .ti-img {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
 
-.zf-type {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid c-border;
-  height: 75px;
-}
+    img {
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      background-color: c-grey;
+    }
 
-.zfb, .wxzf, .api-zf {
-  width: 100%;
-}
+    #teamIcon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+    }
+  }
 
-.p-active {
-  border: 1px solid c-blue;
-}
+  .captcha {
+    width: 50%;
+  }
 
-.tips {
-  font-size: 12px;
-  color: c-black2;
-}
+  .capt-btn {
+    background-color: c-white;
+    color: c-blue;
+    border: 1px solid c-border;
+  }
 
-.recharge-btn {
-  display: inline-block;
-}
+  .close-btn {
+    width: 100%;
+  }
 
-.circle {
-  border: 2px solid c-blue;
-  height: 40px;
-  width: 40px;
-  text-align: center;
-  line-height: 40px;
-  border-radius: 50%;
-}
+  .pay-amount {
+    width: 31%;
+  }
+
+  .type-wrapper {
+    padding-right: 10px;
+  }
+
+  .zf-type {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid c-border;
+    height: 75px;
+  }
+
+  .zfb, .wxzf, .api-zf {
+    width: 100%;
+  }
+
+  .p-active {
+    border: 1px solid c-blue;
+  }
+
+  .tips {
+    font-size: 12px;
+    color: c-black2;
+  }
+
+  .recharge-btn {
+    display: inline-block;
+  }
+
+  .circle {
+    border: 2px solid c-blue;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+  }
 </style>
 
 <style lang="stylus">
-@import '../assets/styles/color.styl';
+  @import '../assets/styles/color.styl';
 
-.wx-pay {
-  text-align: center;
-  margin-left: -48px;
+  .wx-pay {
+    text-align: center;
+    margin-left: -48px;
 
-  .wx-pay_amount {
-    color: c-red;
-    font-size: 1.2em;
+    .wx-pay_amount {
+      color: c-red;
+      font-size: 1.2em;
+    }
   }
-}
 
-.type-select, .type-select .ivu-select-selection, .type-select .ivu-select-selected-value {
-  height: 32px !important;
-  line-height: 32px !important;
-}
+  .type-select, .type-select .ivu-select-selection, .type-select .ivu-select-selected-value {
+    height: 32px !important;
+    line-height: 32px !important;
+  }
 
-.invoice {
-  color: #2d8cf0;
-  cursor: pointer;
-  padding-left: 10px;
-}
+  .invoice {
+    color: #2d8cf0;
+    cursor: pointer;
+    padding-left: 10px;
+  }
 
-.Code-title {
-  text-align: center;
-  font-size: 14px;
-}
+  .Code-title {
+    text-align: center;
+    font-size: 14px;
+  }
 
-.Code-picture {
-  text-align: center
-}
+  .Code-picture {
+    text-align: center
+  }
 
-.invoiceQR {
-  cursor: pointer;
-  margin-left: 10px;
-  vertical-align: middle;
-}
+  .invoiceQR {
+    cursor: pointer;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
 
-.code-show {
-  opacity: 1;
-  transition: all 0.2s linear 0.1s;
-}
+  .code-show {
+    opacity: 1;
+    transition: all 0.2s linear 0.1s;
+  }
 
-.code-hide {
-  opacity: 0;
-  transition: all 0.2s linear 0.1s;
-}
+  .code-hide {
+    opacity: 0;
+    transition: all 0.2s linear 0.1s;
+  }
 </style>
