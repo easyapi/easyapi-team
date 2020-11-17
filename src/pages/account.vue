@@ -322,8 +322,8 @@
       <p class="tips grey">如果你确定要这样做，请在下面输入账户密码确认</p>
       <Input
         class="top-10"
-        v-model="email"
-        placeholder="请输入邮箱以获取验证码"
+        v-model="phone"
+        placeholder="请输入手机以获取验证码"
       >
         <Button class="capt-btn" slot="append" @click="getCaptcha"
         >获取验证码
@@ -430,7 +430,7 @@
 
         // team-close
         teamClose: false,
-        email: "",
+        phone: "",
         captcha: "",
         captchaUse: false,
         codeShow: false,
