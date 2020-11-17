@@ -715,8 +715,8 @@
               this.getTeamInfo();
             }
           })
-          .catch(function (err) {
-            this.$Message.error("修改失败!");
+          .catch(error => {
+            this.$Message.error("请选择成员");
           });
       },
 
