@@ -660,9 +660,9 @@
               }, 1000);
             }
           })
-          .catch(function (err) {
-            this.teamInfoChange = false;
-            this.$Message.success("修改失败!");
+          .catch(error => {
+            console.log(error.response);
+            this.$Message.error(error.response.data.message);
           });
       },
 

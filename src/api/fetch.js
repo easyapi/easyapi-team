@@ -56,10 +56,7 @@ axios.interceptors.response.use(
     } else if (error.response.data.code === -3) {
       // 处理-3团队账户余额不足
       router.push(`/unavailable`);
-    } else if (error.response.data.code === -1) {
-      // 处理-3非法团队
-      // window.location.href = "https://team.easyapi.com";
-    } else {
+    }  else {
       return Promise.reject(error);
     }
   }
