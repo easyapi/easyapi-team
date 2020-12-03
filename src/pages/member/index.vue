@@ -134,19 +134,19 @@
 </template>
 
 <script>
+  import { getTeamUserList } from "../../api/team";
   import {
     setMemberType,
-    memberInvitedInfo,
+    getMemberInvitedInfo,
     addMember,
     delMember
-  } from "../../api/api";
-  import {getTeamUserList} from "../../api/team";
+  } from "../../api/member";
 
   export default {
     name: "Members",
     components: {},
     props: ["propMembers"],
-    data: function () {
+    data: function() {
       return {
         memberSetDialog: false,
         memberSelect: null,
@@ -174,31 +174,31 @@
         hasPowerSetting: false
       };
     },
-    created: function () {
+    created: function() {
       let t = this.$store.state.user.userTeam.type;
       this.hasPowerSetting = t === "创建人" || t === "管理员" ? true : false;
     },
-    mounted: function () {
+    mounted: function() {
       document.title = "团队成员 - EasyAPI";
       this.getMemberInvite();
       this.getTeamUserList();
     },
     watch: {
-      "$store.state.user.userTeam": function () {
+      "$store.state.user.userTeam": function() {
         this.getTeamUserList();
         let t = this.$store.state.user.userTeam.type;
         this.hasPowerSetting = t === "创建人" || t === "管理员" ? true : false;
       }
     },
     methods: {
-      getTeamUserList: function () {
+      getTeamUserList: function() {
         getTeamUserList(this.$store.state.user.team.id).then(res => {
           this.members = res.data.content;
         });
       },
 
       // 成员设置弹窗
-      memberSetting: function (i) {
+      memberSetting: function(i) {
         if (!this.hasPowerSetting) {
           this.$Message.error("你没有权限!!");
           return;
@@ -210,7 +210,7 @@
         this.getMemberInvite(this.members[i].user.id);
       }
       ,
-      memberSDVisible: function (show) {
+      memberSDVisible: function(show) {
         if (!show) {
           this.memberSetDialog = false;
           this.inviter = "";
@@ -218,7 +218,7 @@
         }
       }
       ,
-      closeMemberSD: function (resetSelect = true) {
+      closeMemberSD: function(resetSelect = true) {
         this.memberSetDialog = false;
         setTimeout(() => {
           this.inviter = "";
@@ -229,15 +229,12 @@
       ,
 
       // 获取成员被邀请信息
-      getMemberInvite: function (id) {
-        this.$ajax({
-          method: "GET",
-          url: memberInvitedInfo,
-          params: {
-            inviteeId: id,
-            teamId: this.$store.state.user.team.id
-          }
-        }).then(res => {
+      getMemberInvite: function(id) {
+        let params = {
+          inviteeId: id,
+          teamId: this.$store.state.user.team.id
+        };
+        getMemberInvitedInfo(params).then(res => {
           if (res.data && res.data.content && res.data.content.length > 0) {
             this.inviter = res.data.content[0].inviter.nickname;
           } else {
@@ -248,37 +245,37 @@
       ,
 
       // 确认删除按钮
-      confirmClick: function () {
+      confirmClick: function() {
         this.confirmDelMember = true;
         this.closeMemberSD(false);
       }
       ,
 
       // 确认移除弹窗
-      delSDVisible: function (show) {
+      delSDVisible: function(show) {
         if (!show) this.closeDelSD();
       }
       ,
-      closeDelSD: function () {
+      closeDelSD: function() {
         this.confirmDelMember = false;
       }
       ,
 
       // 添加新成员
-      newMember: function () {
+      newMember: function() {
         this.newMemberSet = true;
       }
       ,
-      newMemberSDVisible: function (show) {
+      newMemberSDVisible: function(show) {
         if (!show) this.newMemberSet = false;
       }
       ,
-      closeNewSD: function () {
+      closeNewSD: function() {
         this.newMemberSet = false;
         this.$refs["newMemberList"].resetFields();
       }
       ,
-      appendMember: function () {
+      appendMember: function() {
         this.newMemberList.items.push({
           userName: "",
           type: "成员"
@@ -287,47 +284,41 @@
       ,
 
       // 设置权限设置
-      setMemberType: function () {
-        this.$ajax({
-          method: "PUT",
-          url: setMemberType,
-          data: {
-            id: this.members[this.memberSelect].userTeamId,
-            type: this.permision
-          },
-          json: true
-        }).then(res => {
+      setMemberType: function() {
+        let data = {
+          id: this.members[this.memberSelect].userTeamId,
+          type: this.permision
+        };
+        setMemberType(data).then(res => {
           this.$Message.success("修改成功!!");
           this.getTeamUserList();
           this.closeMemberSD();
-        }).catch(function (err) {
+        }).catch(function(err) {
           this.$Message.success("修改失败!!");
           this.closeMemberSD();
-        }).then(function () {
+        }).then(function() {
         });
       }
       ,
 
       // 删除成员
-      delMember: function () {
-        this.$ajax({
-          method: "delete",
-          url: `${delMember}\\${this.members[this.memberSelect].userTeamId}`
-        }).then(res => {
+      delMember: function() {
+        let id = this.members[this.memberSelect].userTeamId;
+        delMember(id).then(res => {
           this.$Message.success("删除成功!!");
           this.memberSelect = "";
           this.getTeamUserList();
           this.closeDelSD();
-        }).catch(function (err) {
+        }).catch(function(err) {
           this.$Message.success("删除失败!!");
-        }).then(function () {
+        }).then(function() {
           this.closeDelSD();
         });
       }
       ,
 
       // 添加新成员
-      confirmNewMember: function () {
+      confirmNewMember: function() {
         this.$refs["newMemberList"].validate().then(vaild => {
           if (vaild) {
             let type = [];
@@ -343,10 +334,8 @@
                 remark: this.newMemberRemark
               });
             });
-            this.$ajax.post(addMember, {
-              json: true,
-              data: memberData
-            }).then(res => {
+            let data = memberData;
+            addMember(data).then(res => {
               if (res.data.code) {
                 this.$Message.success({
                   content: res.data.message.replace("添加", "邀请"),
@@ -362,7 +351,7 @@
                 ];
               }
               this.closeNewSD();
-            }).catch(function (err) {
+            }).catch(function(err) {
               this.$Message.success("添加失败!!");
             });
           }
@@ -384,24 +373,30 @@
     padding: 20px
     width: (100 / 5) %
     min-width: 200px
+
     .member
       padding: 10px
       cursor: pointer
       transition: all .4s ease
+
       &:hover
         box-shadow 0 3px 8px c-background-dark
         transform: translateY(-5px)
+
       .icon
         height: 50px
         width: 50px
+
         img
           height: 100%
           width: 100%
           background-color: c-background-dark
           border-radius: 50%
+
       .info
         margin-left: 10px
         font-size: 14px
+
         .name
           color: c-blue
           margin: 5px 0
@@ -412,17 +407,20 @@
     font-size: 50px
     color: c-blue
     cursor: pointer
+
     &:hover
       opacity: .8
 
   .radio-label
     display: inline-block
+
     .des
       margin-left: 15px
       color: c-black2
 
   .permision-set
     margin-top: 20px
+
     .title
       margin: 5px 0
 
