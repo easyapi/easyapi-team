@@ -80,73 +80,73 @@
 </template>
 
 <script>
-  import {getOrderList} from '../../api/order'
+  import { getOrderList } from "../../api/order";
 
   export default {
-    name: 'Bill',
+    name: "Bill",
     components: {},
-    data: function () {
+    data: function() {
       return {
         tableHead: [
           {
-            title: '日期',
-            key: 'addTime'
+            title: "日期",
+            key: "addTime"
           },
           {
-            title: '订单号',
-            key: 'no'
+            title: "订单号",
+            key: "no"
           },
           {
-            title: '服务名称',
-            key: 'name'
+            title: "服务名称",
+            key: "name"
           },
           {
-            title: '金额',
-            key: 'amount',
+            title: "金额",
+            key: "amount",
             render: (h, params) => {
-              return this.renderPrice(h, params.row)
+              return this.renderPrice(h, params.row);
             }
           },
           {
-            title: '计量',
-            key: 'account',
+            title: "计量",
+            key: "account",
             render: (h, params) => {
-              return this.renderQuantity(h, params.row)
+              return this.renderQuantity(h, params.row);
             }
           },
           {
-            title: '状态',
-            key: 'state',
+            title: "状态",
+            key: "state",
             render: (h, params) => {
               return h(
-                'p',
+                "p",
                 {
                   class: {
-                    'un-pay': params.row.state == '0'
+                    "un-pay": params.row.state == "0"
                   }
                 },
                 this.payState[params.row.state]
-              )
+              );
             }
           },
           {
-            title: '操作',
-            key: 'opt',
+            title: "操作",
+            key: "opt",
             render: (h, params) => {
               return h(
-                'a',
+                "a",
                 {
                   class: {
-                    'bill-opt': true
+                    "bill-opt": true
                   },
                   on: {
                     click: () => {
-                      this.openBillDetail(params.index)
+                      this.openBillDetail(params.index);
                     }
                   }
                 },
-                '详情'
-              )
+                "详情"
+              );
             }
           }
         ],
@@ -157,95 +157,91 @@
         billDetailIndex: 0,
         detailOpen: false,
         payState: {
-          '0': '待付款',
-          '1': '已付款(充值中)',
-          '-1': '已取消',
-          '9': '充值成功',
-          '-9': '充值失败'
+          "0": "待付款",
+          "1": "已付款(充值中)",
+          "-1": "已取消",
+          "9": "充值成功",
+          "-9": "充值失败"
         },
         pageSize: 10
-      }
+      };
     },
-    created: function () {
-      let curPage = this.$route.query.page
+    created: function() {
+      let curPage = this.$route.query.page;
       if (curPage) {
-        this.page = curPage
+        this.page = curPage;
       }
-      this.getList()
+      this.getList();
     },
     beforeCreate() {
     },
-    mounted: function () {
-      document.title = '团队订单 - EasyAPI'
+    mounted: function() {
+      document.title = "团队订单 - EasyAPI";
     },
     methods: {
-      pageChange: function (page) {
-        console.log(page,333333333333)  
-        this.page = page
-        location.hash = this.$route.path + '?page=' + page
-        this.getList()
+      pageChange: function(page) {
+        console.log(page, 333333333333);
+        this.page = page;
+        location.hash = this.$route.path + "?page=" + page;
+        this.getList();
       },
-      getList: function () {
-        this.dataLoading = true
-        this.$ajax({
-          method: 'GET',
-          url: getOrderList,
-          params: {
-            page: this.page - 1,
-            size: this.pageSize
+      getList: function() {
+        this.dataLoading = true;
+        let params = {
+          page: this.page - 1,
+          size: this.pageSize
+        };
+        getOrderList(params).then(res => {
+          if (res.data == null) {
+            this.total = 0;
+            this.tableData = [];
+            this.dataLoading = false;
+            return;
+          } else {
+            if (!this.total) this.total = res.data.totalElements;
+            if (res.data.content.length) this.tableData = res.data.content;
           }
+          this.dataLoading = false;
         })
-          .then(res => {
-            if (res.data == null) {
-              this.total = 0
-              this.tableData = []
-              this.dataLoading = false
-              return
-            } else {
-              if (!this.total) this.total = res.data.totalElements
-              if (res.data.content.length) this.tableData = res.data.content
-            }
-            this.dataLoading = false
+          .catch(function(err) {
+            this.tableData = [];
           })
-          .catch(function (err) {
-            this.tableData = []
-          })
-          .then(function () {
-          })
+          .then(function() {
+          });
       },
-      openBillDetail: function (index) {
-        this.detailOpen = true
-        this.billDetailIndex = index
+      openBillDetail: function(index) {
+        this.detailOpen = true;
+        this.billDetailIndex = index;
       },
-      detailVisible: function (o) {
+      detailVisible: function(o) {
         if (!o) {
-          this.detailOpen = false
-          this.billDetailIndex = 0
+          this.detailOpen = false;
+          this.billDetailIndex = 0;
         }
       },
       // render table item
-      renderPrice: function (h, p, html) {
-        let htmlStr = ''
+      renderPrice: function(h, p, html) {
+        let htmlStr = "";
         if (p.discount > 0) {
           if (html) {
             htmlStr = `<p class="bill-reduce">¥${p.amount.toFixed(
               2
             )}<span class="past">¥${(p.amount + p.discount).toFixed(
               2
-            )}</span></p>`
-            return htmlStr
+            )}</span></p>`;
+            return htmlStr;
           } else {
             return h(
-              'p',
+              "p",
               {
                 class: {
-                  'bill-reduce': true
+                  "bill-reduce": true
                 }
               },
               [
                 `¥${p.amount.toFixed(2)}`,
                 h(
-                  'span',
+                  "span",
                   {
                     class: {
                       past: true
@@ -254,45 +250,45 @@
                   `¥${(p.amount + p.discount).toFixed(2)}`
                 )
               ]
-            )
+            );
           }
         } else {
           if (html) {
-            htmlStr = `<p>¥${p.amount.toFixed(2)}</p>`
-            return htmlStr
+            htmlStr = `<p>¥${p.amount.toFixed(2)}</p>`;
+            return htmlStr;
           } else {
-            return h('p', `¥${p.amount.toFixed(2)}`)
+            return h("p", `¥${p.amount.toFixed(2)}`);
           }
         }
       },
-      renderQuantity: function (h, p, html) {
-        let str = ''
+      renderQuantity: function(h, p, html) {
+        let str = "";
         switch (p.type) {
           case 3:
-            str = '时长1月'
-            break
+            str = "时长1月";
+            break;
           case 1:
-            break
+            break;
           case 2:
-            break
+            break;
           case 4:
             if (p.quantity === 0) {
-              str = p.unit || '--'
+              str = p.unit || "--";
             } else if (p.quantity > 0) {
-              str = `${p.quantity}*${p.unit || ''}`
+              str = `${p.quantity}*${p.unit || ""}`;
             }
-            break
+            break;
           default:
-            str = ''
-            break
+            str = "";
+            break;
         }
         if (html) {
-          return `<p>${str}</p>`
+          return `<p>${str}</p>`;
         }
-        return h('p', str)
+        return h("p", str);
       }
     }
-  }
+  };
 </script>
 
 <style lang="stylus" scoped>
