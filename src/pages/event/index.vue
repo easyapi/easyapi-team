@@ -1,36 +1,16 @@
 <template>
   <div class="event_card">
     <div class="event_ti">
+      <span class="screen">筛选动态：
+      </span>
+      <Select placeholder="所有成员" v-model="member" style="width:200px">
+        <Option v-for="item in memberList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+      </Select>
       <span class="screen">筛选项目：
       </span>
-      <Dropdown trigger="click">
-        <span class="btn-link">
-          所有项目
-          <Icon type="md-arrow-dropdown"/>
-        </span>
-        <DropdownMenu slot="list">
-          <DropdownItem>驴打滚</DropdownItem>
-          <DropdownItem>炸酱面</DropdownItem>
-          <DropdownItem>豆汁儿</DropdownItem>
-          <DropdownItem>冰糖葫芦</DropdownItem>
-          <DropdownItem>北京烤鸭</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-      <span class="screen">筛选成员：
-      </span>
-      <Dropdown trigger="click">
-        <span class="btn-link">
-          所有成员
-          <Icon type="md-arrow-dropdown"/>
-        </span>
-        <DropdownMenu slot="list">
-          <DropdownItem>驴打滚</DropdownItem>
-          <DropdownItem>炸酱面</DropdownItem>
-          <DropdownItem>豆汁儿</DropdownItem>
-          <DropdownItem>冰糖葫芦</DropdownItem>
-          <DropdownItem>北京烤鸭</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+      <Select placeholder="所有项目" v-model="project" style="width:200px">
+        <Option v-for="item in memberList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+      </Select>
     </div>
     <div class="eventbox">
       <div>
@@ -40,14 +20,14 @@
               <p>07/18</p>
               <p>星期二</p>
             </div>
-            <div class="em">简碳</div>
+            <div class="em">{{item.team.name}}</div>
             <Divider dashed="true"/>
             <div class="event_content">
-              <span class="addTime">{{item.addTime}}</span>
-              <Avatar icon="ios-person" size="50" class="event_avatar" :src="item.user.photo"/>
-              <span><strong class="event_info">磊大</strong>修改了:<span class="shd"
-                                                                    v-html="item.content">{{item.content}}</span></span>
-            </div>
+            <span class="addTime">{{item.addTime}}</span>
+            <Avatar icon="ios-person" size="50" class="event_avatar" :src="item.user.photo"/>
+            <span><strong class="event_info">磊大</strong>修改了:<span class="shd"
+                                                                  v-html="item.content">{{item.content}}</span></span>
+          </div>
           </li>
         </ul>
       </div>
@@ -56,21 +36,50 @@
 </template>
 
 <script>
-  import {getEventList} from "../../api/event";
+  import { getEventList } from "../../api/event";
 
   export default {
     name: "Event",
-    data: function () {
+    data: function() {
       return {
         showPro: false,
         showMem: false,
-        eventListArray: []
+        eventListArray: [],
+        member: "",
+        project: "",
+        timer: [],
+        memberList: [
+          {
+            value: "New York",
+            label: "New York"
+          },
+          {
+            value: "London",
+            label: "London"
+          },
+          {
+            value: "Sydney",
+            label: "Sydney"
+          },
+          {
+            value: "Ottawa",
+            label: "Ottawa"
+          },
+          {
+            value: "Paris",
+            label: "Paris"
+          },
+          {
+            value: "Canberra",
+            label: "Canberra"
+          }
+        ]
       };
     },
-    created: function () {
+    created: function() {
 
     },
-    mounted: function () {
+    mounted: function() {
       document.title = "团队动态 - EasyAPI";
       this.getEventList();
     },
@@ -79,8 +88,22 @@
         getEventList().then(res => {
           if (res.data.code == 1) {
             this.eventListArray = res.data.content;
+            for (let a of this.eventListArray) {
+              a.addTime = new Date(a.addTime).toLocaleTimeString();
+            }
           }
         });
+      },
+      timeStampString(time) {
+        let datetime = new Date();
+        datetime.setTime(time);
+        let year = datetime.getFullYear();
+        let month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+        let date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+        let hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
+        let minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+        let second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+        return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
       }
     }
   };
@@ -115,20 +138,20 @@
   }
 
   .mr {
-    background: #fff;
+    background: #1ac1d6;
     display: inline-block;
     font-size: 12px;
     float: left;
-    color: #999;
+    color: #ffffff;
     width: 54px;
     text-align: center;
     border-radius: 50%;
     height: 54px;
-    border: 2px solid #ddd;
+    border: 2px solid #1ac1d6;
   }
 
   .event_avatar {
-    margin: 0 15px
+    margin: 0 15px 0 50px
   }
 
   .event_info {

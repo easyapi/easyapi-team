@@ -41,7 +41,7 @@
       };
     },
     mounted() {
-      document.title = "消息通知 - EasyAPI";
+      document.title = "团队通知 - EasyAPI";
       window.addEventListener("scroll", this.lazyLoading); // 滚动到底部，再加载的处理事件
       getNotificationList().then((res) => {
         this.notificationListArray = res.data.content;
