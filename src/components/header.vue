@@ -60,7 +60,7 @@
         </div>
         <div class="user-avatar">
           <a>
-            <img id="showPersonage" :src="photo" alt/>t
+            <img id="showPersonage" :src="photo" alt/>
           </a>
           <div :class="{ active: isActive }" class="ea-DropdownMenu">
             <router-link to="/notification">我的通知</router-link>
@@ -343,6 +343,9 @@
     }
 
     .current-team-info {
+      max-height:715px;
+      overflow-y:auto;
+      overflow-x:hidden;
       position: absolute;
       padding: 0 20px;
       top: 50px;
