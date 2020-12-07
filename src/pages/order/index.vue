@@ -2,6 +2,7 @@
   <div class="m-wrapper" v-cloak>
     <h4 class="title">订单记录</h4>
     <Table
+      class="table"
       v-if="tableData.length"
       stripe
       :columns="tableHead"
@@ -294,6 +295,10 @@
 <style lang="stylus" scoped>
   @import '../../assets/styles/color.styl';
 
+  /deep/.ivu-table-row:hover{
+    cursor pointer
+  }
+
   .title {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -336,6 +341,10 @@
   [v-cloak] {
     display: none !important;
   }
+
+    .ivu-table-body:hover{
+      cursor pointer
+    }
 
   .bill-opt {
     color: c-blue;

@@ -124,6 +124,10 @@
 <style lang="stylus" scoped>
   @import '../../assets/styles/color.styl';
 
+  /deep/.ivu-table-row:hover{
+    cursor pointer
+  }
+
   .title
     margin-top: 20px;
     margin-bottom: 20px;

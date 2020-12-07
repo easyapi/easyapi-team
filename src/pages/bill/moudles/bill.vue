@@ -142,6 +142,11 @@
 
 <style lang="stylus" scoped>
   @import '../../../assets/styles/color.styl';
+
+  /deep/.ivu-table-row:hover{
+    cursor pointer
+  }
+
   .page-nav
     float: right
     margin: 15px 0 40px
