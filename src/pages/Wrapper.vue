@@ -86,7 +86,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../assets/styles/color.styl';
+  @import '../styles/color.styl';
 
   .team-hd {
     height: 260px;

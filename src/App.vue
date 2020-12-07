@@ -36,7 +36,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import './assets/styles/color.styl'
+  @import 'styles/color.styl'
 
   .loading-bg
     position: fixed

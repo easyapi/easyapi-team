@@ -293,7 +293,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../assets/styles/color.styl';
+  @import '../../styles/color.styl';
 
   /deep/.ivu-table-row:hover{
     cursor pointer
@@ -336,7 +336,7 @@
 </style>
 
 <style lang="stylus">
-  @import '../../assets/styles/color.styl';
+  @import '../../styles/color.styl';
 
   [v-cloak] {
     display: none !important;

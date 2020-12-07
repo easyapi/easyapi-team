@@ -258,7 +258,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../assets/styles/color';
+@import '../styles/color';
 
 header {
   text-align: center;

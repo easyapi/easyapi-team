@@ -10,11 +10,11 @@ import infiniteScroll from "vue-infinite-scroll"
 import 'core-js';
 import "view-design/dist/styles/iview.css";
 
-import "./assets/styles/gobal.styl";
-import "./assets/styles/a-icon-font.css";
+import "./styles/gobal.styl";
+import "./styles/a-icon-font.css";
 // icomoon
-import "./assets/styles/icomoon/style.css";
-import "./assets/styles/fontello/fontello.css";
+import "./styles/icomoon/style.css";
+import "./styles/fontello/fontello.css";
 
 Vue.use(ViewUI);
 Vue.use(VueBus);

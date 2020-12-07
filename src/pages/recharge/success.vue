@@ -22,7 +22,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../assets/styles/color.styl'
+  @import '../../styles/color.styl'
 
   .recharge-success
     width: 860px

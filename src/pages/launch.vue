@@ -64,7 +64,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../assets/styles/color'
+  @import '../styles/color'
 
   .tips
     padding: 20px 0

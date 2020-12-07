@@ -895,7 +895,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../assets/styles/color.styl';
+  @import '../styles/color.styl';
 
   .m-wrapper {
     max-width: 960px;
@@ -1084,7 +1084,7 @@
 </style>
 
 <style lang="stylus">
-  @import '../assets/styles/color.styl';
+  @import '../styles/color.styl';
 
   .wx-pay {
     text-align: center;

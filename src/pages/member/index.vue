@@ -363,7 +363,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../assets/styles/color.styl'
+  @import '../../styles/color.styl'
 
   .m-wrapper
     padding-top: 40px

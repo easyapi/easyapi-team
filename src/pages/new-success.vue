@@ -75,7 +75,7 @@
 </script>
 
 <style lang="stylus" scoped>
-  @import '../assets/styles/color'
+  @import '../styles/color'
 
   header {
     padding: 40px 0;
