@@ -1,4 +1,4 @@
-import { baseUrl } from "./api";
+import {baseUrl} from "./api";
 import axios from "axios";
 
 
@@ -7,7 +7,7 @@ import axios from "axios";
  *
  * @see https://www.easyai.com
  */
-export const setMemberType = (data) => axios.put(`${baseUrl}/api/userTeam`, data, { json: true });
+export const setMemberType = (data) => axios.put(`${baseUrl}/api/user-team`, data, {json: true});
 
 /**
  * 获取成员邀请信息
@@ -21,11 +21,11 @@ export const getMemberInvitedInfo = (params) => axios.get(`${baseUrl}/api/invite
  *
  * @see https://www.easyai.com
  */
-export const addMember = (data) => axios.post(`${baseUrl}/api/userTeam`, data,{json: true})
+export const addMember = (data) => axios.post(`${baseUrl}/api/user-team`, data, {json: true})
 
 /**
  * 删除成员
  *
  * @see https://www.easyai.com
  */
-export const delMember = (data,id) => axios.delete(`${baseUrl}/api/userTeam\\${id}`, data)
+export const delMember = (data, id) => axios.delete(`${baseUrl}/api/user-team/${id}`, data)
