@@ -81,7 +81,7 @@
                   message: '成员邮箱不能为空',
                   trigger: 'blur'
                 },
-                { type: 'email', message: '成员邮箱错误', trigger: 'blur' }
+                
               ]"
             >
               <Input
