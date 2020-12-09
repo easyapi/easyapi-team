@@ -81,7 +81,6 @@
                   message: '成员邮箱不能为空',
                   trigger: 'blur'
                 },
-                
               ]"
             >
               <Input
