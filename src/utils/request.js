@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from "../router";
+import router from "../router/index";
 import Cookies from "js-cookie";
 
 // 添加请求拦截器

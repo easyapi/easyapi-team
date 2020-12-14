@@ -3,7 +3,7 @@ import App from "./App.vue";
 import store from "./store";
 import router from "./router";
 import ViewUI from "view-design";
-import axios from "./api/fetch";
+import axios from "./utils/request";
 import VueBus from "vue-bus";
 import infiniteScroll from "vue-infinite-scroll"
 

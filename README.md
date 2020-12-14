@@ -66,7 +66,7 @@ npm run build --report
   │   └── index.js          #路由
   ├── service
   │   ├── apiList.js        #api列表
-  │   └── fetch.js          #ajax封装
+  │   └── request.js          #ajax封装
   └── store                 #vuex相关
   ├── actions.js
   ├── getters.js

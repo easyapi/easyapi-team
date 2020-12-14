@@ -465,7 +465,9 @@
           this.members = res.data.content;
         });
       },
-      //获取发票Token
+      /**
+       * 获取发票Token
+       */
       getInvoiceToken() {
         let encryption = md5("" + this.$store.state.user.team.id);
         getInvoiceToken(encryption.toUpperCase()).then((res) => {
@@ -478,15 +480,13 @@
       jumpInvoice() {
         this.getInvoiceToken();
         window.open(
-          "https://fapiao-user-center-web.easyapi.com/?accessToken=" +
-          this.fapiaoToken
+          "https://fapiao-user-center-web.easyapi.com/?accessToken=" + this.fapiaoToken
         );
       },
       //生成二维码
       qrCode: function () {
         this.getInvoiceToken();
-        this.picture =
-          "https://fapiao-h5.easyapi.com?accessToken=" + this.fapiaoToken;
+        this.picture = "https://fapiao-h5.easyapi.com?accessToken=" + this.fapiaoToken;
       },
       getTeamInfo: function () {
         if (!this.$store.state.user.team) {
@@ -611,9 +611,9 @@
         let s = this.needMoneyWarn ? this.moneyWarnSize : 0;
         this.$ajax({
           method: "PUT",
-          url: moneyWarn+"/"+this.accountGolbalInfo.id,
+          url: moneyWarn + "/" + this.accountGolbalInfo.id,
           data: {
-            id:this.accountGolbalInfo.id,
+            id: this.accountGolbalInfo.id,
             warningBalance: s,
           },
           json: true,

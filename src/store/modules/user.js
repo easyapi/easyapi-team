@@ -3,27 +3,25 @@ import {getAccountInfo} from "@/api/account";
 
 const user = {
   state: {
-    accountInfo: "",
+    accountInfo: {},
     userId: "",
     username: "",
     nickname: "",
     photo: "",
     mobile: "",
     email: "",
-    team: "",
+    team: {},
     teamName: "",
     teamImg: "",
-    //用户团队
-    userTeam: "",
+    userTeam: "", //用户团队
     token: Cookies.get("authenticationToken")
   },
 
   mutations: {
-    //accountInfo
-    SET_ACCOUNTINFO: (state, accountInfo) => {
+    SET_ACCOUNT_INFO: (state, accountInfo) => {
       state.accountInfo = accountInfo;
     },
-    SET_USERID: (state, userId) => {
+    SET_USER_ID: (state, userId) => {
       state.userId = userId;
     },
     SET_USERNAME: (state, username) => {
@@ -44,13 +42,13 @@ const user = {
     SET_TEAM: (state, team) => {
       state.team = team;
     },
-    SET_TEAMNAME: (state, teamName) => {
+    SET_TEAM_NAME: (state, teamName) => {
       state.teamName = teamName;
     },
-    SET_TEAMIMG: (state, teamImg) => {
+    SET_TEAM_IMG: (state, teamImg) => {
       state.teamImg = teamImg;
     },
-    SET_USERTEAM: (state, userTeam) => {
+    SET_USER_TEAM: (state, userTeam) => {
       state.userTeam = userTeam;
     },
     SET_TOKEN: (state, token) => {
@@ -66,8 +64,8 @@ const user = {
     GetUserInfo({commit, state}) {
       getAccountInfo().then(res => {
         let userInfoData = res.data;
-        commit("SET_ACCOUNTINFO", userInfoData);
-        commit("SET_USERID", userInfoData.id);
+        commit("SET_ACCOUNT_INFO", userInfoData);
+        commit("SET_USER_ID", userInfoData.id);
         commit("SET_USERNAME", userInfoData.username);
         commit("SET_NICKNAME", userInfoData.nickname);
         commit("SET_PHOTO", userInfoData.photo);
@@ -77,11 +75,11 @@ const user = {
           //团队信息{}，包括：name，img，id。。
           commit("SET_TEAM", userInfoData.team);
           //团队信息具体信息
-          commit("SET_TEAMNAME", userInfoData.team.name);
-          commit("SET_TEAMIMG", userInfoData.team.img);
+          commit("SET_TEAM_NAME", userInfoData.team.name);
+          commit("SET_TEAM_IMG", userInfoData.team.img);
         }
         //用户团队{}
-        commit("SET_USERTEAM", userInfoData.userTeam);
+        commit("SET_USER_TEAM", userInfoData.userTeam);
       }).catch(error => {
       });
     },
