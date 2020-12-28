@@ -1,16 +1,31 @@
-import {baseUrl} from "./api";
-
+import { baseUrl } from "./api";
+import request from "@/utils/request";
 
 /**
  * 支付宝支付
  *
  * @see https://www.easyai.com
  */
-export const alipay = (price) => axios.get(`${baseUrl}/api/alipay/recharge`, {price: price});
-
+export function alipay(params) {
+  return request({
+    url: `${baseUrl}/api/alipay/recharge`,
+    method: "get",
+    params: {
+      ...params,
+    },
+  });
+}
 /**
  * 微信支付
  *
  * @see https://www.easyai.com
  */
-export const wxpay = (price) => axios.get(`${baseUrl}/api/wxpay/recharge`, {price: price});
+export function wxpay(params) {
+  return request({
+    url: `${baseUrl}/api/wxpay/recharge`,
+    method: "get",
+    params: {
+      ...params,
+    },
+  });
+}

@@ -1,9 +1,17 @@
-import {baseUrl} from "./api";
-import axios from "axios";
+import { baseUrl } from "./api";
+import request from "@/utils/request";
 
 /**
  * 获取团队充值记录列表
  *
  * @see https://www.easyai.com
  */
-export const getRechargeList = (params) => axios.get(`${baseUrl}/api/recharges`, params);
+export function getRechargeList(params) {
+  return request({
+    url: `${baseUrl}/api/recharges`,
+    method: "get",
+    params: {
+      ...params,
+    },
+  });
+}

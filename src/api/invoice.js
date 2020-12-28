@@ -1,5 +1,5 @@
 import {baseUrl} from "./api";
-import axios from "axios";
+import request from "@/utils/request";
 
 
 /**
@@ -7,8 +7,12 @@ import axios from "axios";
  *
  * @see https://www.easyai.com
  */
-export const getInvoiceToken = (username) => axios.get(`${baseUrl}/invoice/access-token`, {
-  params: {
-    username: username
-  }
-});
+export function getInvoiceToken(username) {
+  return request({
+    url: `${baseUrl}/invoice/access-token`,
+    method: "get",
+    params: {
+      username: username
+    }
+  });
+}

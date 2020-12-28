@@ -1,5 +1,5 @@
 import {baseUrl} from "./api";
-import axios from "axios";
+import request from "@/utils/request";
 
 
 /**
@@ -7,4 +7,12 @@ import axios from "axios";
  *
  * @see https://www.easyai.com
  */
-export const getNotificationList = (params) => axios.get(`${baseUrl}/notifications`, params);
+export function getNotificationList(params) {
+    return request({
+      url: `${baseUrl}/notifications`,
+      method: "get",
+      params: {
+        ...params,
+      },
+    });
+  }

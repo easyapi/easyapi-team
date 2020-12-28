@@ -1,10 +1,17 @@
-import {baseUrl} from "./api";
-import axios from "axios";
-
+import { baseUrl } from "./api";
+import request from "@/utils/request";
 
 /**
  * 获取动态列表
  *
  * @see https://www.easyai.com
  */
-export const getEventList = (params) => axios.get(`${baseUrl}/events`, params);
+export function getEventList(params) {
+  return request({
+    url: `${baseUrl}/events`,
+    method: "get",
+    params: {
+      ...params,
+    },
+  });
+}

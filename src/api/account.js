@@ -1,12 +1,16 @@
 import {baseUrl} from "./api";
-import axios from "axios";
-
+import request from "@/utils/request";
 /**
  * 获取用户信息
  **
  * @see https://www.easyai.com
  */
-export const getAccountInfo = () => axios.get(`${baseUrl}/api/account`);
+export function getAccountInfo() {
+  return request({
+    url: `${baseUrl}/api/account`,
+    method: "get",
+  });
+}
 
 
 /**
@@ -14,23 +18,39 @@ export const getAccountInfo = () => axios.get(`${baseUrl}/api/account`);
  **
  * @see https://www.easyai.com
  */
-export const getUserTeamList = () => axios.get(`${baseUrl}/api/user/teams`);
-
+export function getUserTeamList() {
+  return request({
+    url: `${baseUrl}/api/user/teams`,
+    method: "get",
+  });
+}
 
 /**
  * 修改密码
  **
  * @see https://www.easyai.com
  */
-export const changePassword = (data) => axios.post(`${baseUrl}/api/account/change-password`, {
-  data: {
-    data
-  }
-});
+export function changePassword(data) {
+  return request({
+    url: `${baseUrl}/api/account/change-password`,
+    method: "post",
+    data:{
+      ...data
+    }
+  });
+}
 
 /**
  * 更新用户信息
  *
  * @see https://www.easyai.com
  */
-export const updateAccountInfo = (data) => axios.put(`${baseUrl}/api/account`, data);
+export function updateAccountInfo(data) {
+  return request({
+    url: `${baseUrl}/api/account`,
+    method: "put",
+    data:{
+      ...data
+    }
+  });
+}

@@ -1,5 +1,5 @@
 import {baseUrl} from "./api";
-import axios from "axios";
+import request from "@/utils/request";
 
 
 /**
@@ -7,25 +7,54 @@ import axios from "axios";
  *
  * @see https://www.easyai.com
  */
-export const setMemberType = (data) => axios.put(`${baseUrl}/api/user-team`, data, {json: true});
-
+export function setMemberType(data) {
+    return request({
+      url: `${baseUrl}/api/user-team`,
+      method: "put",
+      data: {
+        ...data
+      }
+    });
+  }
 /**
  * 获取成员邀请信息
  *
  * @see https://www.easyai.com
  */
-export const getMemberInvitedInfo = (params) => axios.get(`${baseUrl}/api/invite`, params)
-
+export function getMemberInvitedInfo(params) {
+    return request({
+      url: `${baseUrl}/api/invite`,
+      method: "get",
+      params: {
+        ...params
+      }
+    });
+  }
 /**
  * 增加成员
  *
  * @see https://www.easyai.com
  */
-export const addMember = (data) => axios.post(`${baseUrl}/api/user-team`, data, {json: true})
-
+export function addMember(data) {
+    return request({
+      url: `${baseUrl}/api/user-team`,
+      method: "post",
+      data: {
+        ...data
+      }
+    });
+  }
 /**
  * 删除成员
  *
  * @see https://www.easyai.com
  */
-export const delMember = (data, id) => axios.delete(`${baseUrl}/api/user-team/${id}`, data)
+export function delMember(data,id) {
+    return request({
+      url: `${baseUrl}/api/user-team/${id}`,
+      method: "delete",
+      data: {
+        ...data
+      }
+    });
+  }
