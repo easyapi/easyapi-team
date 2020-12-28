@@ -7,9 +7,9 @@
       :loading="dataLoading"
     ></Table>
     <Page
-      :total="total"
-      :current="Number(page)"
-      :page-size="pageSize"
+      :total="page.total"
+      :current="page.page"
+      :page-size="page.size"
       class="page-nav"
       @on-change="pageChange"
     ></Page>
@@ -65,25 +65,24 @@
           }
         ],
         tableData: [],
-        total: null,
-        page: 1,
+        page: {
+          page: 1,
+          size: 10,
+          total: 0
+        },
         dataLoading: false,
-        billDetailIndex: 0,
-        detailOpen: false,
         payState: {
           "0": "待付款",
           "1": "充值成功",
           "-1": "已取消",
           "9": "充值成功",
           "-9": "充值失败"
-        },
-        pageSize: 10
+        }
       };
     },
     created: function () {
-      let curPage = this.$route.query.page;
-      if (curPage) {
-        this.page = curPage;
+      if (this.$route.query.page) {
+        this.page = this.$route.query.page;
       }
       this.getList();
     },
@@ -92,7 +91,7 @@
     },
     methods: {
       pageChange: function (page) {
-        this.page = page;
+        this.page.page = page;
         location.hash = this.$route.path + "?page=" + page;
         this.getList();
       },
@@ -102,17 +101,17 @@
           method: "GET",
           url: getRechargeList,
           params: {
-            page: this.page - 1,
-            size: this.pageSize
+            page: this.page.page - 1,
+            size: this.page.size
           }
         }).then(res => {
           this.dataLoading = false;
-          if (res.data == null) {
+          if (res.data.code === 0) {
             this.tableData = [];
             this.dataLoading = false;
           } else {
-            if (!this.total) this.total = res.data.totalElements
-            if (res.data.content.length) this.tableData = res.data.content;
+            this.page.total = res.data.totalElements
+            this.tableData = res.data.content;
           }
         }).catch(function (err) {
           this.dataLoading = false;

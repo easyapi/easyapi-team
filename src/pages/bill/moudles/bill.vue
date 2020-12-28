@@ -7,9 +7,9 @@
       :loading="dataLoading"
     ></Table>
     <Page
-      :total="total"
-      :current="Number(page)"
-      :page-size="pageSize"
+      :total="page.total"
+      :current="page.page"
+      :page-size="page.size"
       class="page-nav"
       @on-change="pageChange"
     ></Page>
@@ -50,7 +50,6 @@
               } else {
                 return h("p", "+" + "¥" + params.row.receive);
               }
-
             }
           },
           {
@@ -81,23 +80,23 @@
           },
         ],
         tableData: [],
-        total: null,
-        page: 1,
+        page: {
+          page: 1,
+          size: 10,
+          total: 0
+        },
         dataLoading: false,
-        billDetailIndex: 0,
-        detailOpen: false,
         payState: {
           "0": "未完成",
           "1": "已完成",
           "-1": "已取消",
         },
-        pageSize: 10
+
       };
     },
     created: function () {
-      let curPage = this.$route.query.page;
-      if (curPage) {
-        this.page = curPage;
+      if (this.$route.query.page) {
+        this.page.page = this.$route.query.page;
       }
       this.getList();
     },
@@ -106,25 +105,24 @@
     },
     methods: {
       pageChange: function (page) {
-        this.page = page;
+        this.page.page = page;
         location.hash = this.$route.path + "?page=" + page;
         this.getList();
       },
       getList: function () {
         this.dataLoading = true;
-        let params = {
-          page: this.page - 1,
-          size: this.pageSize
-        };
-        getBillList(params).then(res => {
+        getBillList({
+          page: this.page.page - 1,
+          size: this.page.size
+        }).then(res => {
           this.dataLoading = false;
           if (res.data == null) {
-            this.total = 0
+            this.page.total = 0
             this.tableData = [];
             this.dataLoading = false;
           } else {
-            if (!this.total) this.total = res.data.totalElements
-            if (res.data.content.length) this.tableData = res.data.content;
+            this.page.total = res.data.totalElements
+            this.tableData = res.data.content;
           }
         }).catch(function (err) {
           this.dataLoading = false;

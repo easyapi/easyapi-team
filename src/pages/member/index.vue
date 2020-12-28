@@ -307,8 +307,7 @@
         }).then(function () {
           this.closeDelSD();
         });
-      }
-      ,
+      },
 
       /**
        * 添加新成员
