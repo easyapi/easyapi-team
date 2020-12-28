@@ -18,12 +18,12 @@
 </template>
 
 <script>
-  import { getRechargeList } from "../../api/recharge";
+  import {getRechargeList} from "../../api/recharge";
 
   export default {
     name: "Recharges",
     components: {},
-    data: function() {
+    data: function () {
       return {
         tableHead: [
           {
@@ -80,23 +80,23 @@
         }
       };
     },
-    created: function() {
+    created: function () {
       let curPage = this.$route.query.page;
       if (curPage) {
         this.page = curPage;
       }
       this.getList();
     },
-    mounted: function() {
+    mounted: function () {
       document.title = "充值记录 - EasyAPI";
     },
     methods: {
-      pageChange: function(page) {
+      pageChange: function (page) {
         this.page = page;
         location.hash = this.$route.path + "?page=" + page;
         this.getList();
       },
-      getList: function(page) {
+      getList: function () {
         this.dataLoading = true;
         getRechargeList().then(res => {
           this.dataLoading = false;
@@ -106,15 +106,14 @@
           } else {
             if (res.data.content.length) this.tableData = res.data.content;
           }
-        })
-          .catch(function(err) {
-            this.dataLoading = false;
-            console.log(err);
-          });
+        }).catch(function (err) {
+          this.dataLoading = false;
+          console.log(err);
+        });
       }
     },
     watch: {
-      "$store.state.accountInfo.team": function() {
+      "$store.state.accountInfo.team": function () {
         this.getList();
       }
     }
@@ -124,7 +123,7 @@
 <style lang="stylus" scoped>
   @import '../../styles/color.styl';
 
-  /deep/.ivu-table-row:hover{
+  /deep/ .ivu-table-row:hover {
     cursor pointer
   }
 

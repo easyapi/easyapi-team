@@ -203,13 +203,11 @@
           headers: {
             authorization: this.authenticationToken
           }
+        }).then(res => {
+          this.balance = res.data.content.balance
+        }).catch(error => {
+          console.log(error)
         })
-          .then(res => {
-            this.balance = res.data.content.balance
-          })
-          .catch(error => {
-            console.log(error)
-          })
       },
       getTeamInfo() {
         this.$ajax({
@@ -320,10 +318,10 @@
       }
     },
     created() {
-      this.serviceId = this.$route.query.serviceId
-      this.teamServiceId = this.$route.query.teamServiceId
-      this.getItem()
-      this.getTeamInfo()
+      this.serviceId = this.$route.query.serviceId;
+      this.teamServiceId = this.$route.query.teamServiceId;
+      this.getItem();
+      this.getTeamInfo();
       this.authenticationToken = 'Bearer ' + Cookies.get('authenticationToken')
     },
     mounted() {

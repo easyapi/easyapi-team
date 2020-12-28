@@ -105,21 +105,19 @@
             page: this.page - 1,
             size: this.pageSize
           }
-        })
-          .then(res => {
+        }).then(res => {
+          this.dataLoading = false;
+          if (res.data == null) {
+            this.tableData = [];
             this.dataLoading = false;
-            if (res.data == null) {
-              this.tableData = [];
-              this.dataLoading = false;
-            } else {
-              if (!this.total) this.total = res.data.totalElements
-              if (res.data.content.length) this.tableData = res.data.content;
-            }
-          })
-          .catch(function (err) {
-            this.dataLoading = false;
-            console.log(err);
-          });
+          } else {
+            if (!this.total) this.total = res.data.totalElements
+            if (res.data.content.length) this.tableData = res.data.content;
+          }
+        }).catch(function (err) {
+          this.dataLoading = false;
+          console.log(err);
+        });
       }
     },
     watch: {
@@ -133,7 +131,7 @@
 <style lang="stylus" scoped>
   @import '../../../styles/color.styl'
 
-  /deep/.ivu-table-row:hover{
+  /deep/ .ivu-table-row:hover {
     cursor pointer
   }
 

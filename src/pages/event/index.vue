@@ -23,11 +23,11 @@
             <div class="em">{{item.team.name}}</div>
             <Divider dashed="true"/>
             <div class="event_content">
-            <span class="addTime">{{item.addTime}}</span>
-            <Avatar icon="ios-person" size="50" class="event_avatar" :src="item.user.photo"/>
-            <span><strong class="event_info">磊大</strong>修改了:<span class="shd"
-                                                                  v-html="item.content">{{item.content}}</span></span>
-          </div>
+              <span class="addTime">{{item.addTime}}</span>
+              <Avatar icon="ios-person" size="50" class="event_avatar" :src="item.user.photo"/>
+              <span><strong class="event_info">磊大</strong>修改了:<span class="shd"
+                                                                    v-html="item.content">{{item.content}}</span></span>
+            </div>
           </li>
         </ul>
       </div>
@@ -36,11 +36,11 @@
 </template>
 
 <script>
-  import { getEventList } from "../../api/event";
+  import {getEventList} from "../../api/event";
 
   export default {
     name: "Event",
-    data: function() {
+    data: function () {
       return {
         showPro: false,
         showMem: false,
@@ -76,10 +76,10 @@
         ]
       };
     },
-    created: function() {
+    created: function () {
 
     },
-    mounted: function() {
+    mounted: function () {
       document.title = "团队动态 - EasyAPI";
       this.getEventList();
     },

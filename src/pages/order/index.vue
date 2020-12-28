@@ -81,12 +81,12 @@
 </template>
 
 <script>
-  import { getOrderList } from "../../api/order";
+  import {getOrderList} from "../../api/order";
 
   export default {
     name: "Bill",
     components: {},
-    data: function() {
+    data: function () {
       return {
         tableHead: [
           {
@@ -167,7 +167,7 @@
         pageSize: 10
       };
     },
-    created: function() {
+    created: function () {
       let curPage = this.$route.query.page;
       if (curPage) {
         this.page = curPage;
@@ -176,23 +176,21 @@
     },
     beforeCreate() {
     },
-    mounted: function() {
+    mounted: function () {
       document.title = "团队订单 - EasyAPI";
     },
     methods: {
-      pageChange: function(page) {
-        console.log(page, 333333333333);
+      pageChange: function (page) {
         this.page = page;
         location.hash = this.$route.path + "?page=" + page;
         this.getList();
       },
-      getList: function() {
+      getList: function () {
         this.dataLoading = true;
-        let params = {
+        getOrderList({
           page: this.page - 1,
           size: this.pageSize
-        };
-        getOrderList(params).then(res => {
+        }).then(res => {
           if (res.data == null) {
             this.total = 0;
             this.tableData = [];
@@ -203,25 +201,23 @@
             if (res.data.content.length) this.tableData = res.data.content;
           }
           this.dataLoading = false;
-        })
-          .catch(function(err) {
-            this.tableData = [];
-          })
-          .then(function() {
-          });
+        }).catch(function (err) {
+          this.tableData = [];
+        }).then(function () {
+        });
       },
-      openBillDetail: function(index) {
+      openBillDetail: function (index) {
         this.detailOpen = true;
         this.billDetailIndex = index;
       },
-      detailVisible: function(o) {
+      detailVisible: function (o) {
         if (!o) {
           this.detailOpen = false;
           this.billDetailIndex = 0;
         }
       },
       // render table item
-      renderPrice: function(h, p, html) {
+      renderPrice: function (h, p, html) {
         let htmlStr = "";
         if (p.discount > 0) {
           if (html) {
@@ -262,7 +258,7 @@
           }
         }
       },
-      renderQuantity: function(h, p, html) {
+      renderQuantity: function (h, p, html) {
         let str = "";
         switch (p.type) {
           case 3:
@@ -295,7 +291,7 @@
 <style lang="stylus" scoped>
   @import '../../styles/color.styl';
 
-  /deep/.ivu-table-row:hover{
+  /deep/ .ivu-table-row:hover {
     cursor pointer
   }
 
@@ -342,9 +338,9 @@
     display: none !important;
   }
 
-    .ivu-table-body:hover{
-      cursor pointer
-    }
+  .ivu-table-body:hover {
+    cursor pointer
+  }
 
   .bill-opt {
     color: c-blue;

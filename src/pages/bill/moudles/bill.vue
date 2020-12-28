@@ -110,12 +110,12 @@
         location.hash = this.$route.path + "?page=" + page;
         this.getList();
       },
-      getList: function (page) {
+      getList: function () {
         this.dataLoading = true;
         let params = {
           page: this.page - 1,
           size: this.pageSize
-        }
+        };
         getBillList(params).then(res => {
           this.dataLoading = false;
           if (res.data == null) {
@@ -143,7 +143,7 @@
 <style lang="stylus" scoped>
   @import '../../../styles/color.styl';
 
-  /deep/.ivu-table-row:hover{
+  /deep/ .ivu-table-row:hover {
     cursor pointer
   }
 

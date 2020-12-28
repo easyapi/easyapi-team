@@ -229,40 +229,38 @@
             authorization: "Bearer " + this.getCookie("authenticationToken"),
           },
           params: {serviceId: this.serviceId},
-        })
-          .then((res) => {
-            if (res.data.code !== 0) {
-              let arr = [];
-              res.data.content.forEach((item) => {
-                let obj = {};
-                if (item.type == 2) {
-                  obj.num = item.times;
-                  obj.price = item.price;
-                }
-                if (item.type == 3) {
-                  obj.num = item.month;
-                  obj.price = item.price;
-                }
-                obj.id = item.servicePriceId;
-                obj.once = (obj.price / obj.num).toFixed(4);
-                arr.push(obj);
-              });
+        }).then((res) => {
+          if (res.data.code !== 0) {
+            let arr = [];
+            res.data.content.forEach((item) => {
+              let obj = {};
+              if (item.type == 2) {
+                obj.num = item.times;
+                obj.price = item.price;
+              }
+              if (item.type == 3) {
+                obj.num = item.month;
+                obj.price = item.price;
+              }
+              obj.id = item.servicePriceId;
+              obj.once = (obj.price / obj.num).toFixed(4);
+              arr.push(obj);
+            });
 
-              this.frequency = arr;
-              // this.frequency = arr
-              // console.log(this.frequency)
-              // // this.servicePriceId = res.data.content[0].servicePriceId
-              // for (let v of this.frequency) {
-              //   second = (v.price / v.month).toFixed(2)
-              //   this.onePrice.push(second)
-              // }
-              // console.log(this.onePrice)
-              // this.howMuchOfTheRest()
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+            this.frequency = arr;
+            // this.frequency = arr
+            // console.log(this.frequency)
+            // // this.servicePriceId = res.data.content[0].servicePriceId
+            // for (let v of this.frequency) {
+            //   second = (v.price / v.month).toFixed(2)
+            //   this.onePrice.push(second)
+            // }
+            // console.log(this.onePrice)
+            // this.howMuchOfTheRest()
+          }
+        }).catch((error) => {
+          console.log(error);
+        });
       },
       //查询 服务报价列表
       getDocPrice() {
@@ -274,29 +272,27 @@
             authorization: "Bearer " + this.getCookie("authenticationToken"),
           },
           params: {serviceId: this.serviceId},
-        })
-          .then((res) => {
-            if (res.data.code !== 0) {
-              let arr = [];
-              Object.keys(res.data.content).forEach(function (key) {
-                let obj = {};
-                obj.month = key;
-                obj.price = res.data.content[key];
-                arr.push(obj);
-              });
+        }).then((res) => {
+          if (res.data.code !== 0) {
+            let arr = [];
+            Object.keys(res.data.content).forEach(function (key) {
+              let obj = {};
+              obj.month = key;
+              obj.price = res.data.content[key];
+              arr.push(obj);
+            });
 
-              this.frequency = arr;
-              // this.servicePriceId = res.data.content[0].servicePriceId
-              for (let v of this.frequency) {
-                second = (v.price / v.month).toFixed(2);
-                this.onePrice.push(second);
-              }
-              this.howMuchOfTheRest();
+            this.frequency = arr;
+            // this.servicePriceId = res.data.content[0].servicePriceId
+            for (let v of this.frequency) {
+              second = (v.price / v.month).toFixed(2);
+              this.onePrice.push(second);
             }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+            this.howMuchOfTheRest();
+          }
+        }).catch((error) => {
+          console.log(error);
+        });
       },
       //余额
       choosePaymentMethod() {
@@ -306,13 +302,11 @@
           headers: {
             authorization: "Bearer " + this.getCookie("authenticationToken"),
           },
-        })
-          .then((res) => {
-            this.balance = res.data.content.balance;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        }).then((res) => {
+          this.balance = res.data.content.balance;
+        }).catch((error) => {
+          console.log(error);
+        });
       },
       dateFormat(date) {
         let y = date.getFullYear();
@@ -407,38 +401,36 @@
             servicePriceId: this.servicePriceId,
             payment: this.assignment,
           },
-        })
-          .then((res) => {
-            if (this.assignment === "支付宝") {
-              this.formHtml = res.data.alipay;
-              let form = $(this.formHtml);
-              form.attr("target", "_blank");
-              $("#app").append(form);
-            } else if (this.assignment === "微信支付") {
-              let weChatPayment = res.data.codeUrl;
-              this.$Modal.confirm({
-                title: "微信扫码支付",
-                content: `<div class="wx-pay"><p class="wx-pay_amount">支付${
-                this.price - this.discount
-                  }元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
-                okText: "",
-                cancelText: "",
-                onOk: () => {
-                  this.getServiceList();
-                  this.getTeamInfo();
-                  this.howMuchOfTheRest();
-                },
-              });
-            }
-            this.$Message.success(res.data.message);
-          })
-          .catch((error) => {
-            if (this.assignment == "" || this.assignment == null) {
-              this.$Message.warning("请选择和支付方式");
-            } else {
-              this.$Message.error(error.data.message);
-            }
-          });
+        }).then((res) => {
+          if (this.assignment === "支付宝") {
+            this.formHtml = res.data.alipay;
+            let form = $(this.formHtml);
+            form.attr("target", "_blank");
+            $("#app").append(form);
+          } else if (this.assignment === "微信支付") {
+            let weChatPayment = res.data.codeUrl;
+            this.$Modal.confirm({
+              title: "微信扫码支付",
+              content: `<div class="wx-pay"><p class="wx-pay_amount">支付${
+              this.price - this.discount
+                }元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
+              okText: "",
+              cancelText: "",
+              onOk: () => {
+                this.getServiceList();
+                this.getTeamInfo();
+                this.howMuchOfTheRest();
+              },
+            });
+          }
+          this.$Message.success(res.data.message);
+        }).catch((error) => {
+          if (this.assignment == "" || this.assignment == null) {
+            this.$Message.warning("请选择和支付方式");
+          } else {
+            this.$Message.error(error.data.message);
+          }
+        });
       },
       getCookie(name) {
         var arr,

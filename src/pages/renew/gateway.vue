@@ -163,7 +163,7 @@
       },
       //查询 服务报价列表
       getServiceList() {
-        let second = ''
+        let second = '';
         this.$ajax({
           method: 'get',
           url: ServiceList,
@@ -181,13 +181,10 @@
             })
 
             this.frequency = arr
-            console.log(this.frequency)
-            // this.servicePriceId = res.data.content[0].servicePriceId
             for (let v of this.frequency) {
               second = (v.price / v.month).toFixed(2)
               this.onePrice.push(second)
             }
-            console.log(this.onePrice)
             this.howMuchOfTheRest()
           }
         }).catch(error => {
@@ -288,9 +285,6 @@
         this.purchase = true
       },
       determineThePurchase() {
-        // if(){
-
-        // }
         this.$ajax({
           method: 'POST',
           url: documentRenewUrl,
@@ -302,39 +296,37 @@
             price: this.price,
             payment: this.assignment
           }
+        }).then(res => {
+          if (this.assignment === '支付宝') {
+            this.formHtml = res.data.alipay
+            let form = $(this.formHtml)
+            form.attr('target', '_blank')
+            $('#app').append(form)
+          } else if (this.assignment === '微信支付') {
+            let weChatPayment = res.data.codeUrl
+            this.$Modal.confirm({
+              title: '微信扫码支付',
+              content: `<div class="wx-pay"><p class="wx-pay_amount">支付${this
+                .price -
+              this
+                .discount}元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
+              okText: '',
+              cancelText: '',
+              onOk: () => {
+                this.getServiceList()
+                this.getTeamInfo()
+                this.howMuchOfTheRest()
+              }
+            })
+          }
+          this.$Message.success(res.data.message)
+        }).catch(error => {
+          if (this.assignment == '' || this.assignment == null) {
+            this.$Message.warning('请选择和支付方式')
+          } else {
+            this.$Message.error(error.response.data.message)
+          }
         })
-          .then(res => {
-            if (this.assignment === '支付宝') {
-              this.formHtml = res.data.alipay
-              let form = $(this.formHtml)
-              form.attr('target', '_blank')
-              $('#app').append(form)
-            } else if (this.assignment === '微信支付') {
-              let weChatPayment = res.data.codeUrl
-              this.$Modal.confirm({
-                title: '微信扫码支付',
-                content: `<div class="wx-pay"><p class="wx-pay_amount">支付${this
-                  .price -
-                this
-                  .discount}元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
-                okText: '',
-                cancelText: '',
-                onOk: () => {
-                  this.getServiceList()
-                  this.getTeamInfo()
-                  this.howMuchOfTheRest()
-                }
-              })
-            }
-            this.$Message.success(res.data.message)
-          })
-          .catch(error => {
-            if (this.assignment == '' || this.assignment == null) {
-              this.$Message.warning('请选择和支付方式')
-            } else {
-              this.$Message.error(error.response.data.message)
-            }
-          })
       },
       getCookie(name) {
         var arr,

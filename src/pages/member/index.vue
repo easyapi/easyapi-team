@@ -133,7 +133,7 @@
 </template>
 
 <script>
-  import { getTeamUserList } from "../../api/team";
+  import {getTeamUserList} from "../../api/team";
   import {
     setMemberType,
     getMemberInvitedInfo,
@@ -145,7 +145,7 @@
     name: "Members",
     components: {},
     props: ["propMembers"],
-    data: function() {
+    data: function () {
       return {
         memberSetDialog: false,
         memberSelect: null,
@@ -173,31 +173,31 @@
         hasPowerSetting: false
       };
     },
-    created: function() {
+    created: function () {
       let t = this.$store.state.user.userTeam.type;
       this.hasPowerSetting = t === "创建人" || t === "管理员" ? true : false;
     },
-    mounted: function() {
+    mounted: function () {
       document.title = "团队成员 - EasyAPI";
       this.getMemberInvite();
       this.getTeamUserList();
     },
     watch: {
-      "$store.state.user.userTeam": function() {
+      "$store.state.user.userTeam": function () {
         this.getTeamUserList();
         let t = this.$store.state.user.userTeam.type;
         this.hasPowerSetting = t === "创建人" || t === "管理员" ? true : false;
       }
     },
     methods: {
-      getTeamUserList: function() {
+      getTeamUserList: function () {
         getTeamUserList(this.$store.state.user.team.id).then(res => {
           this.members = res.data.content;
         });
       },
 
       // 成员设置弹窗
-      memberSetting: function(i) {
+      memberSetting: function (i) {
         if (!this.hasPowerSetting) {
           this.$Message.error("你没有权限!!");
           return;
@@ -207,28 +207,25 @@
         this.memberSetDialog = true;
         this.permision = this.members[this.memberSelect].type;
         this.getMemberInvite(this.members[i].user.id);
-      }
-      ,
-      memberSDVisible: function(show) {
+      },
+      memberSDVisible: function (show) {
         if (!show) {
           this.memberSetDialog = false;
           this.inviter = "";
           this.hasInviter = true;
         }
-      }
-      ,
-      closeMemberSD: function(resetSelect = true) {
+      },
+      closeMemberSD: function (resetSelect = true) {
         this.memberSetDialog = false;
         setTimeout(() => {
           this.inviter = "";
           this.hasInviter = true;
           if (resetSelect) this.memberSelect = null;
         }, 200);
-      }
-      ,
+      },
 
       // 获取成员被邀请信息
-      getMemberInvite: function(id) {
+      getMemberInvite: function (id) {
         let params = {
           inviteeId: id,
           teamId: this.$store.state.user.team.id
@@ -240,50 +237,46 @@
             this.hasInviter = false;
           }
         });
-      }
-      ,
+      },
 
       // 确认删除按钮
-      confirmClick: function() {
+      confirmClick: function () {
         this.confirmDelMember = true;
         this.closeMemberSD(false);
-      }
-      ,
+      },
 
       // 确认移除弹窗
-      delSDVisible: function(show) {
+      delSDVisible: function (show) {
         if (!show) this.closeDelSD();
-      }
-      ,
-      closeDelSD: function() {
+      },
+      closeDelSD: function () {
         this.confirmDelMember = false;
-      }
-      ,
+      },
 
-      // 添加新成员
-      newMember: function() {
+      /**
+       * 添加新成员
+       */
+      newMember: function () {
         this.newMemberSet = true;
-      }
-      ,
-      newMemberSDVisible: function(show) {
+      },
+      newMemberSDVisible: function (show) {
         if (!show) this.newMemberSet = false;
-      }
-      ,
-      closeNewSD: function() {
+      },
+      closeNewSD: function () {
         this.newMemberSet = false;
         this.$refs["newMemberList"].resetFields();
-      }
-      ,
-      appendMember: function() {
+      },
+      appendMember: function () {
         this.newMemberList.items.push({
           userName: "",
           type: "成员"
         });
-      }
-      ,
+      },
 
-      // 设置权限设置
-      setMemberType: function() {
+      /**
+       * 设置权限设置
+       */
+      setMemberType: function () {
         let data = {
           id: this.members[this.memberSelect].userTeamId,
           type: this.permision
@@ -292,32 +285,35 @@
           this.$Message.success("修改成功!!");
           this.getTeamUserList();
           this.closeMemberSD();
-        }).catch(function(err) {
+        }).catch(function (err) {
           this.$Message.success("修改失败!!");
           this.closeMemberSD();
-        }).then(function() {
+        }).then(function () {
         });
-      }
-      ,
+      },
 
-      // 删除成员
-      delMember: function() {
+      /**
+       * 删除成员
+       */
+      delMember: function () {
         let id = this.members[this.memberSelect].userTeamId;
         delMember(id).then(res => {
           this.$Message.success("删除成功!!");
           this.memberSelect = "";
           this.getTeamUserList();
           this.closeDelSD();
-        }).catch(function(err) {
+        }).catch(function (err) {
           this.$Message.success("删除失败!!");
-        }).then(function() {
+        }).then(function () {
           this.closeDelSD();
         });
       }
       ,
 
-      // 添加新成员
-      confirmNewMember: function() {
+      /**
+       * 添加新成员
+       */
+      confirmNewMember: function () {
         this.$refs["newMemberList"].validate().then(vaild => {
           if (vaild) {
             let type = [];
@@ -350,15 +346,14 @@
                 ];
               }
               this.closeNewSD();
-            }).catch(function(err) {
+            }).catch(function (err) {
               this.$Message.success("添加失败!!");
             });
           }
         });
       }
     }
-  }
-  ;
+  };
 </script>
 
 <style lang="stylus" scoped>
