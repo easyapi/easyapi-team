@@ -5,18 +5,12 @@ import Cookies from "js-cookie";
 // 添加请求拦截器
 axios.interceptors.request.use(
   function (config) {
-    // if (config.url.indexOf("/page/team") == -1) {
-    //   if (!Cookies.get("authenticationToken")) {
-    //     location.href = "https://account.easyapi.com/login?from=https://team.easyapi.com"; // 如果没有authenticationToken存在
-    //   }
-    // }
     // config.headers.Authorization = "Bearer " + Cookies.get("authenticationToken");
-    config.headers.Authorization = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZzIwMDg0QDEyNi5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYwOTE1MTY0OX0.8Vsp9ayIIBNEUYW1nRe8P3YmMPoIKvDX5EOhPteS1rusrNbFyJP1unOaziFbSlumZrl5CAR9KIuCh_ha8-UGMw";
+    config.headers.Authorization = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZzIwMDg0QDEyNi5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxMzgxNTAzOX0.ftr5n94Xx_k1RdB77fP-Jx5LtVODJ3d4lAysiKHEdXDkaaLpw1XkibMpsQTTPv-GO9MADHk83tOsZh6Nrd-v4g";
     return config;
   },
   function (error) {
     // 对请求错误做些什么
-
     return Promise.reject(error);
   }
 );
@@ -25,8 +19,6 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   function (response) {
     if (response.status === 204) {
-      // 处理204返回内容为空
-      console.log(204);
     }
     return response;
   },

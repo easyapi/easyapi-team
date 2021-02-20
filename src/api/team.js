@@ -30,6 +30,52 @@ export function changeTeam(teamId) {
   });
 }
 
+
+/**
+ * 创建团队信息
+ *
+ * @see https://www.easyai.com
+ */
+export function createTeam(data) {
+  return request({
+    url: `${baseUrl}/api/team`,
+    method: "put",
+    data: {
+      ...data
+    }
+  });
+}
+
+/**
+ * 修改团队信息
+ *
+ * @see https://www.easyai.com
+ */
+export function updateTeam(id, data) {
+  return request({
+    url: `${baseUrl}/api/team/${id}`,
+    method: "PUT",
+    data: {
+      ...data
+    }
+  });
+}
+
+/**
+ * 修改团队信息
+ *
+ * @see https://www.easyai.com
+ */
+export function deleteTeam(id, data) {
+  return request({
+    url: `${baseUrl}/api/team/${id}`,
+    method: "DELETE",
+    data: {
+      ...data
+    }
+  });
+}
+
 /**
  * 检查团队URL
  *
@@ -42,5 +88,35 @@ export function checkTeamUrl(url) {
     params: {
       url: url,
     },
+  });
+}
+
+/**
+ * 退出团队
+ *
+ * @see https://www.easyai.com
+ */
+export function quitTeam(id, params) {
+  return request({
+    url: `${baseUrl}/api/team/${id}/exit`,
+    method: "GET",
+    params: {
+      ...params
+    }
+  });
+}
+
+/**
+ * 转让团队
+ *
+ * @see https://www.easyai.com
+ */
+export function transferTeam(id, data) {
+  return request({
+    url: `${baseUrl}/api/team/${id}/transfer`,
+    method: "PUT",
+    data: {
+      ...data
+    }
   });
 }

@@ -6,7 +6,7 @@
         <Col span="4" class="key">团队图标：</Col>
         <Col span="20">
           <div class="gird">
-            <img class="team-logo" src="../assets/images/team-logo.png" alt />
+            <img class="team-logo" src="../assets/images/team-logo.png" alt/>
             <div class="team-logo-select">
               <Upload
                 ref="upload"
@@ -41,7 +41,7 @@
       <Row>
         <Col span="4" class="key">团队名称：</Col>
         <Col span="20">
-          <Input v-model="name" placeholder="例如：帮趣网络" />
+          <Input v-model="name" placeholder="例如：帮趣网络"/>
         </Col>
       </Row>
       <Row>
@@ -64,7 +64,7 @@
       <Row>
         <Col span="4" class="key">团队介绍：</Col>
         <Col span="20">
-          <Input v-model="des" placeholder="请一句话介绍团队" />
+          <Input v-model="des" placeholder="请一句话介绍团队"/>
         </Col>
       </Row>
       <Row>
@@ -80,7 +80,7 @@
       <Row>
         <Col span="4" class="key">
           <p>
-            <br />
+            <br/>
           </p>
         </Col>
         <Col span="20">
@@ -110,221 +110,215 @@
 </template>
 
 <script>
-const qiNiuFileDomain = 'https://qiniu.easyapi.com'
+  const qiNiuFileDomain = 'https://qiniu.easyapi.com';
 
-import {teamUrl} from '../api/api'
-import {checkTeamUrl} from '../api/team'
-import {getQiniuToken} from '../api/qiniu'
-import $ from 'jquery'
+  import {checkTeamUrl, createTeam} from '../api/team'
+  import {getQiniuToken} from '../api/qiniu'
+  import $ from 'jquery'
 
-export default {
-  name: 'New',
-  data: function () {
-    return {
-      teamIcon: '',
-      iconUploadUrl: '',
-      uploadToken: '',
-      name: '',
-      des: '',
-      url: '',
-      baseUrlOccupy: false,
-      urlOccupy: false,
-      industry: '',
-      industries: [
-        '互联网',
-        '新媒体',
-        '技术与服务',
-        '娱乐',
-        '生活服务',
-        '教育',
-        '制造业',
-        '家具建材',
-        '金融服务',
-        '旅行与交通',
-        '通讯',
-        '医疗健康',
-        '文化与设计',
-        '其他'
-      ]
-    }
-  },
-  created: function () {
-    this.getQiniu().then(res => {
-      this.uploadToken = res.data.content.upToken
-    })
-  },
-  mounted: function () {
-    document.title = '新建团队 - EasyAPI'
-  },
-  methods: {
-    cleanUrl() {
-      this.urlOccupy = false
-    },
-
-    // 检查团队URL是否合法
-    async checkUrl() {
-      if (!this.url) {
-        return
+  export default {
+    name: 'New',
+    data: function () {
+      return {
+        teamIcon: '',
+        iconUploadUrl: '',
+        uploadToken: '',
+        name: '',
+        des: '',
+        url: '',
+        baseUrlOccupy: false,
+        urlOccupy: false,
+        industry: '',
+        industries: [
+          '互联网',
+          '新媒体',
+          '技术与服务',
+          '娱乐',
+          '生活服务',
+          '教育',
+          '制造业',
+          '家具建材',
+          '金融服务',
+          '旅行与交通',
+          '通讯',
+          '医疗健康',
+          '文化与设计',
+          '其他'
+        ]
       }
-      await this.checkTeamUrl().catch(err => {
-        this.urlOccupy = true
-        this.$Message.error('团队URL已经被占用')
+    },
+    created: function () {
+      this.getQiniu().then(res => {
+        this.uploadToken = res.data.content.upToken
       })
     },
-    checkTeamUrl(success, fail) {
-      return new Promise((resolve, reject) => {
-        checkTeamUrl(this.url).then(res => {
-          if (res.data.code == 1) {
-            resolve('团队URL可用')
-          } else {
-            reject('团队URL已存在')
-          }
-        }).catch(err => {
-          if (err.responseJSON.code == -1 || err.responseJSON.message == '该编码已存在') {
-            reject('团队URL已存在')
-          }
+    mounted: function () {
+      document.title = '新建团队 - EasyAPI'
+    },
+    methods: {
+      cleanUrl() {
+        this.urlOccupy = false
+      },
+
+      // 检查团队URL是否合法
+      async checkUrl() {
+        if (!this.url) {
+          return
+        }
+        await this.checkTeamUrl().catch(err => {
+          this.urlOccupy = true
+          this.$Message.error('团队URL已经被占用')
         })
-      })
-    },
+      },
+      checkTeamUrl(success, fail) {
+        return new Promise((resolve, reject) => {
+          checkTeamUrl(this.url).then(res => {
+            if (res.data.code == 1) {
+              resolve('团队URL可用')
+            } else {
+              reject('团队URL已存在')
+            }
+          }).catch(err => {
+            if (err.responseJSON.code == -1 || err.responseJSON.message == '该编码已存在') {
+              reject('团队URL已存在')
+            }
+          })
+        })
+      },
 
-    newTeam: function () {
-      if (this.url == "") {
-        this.$Message.warning("请输入团队URL");
-        return;
-      }
-      this.$ajax({
-        method: 'POST',
-        url: teamUrl,
-        json: true,
-        data: {
+      newTeam: function () {
+        if (this.url == "") {
+          this.$Message.warning("请输入团队URL");
+          return;
+        }
+        createTeam({
           name: this.name,
           description: this.des,
           img: this.teamIcon,
           industry: this.industry,
           url: this.url
-        }
-      }).then(res => {
-        if (res.data.code === 1) {
-          this.$store.dispatch('GetUserInfo')
-          this.$store.dispatch('getTeamList')
-          this.$router.replace('new/success')
-        }
-      })
-    },
-
-    handleSuccess(res, file) {
-      this.teamIcon = `${qiNiuFileDomain}/${res.key}`
-      $('.team-logo').attr('src', this.teamIcon)
-    },
-    handleFormatError(file) {
-      this.$Notice.warning({
-        title: 'The file format is incorrect',
-        desc:
-          'File format of ' +
-          file.name +
-          ' is incorrect, please select jpg or png.'
-      })
-    },
-    handleMaxSize(file) {
-      this.$Notice.warning({
-        title: 'Exceeding file size limit',
-        desc: 'File  ' + file.name + ' is too large, no more than 2M.'
-      })
-    },
-
-    //获取七牛token
-    getQiniu: function () {
-      return new Promise((resolve, reject) => {
-        getQiniuToken().then(res => {
-          resolve(res)
+        }).then(res => {
+          if (res.data.code === 1) {
+            this.$store.dispatch('GetUserInfo')
+            this.$store.dispatch('getTeamList')
+            this.$router.replace('new/success')
+          }
         })
-      })
-    },
+      },
 
-    createTeam: function () {
-      this.newTeam()
-    },
+      handleSuccess(res, file) {
+        this.teamIcon = `${qiNiuFileDomain}/${res.key}`
+        $('.team-logo').attr('src', this.teamIcon)
+      },
+      handleFormatError(file) {
+        this.$Notice.warning({
+          title: 'The file format is incorrect',
+          desc:
+            'File format of ' +
+            file.name +
+            ' is incorrect, please select jpg or png.'
+        })
+      },
+      handleMaxSize(file) {
+        this.$Notice.warning({
+          title: 'Exceeding file size limit',
+          desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+        })
+      },
 
-    cancelCreate: function () {
-      this.$router.replace('/launch')
-      setTimeout(() => {
-        window.location.reload()
-      }, 400)
-    },
-    handleBeforeUpload() {
+      //获取七牛token
+      getQiniu: function () {
+        return new Promise((resolve, reject) => {
+          getQiniuToken().then(res => {
+            resolve(res)
+          })
+        })
+      },
+
+      createTeam: function () {
+        this.newTeam()
+      },
+
+      cancelCreate: function () {
+        this.$router.replace('/launch')
+        setTimeout(() => {
+          window.location.reload()
+        }, 400)
+      },
+      handleBeforeUpload() {
+      }
     }
   }
-}
 </script>
 
 <style lang="stylus" scoped>
-@import '../styles/color';
+  @import '../styles/color';
 
-header {
-  text-align: center;
-  padding: 40px 0;
-  margin-bottom: 20px;
-  border-bottom: 1px solid c-grey;
-}
-
-.m-wrapper {
-  width: 540px;
-}
-
-.ivu-row {
-  min-height: 50px;
-  line-height: 50px;
-}
-
-.cancel-btn {
-  color: c-black2 !important;
-  background-color: rgba(0, 0, 0, 0) !important;
-}
-
-footer {
-  margin-top: 60px;
-  padding-top: 20px;
-  border-top: 1px solid c-grey;
-}
-
-.team-logo {
-  float: left;
-  height: 80px;
-  width: 80px;
-}
-
-.team-icon_row {
-  margin-bottom: 10px;
-}
-
-.team-logo-select {
-  margin-left: 90px;
-
-  .tips {
-    line-height: 1em;
+  header {
+    text-align: center;
+    padding: 40px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid c-grey;
   }
-}
+
+  .m-wrapper {
+    width: 540px;
+  }
+
+  .ivu-row {
+    min-height: 50px;
+    line-height: 50px;
+  }
+
+  .cancel-btn {
+    color: c-black2 !important;
+    background-color: rgba(0, 0, 0, 0) !important;
+  }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid c-grey;
+  }
+
+  .team-logo {
+    float: left;
+    height: 80px;
+    width: 80px;
+  }
+
+  .team-icon_row {
+    margin-bottom: 10px;
+  }
+
+  .team-logo-select {
+    margin-left: 90px;
+
+    .tips {
+      line-height: 1em;
+    }
+  }
 </style>
 
 <style lang="stylus">
-.team-new {
-  .ivu-select, .ivu-select-selection, .ivu-select-placeholder, .ivu-select-selected-value {
-    height: 32px !important;
-    line-height: 32px !important;
-  }
-}
-
-.team-logo-select {
-  .ivu-upload-drag {
-    border: none;
-    height: 40px;
-    text-align: left;
-    cursor: pointer;
-    overflow: auto;
-
-    &:hover {
-      border: none;
+  .team-new {
+    .ivu-select, .ivu-select-selection, .ivu-select-placeholder, .ivu-select-selected-value {
+      height: 32px !important;
+      line-height: 32px !important;
     }
   }
-}
+
+  .team-logo-select {
+    .ivu-upload-drag {
+      border: none;
+      height: 40px;
+      text-align: left;
+      cursor: pointer;
+      overflow: auto;
+
+      &:hover {
+        border: none;
+      }
+    }
+  }
 </style>

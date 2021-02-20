@@ -341,15 +341,8 @@
 </template>
 
 <script>
-  import {
-    getAccountMoney,
-    getCaptcha,
-    moneyWarn,
-    teamUrl,
-    quitTeam,
-    transferTeam,
-  } from "../api/api";
-  import {getTeamUserList, checkTeamUrl} from "../api/team";
+  import {getAccountMoney, balanceWarn} from "../api/money";
+  import {getTeamUserList, checkTeamUrl, updateTeam, deleteTeam, quitTeam, transferTeam} from "../api/team";
   import {getQiniuToken} from "../api/qiniu";
   import {getInvoiceToken} from "../api/invoice";
   import {alipay, wxpay} from "../api/pay";
@@ -489,12 +482,8 @@
         if (!this.$store.state.user.team) {
           return;
         }
-        this.$ajax({
-          method: "GET",
-          url: getAccountMoney,
-          params: {
-            teamId: this.$store.state.user.team.id,
-          },
+        getAccountMoney({
+          teamId: this.$store.state.user.team.id,
         }).then((res) => {
           if (res.data.code == 1) {
             this.accountGolbalInfo = res.data.content;
@@ -616,23 +605,16 @@
       // 设置余额预警
       setMoneyWarn: function () {
         let s = this.needMoneyWarn ? this.moneyWarnSize : 0;
-        this.$ajax({
-          method: "PUT",
-          url: moneyWarn + "/" + this.accountGolbalInfo.id,
-          data: {
-            id: this.accountGolbalInfo.id,
-            warningBalance: s,
-          },
-          json: true,
-        })
-          .then((res) => {
-            if (res.data.code === 1) {
-              this.$Message.success("余额预警设置成功!");
-            }
-          })
-          .catch(function (err) {
-            this.$Message.success("余额预警设置失败!");
-          });
+        balanceWarn(this.accountGolbalInfo.id, {
+          id: this.accountGolbalInfo.id,
+          warningBalance: s,
+        }).then((res) => {
+          if (res.data.code === 1) {
+            this.$Message.success("余额预警设置成功!");
+          }
+        }).catch(function (err) {
+          this.$Message.success("余额预警设置失败!");
+        });
       },
 
       // 展开修改团队信息
@@ -647,30 +629,23 @@
       },
       // 修改团队
       changeTeamInfo: function () {
-        this.$ajax({
-          method: "PUT",
-          url: `${teamUrl}/${this.$store.state.user.team.id}`,
-          data: {
-            name: this.teamName,
-            img: this.teamIcon,
-            url: this.teamUrl,
-            description: this.teamDes,
-            industry: this.teamType,
-          },
-          json: true,
-        })
-          .then((res) => {
-            if (res.data.code) {
-              this.$Message.success("修改成功!");
-              setTimeout(() => {
-                location.reload();
-              }, 1000);
-            }
-          })
-          .catch((error) => {
-            console.log(error.response);
-            this.$Message.error(error.response.data.message);
-          });
+        updateTeam(this.$store.state.user.team.id, {
+          name: this.teamName,
+          img: this.teamIcon,
+          url: this.teamUrl,
+          description: this.teamDes,
+          industry: this.teamType,
+        }).then((res) => {
+          if (res.data.code) {
+            this.$Message.success("修改成功!");
+            setTimeout(() => {
+              location.reload();
+            }, 1000);
+          }
+        }).catch((error) => {
+          console.log(error.response);
+          this.$Message.error(error.response.data.message);
+        });
       },
 
       // 检查团队URL是否合法
@@ -702,13 +677,8 @@
 
       // 转让团队
       confirmTransferTeam: function () {
-        let user = this.$store.state.user;
-        this.$ajax({
-          method: "put",
-          url: transferTeam.replace("#id#", user.team.id),
-          data: {
-            username: this.transferMember,
-          },
+        transferTeam(this.$store.state.user.team.id, {
+          username: this.transferMember,
         }).then((res) => {
           if (res.data.code) {
             this.$Message.success("转让成功!");
@@ -798,13 +768,7 @@
           this.$Message.error("邮箱格式错误");
           return;
         }
-        this.$ajax({
-          method: "POST",
-          url: getCaptcha,
-          data: {
-            username: email,
-          },
-        }).then((res) => {
+        getCaptcha(email).then((res) => {
           if (res.data.code === 1) {
             this.$Message.success("验证码发送成功，请查收");
             this.captchaUse = true;
@@ -816,14 +780,9 @@
 
       // 解散团队
       delTeam: function () {
-        let user = this.$store.state.user;
-        this.$ajax({
-          method: "DELETE",
-          url: `${teamUrl}/${user.team.id}`,
-          data: {
-            code: this.captcha,
-          },
-        }).then((res) => {
+        deleteTeam(this.$store.state.user.team.id, {
+          code: this.captcha,
+        },).then((res) => {
           if (res.data.code === 1) {
             this.$Message.success("解散成功");
             this.$store.dispatch("GetUserInfo");
@@ -838,12 +797,8 @@
           title: "提示",
           content: "确定退出该团队？",
           onOk: () => {
-            this.$ajax({
-              method: "GET",
-              url: quitTeam.replace("#id#", this.$store.state.user.team.id),
-              params: {
-                code: this.captcha,
-              },
+            quitTeam(this.$store.state.user.team.id, {
+              code: this.captcha,
             }).then((res) => {
               if (res.data.code === 1) {
                 this.$Message.success("解散成功");

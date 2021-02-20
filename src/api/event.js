@@ -1,4 +1,4 @@
-import { baseUrl } from "./api";
+import {baseUrl} from "./api";
 import request from "@/utils/request";
 
 /**

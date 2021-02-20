@@ -1,5 +1,6 @@
 import {baseUrl} from "./api";
 import request from "@/utils/request";
+
 /**
  * 获取用户信息
  **
@@ -34,7 +35,7 @@ export function changePassword(data) {
   return request({
     url: `${baseUrl}/api/account/change-password`,
     method: "post",
-    data:{
+    data: {
       ...data
     }
   });
@@ -49,7 +50,7 @@ export function updateAccountInfo(data) {
   return request({
     url: `${baseUrl}/api/account`,
     method: "put",
-    data:{
+    data: {
       ...data
     }
   });

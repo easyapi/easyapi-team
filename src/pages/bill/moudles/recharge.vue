@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import {getRechargeList} from "../../../api/api";
+  import {getRechargeList} from "../../../api/recharge";
 
   export default {
     name: "RechargeList",
@@ -97,13 +97,9 @@
       },
       getList: function () {
         this.dataLoading = true;
-        this.$ajax({
-          method: "GET",
-          url: getRechargeList,
-          params: {
-            page: this.page.page - 1,
-            size: this.page.size
-          }
+        getRechargeList({
+          page: this.page.page - 1,
+          size: this.page.size
         }).then(res => {
           this.dataLoading = false;
           if (res.data.code === 0) {

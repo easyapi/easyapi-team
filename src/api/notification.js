@@ -8,11 +8,11 @@ import request from "@/utils/request";
  * @see https://www.easyai.com
  */
 export function getNotificationList(params) {
-    return request({
-      url: `${baseUrl}/notifications`,
-      method: "get",
-      params: {
-        ...params,
-      },
-    });
-  }
+  return request({
+    url: `${baseUrl}/notifications`,
+    method: "get",
+    params: {
+      ...params,
+    },
+  });
+}

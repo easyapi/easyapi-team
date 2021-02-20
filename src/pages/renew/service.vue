@@ -144,7 +144,7 @@
   </div>
 </template>
 <script>
-  import {getAccountMoney} from "../../api/api";
+  import {getAccountMoney} from "../../api/money";
   import {ServiceList, balance, paymentMethod} from "../../api/service";
   import calcudate from "calcudate";
   import accountUser from "../../store/modules/user";
@@ -315,12 +315,8 @@
         return `${y}/${m + 1}/${d}`;
       },
       getTeamInfo() {
-        this.$ajax({
-          method: "GET",
-          url: getAccountMoney,
-          params: {
-            teamId: this.$store.state.user.team.id,
-          },
+        getAccountMoney({
+          teamId: this.$store.state.user.team.id,
         }).then((res) => {
           if (res.data.code == 1) {
             this.balance = res.data.content.balance;
@@ -348,10 +344,7 @@
             .toLocaleDateString();
         } else {
           now = new Date();
-          this.dueTime = calcudate
-            .add(now)
-            .months(this.selectMoney)
-            .toLocaleDateString();
+          this.dueTime = calcudate.add(now).months(this.selectMoney).toLocaleDateString();
         }
         // this.howMany = accountUser.state.accountInfo.team.documentEndTime;
         // this.dueTime = this.howMany?this.howMany:'已到期，请续费^_^';
