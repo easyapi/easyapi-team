@@ -10,7 +10,7 @@ import request from "@/utils/request";
 export function getInvoiceToken(username) {
   return request({
     url: `${baseUrl}/invoice/access-token`,
-    method: "get",
+    method: "GET",
     params: {
       username: username
     }

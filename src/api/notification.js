@@ -10,7 +10,7 @@ import request from "@/utils/request";
 export function getNotificationList(params) {
   return request({
     url: `${baseUrl}/notifications`,
-    method: "get",
+    method: "GET",
     params: {
       ...params,
     },

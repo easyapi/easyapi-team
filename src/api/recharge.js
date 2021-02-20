@@ -9,7 +9,7 @@ import request from "@/utils/request";
 export function getRechargeList(params) {
   return request({
     url: `${baseUrl}/api/recharges`,
-    method: "get",
+    method: "GET",
     params: {
       ...params,
     },

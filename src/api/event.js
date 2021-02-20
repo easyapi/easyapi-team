@@ -9,7 +9,7 @@ import request from "@/utils/request";
 export function getEventList(params) {
   return request({
     url: `${baseUrl}/events`,
-    method: "get",
+    method: "GET",
     params: {
       ...params,
     },

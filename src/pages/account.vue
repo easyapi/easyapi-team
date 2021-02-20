@@ -532,30 +532,28 @@
         let params = {
           price: Number(this.rechargeAmount),
         };
-        alipay(params)
-          .then((res) => {
-            if (res.data.code) {
-              let html = res.data.alipay;
-              let form = $(html);
-              form.attr("target", "_blank");
-              $("#app").append(form);
-              this.recharge = false;
-              this.$Modal.confirm({
-                title: "提示",
-                content:
-                  "<p>请您在新打开的页面上完成充值。<br>充值完成后，根据您的情况点击下面按钮。</p>",
-                okText: "充值成功",
-                cancelText: "充值失败",
-                onOk: () => {
-                  this.$Modal.remove();
-                  this.getTeamInfo();
-                },
-              });
-            }
-          })
-          .catch((err) => {
-            this.$Message.error("接口错误，请稍后再试");
-          });
+        alipay(params).then((res) => {
+          if (res.data.code) {
+            let html = res.data.alipay;
+            let form = $(html);
+            form.attr("target", "_blank");
+            $("#app").append(form);
+            this.recharge = false;
+            this.$Modal.confirm({
+              title: "提示",
+              content:
+                "<p>请您在新打开的页面上完成充值。<br>充值完成后，根据您的情况点击下面按钮。</p>",
+              okText: "充值成功",
+              cancelText: "充值失败",
+              onOk: () => {
+                this.$Modal.remove();
+                this.getTeamInfo();
+              },
+            });
+          }
+        }).catch((err) => {
+          this.$Message.error("接口错误，请稍后再试");
+        });
       },
       wxpay: function () {
         let _that = this;

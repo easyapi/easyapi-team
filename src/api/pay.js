@@ -1,4 +1,4 @@
-import { baseUrl } from "./api";
+import {baseUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -9,12 +9,13 @@ import request from "@/utils/request";
 export function alipay(params) {
   return request({
     url: `${baseUrl}/api/alipay/recharge`,
-    method: "get",
+    method: "GET",
     params: {
       ...params,
     },
   });
 }
+
 /**
  * 微信支付
  *
@@ -23,7 +24,7 @@ export function alipay(params) {
 export function wxpay(params) {
   return request({
     url: `${baseUrl}/api/wxpay/recharge`,
-    method: "get",
+    method: "GET",
     params: {
       ...params,
     },

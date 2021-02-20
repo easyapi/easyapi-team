@@ -5,8 +5,7 @@ import Cookies from "js-cookie";
 // 添加请求拦截器
 axios.interceptors.request.use(
   function (config) {
-    // config.headers.Authorization = "Bearer " + Cookies.get("authenticationToken");
-    config.headers.Authorization = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZzIwMDg0QDEyNi5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYxMzgxNTAzOX0.ftr5n94Xx_k1RdB77fP-Jx5LtVODJ3d4lAysiKHEdXDkaaLpw1XkibMpsQTTPv-GO9MADHk83tOsZh6Nrd-v4g";
+    config.headers.Authorization = "Bearer " + Cookies.get("authenticationToken");
     return config;
   },
   function (error) {

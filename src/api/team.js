@@ -9,7 +9,7 @@ import request from "@/utils/request";
 export function getTeamUserList(teamId) {
   return request({
     url: `${baseUrl}/api/team/users`,
-    method: "get",
+    method: "GET",
     params: {
       teamId: teamId,
       page: 0,
@@ -26,7 +26,7 @@ export function getTeamUserList(teamId) {
 export function changeTeam(teamId) {
   return request({
     url: `${baseUrl}/api/team/${teamId}/change`,
-    method: "put",
+    method: "PUT",
   });
 }
 
@@ -39,7 +39,7 @@ export function changeTeam(teamId) {
 export function createTeam(data) {
   return request({
     url: `${baseUrl}/api/team`,
-    method: "put",
+    method: "PUT",
     data: {
       ...data
     }
@@ -84,7 +84,7 @@ export function deleteTeam(id, data) {
 export function checkTeamUrl(url) {
   return request({
     url: `${baseUrl}/api/team/checkUrl`,
-    method: "get",
+    method: "GET",
     params: {
       url: url,
     },

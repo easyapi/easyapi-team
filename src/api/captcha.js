@@ -9,7 +9,7 @@ import request from "@/utils/request";
 export function getCaptcha(username) {
   return request({
     url: `${baseUrl}/api/account/captcha/activation`,
-    method: "post",
+    method: "POST",
     data: {
       username: username
     },

@@ -223,7 +223,7 @@
       getServiceList() {
         let second = "";
         this.$ajax({
-          method: "get",
+          method: "GET",
           url: ServiceList,
           headers: {
             authorization: "Bearer " + this.getCookie("authenticationToken"),
@@ -266,7 +266,7 @@
       getDocPrice() {
         let second = "";
         this.$ajax({
-          method: "get",
+          method: "GET",
           url: ServiceList,
           headers: {
             authorization: "Bearer " + this.getCookie("authenticationToken"),
@@ -297,7 +297,7 @@
       //余额
       choosePaymentMethod() {
         this.$ajax({
-          method: "get",
+          method: "GET",
           url: paymentMethod,
           headers: {
             authorization: "Bearer " + this.getCookie("authenticationToken"),

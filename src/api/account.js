@@ -9,7 +9,7 @@ import request from "@/utils/request";
 export function getAccountInfo() {
   return request({
     url: `${baseUrl}/api/account`,
-    method: "get",
+    method: "GET",
   });
 }
 
@@ -22,7 +22,7 @@ export function getAccountInfo() {
 export function getUserTeamList() {
   return request({
     url: `${baseUrl}/api/user/teams`,
-    method: "get",
+    method: "GET",
   });
 }
 
@@ -34,7 +34,7 @@ export function getUserTeamList() {
 export function changePassword(data) {
   return request({
     url: `${baseUrl}/api/account/change-password`,
-    method: "post",
+    method: "POST",
     data: {
       ...data
     }
@@ -49,7 +49,7 @@ export function changePassword(data) {
 export function updateAccountInfo(data) {
   return request({
     url: `${baseUrl}/api/account`,
-    method: "put",
+    method: "PUT",
     data: {
       ...data
     }
