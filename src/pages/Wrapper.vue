@@ -66,11 +66,7 @@
       // 获取成员列表
       getTeamUserList: function () {
         this.loadingMemberList = true
-        getTeamUserList({
-          teamId: this.$store.state.user.team.id,
-          page: 0,
-          size: 100
-        }).then(res => {
+        getTeamUserList(this.$store.state.user.team.id).then(res => {
           this.members = res.data.content
           this.loadingMemberList = false
         }).catch(err => {
