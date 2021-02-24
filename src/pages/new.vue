@@ -41,7 +41,7 @@
       <Row>
         <Col span="4" class="key">团队名称：</Col>
         <Col span="20">
-          <Input v-model="name" placeholder="例如：帮趣网络"/>
+          <Input v-model="teamForm.name" placeholder="例如：帮趣网络"/>
         </Col>
       </Row>
       <Row>
@@ -51,26 +51,23 @@
             placeholder="团队URL"
             @on-blur="checkUrl"
             @on-focus="cleanUrl"
-            v-model="url"
+            v-model="teamForm.url"
           >
             <span slot="prepend">https：//</span>
             <span slot="append">.easyapi.com</span>
           </Input>
-          <p v-if="baseUrlOccupy">
-            <small class="err">该团队URL已经被占用</small>
-          </p>
         </Col>
       </Row>
       <Row>
         <Col span="4" class="key">团队介绍：</Col>
         <Col span="20">
-          <Input v-model="des" placeholder="请一句话介绍团队"/>
+          <Input v-model="teamForm.description" placeholder="请一句话介绍团队"/>
         </Col>
       </Row>
       <Row>
         <Col span="4" class="key">行业选择：</Col>
         <Col span="20">
-          <Select v-model="industry" size="small">
+          <Select v-model="teamForm.industry" size="small">
             <Option v-for="item in industries" :value="item" :key="item">
               {{ item }}
             </Option>
@@ -86,7 +83,6 @@
         <Col span="20">
           <ea-button
             class="new-btn"
-            :disabled="urlOccupy"
             text="创建团队"
             type="main"
             @click="createTeam"
@@ -123,12 +119,13 @@
         teamIcon: '',
         iconUploadUrl: '',
         uploadToken: '',
-        name: '',
-        des: '',
-        url: '',
-        baseUrlOccupy: false,
-        urlOccupy: false,
-        industry: '',
+        teamForm: {
+          name: '',
+          description: '',
+          url: '',
+          industry: ''
+        },
+        urlExist: false,//团队URL是否存在
         industries: [
           '互联网',
           '新媒体',
@@ -157,29 +154,29 @@
     },
     methods: {
       cleanUrl() {
-        this.urlOccupy = false
+        this.urlExist = false
       },
 
       // 检查团队URL是否合法
       async checkUrl() {
-        if (!this.url) {
+        if (!this.teamForm.url) {
           return
         }
         await this.checkTeamUrl().catch(err => {
-          this.urlOccupy = true
+          this.urlExist = true;
           this.$Message.error('团队URL已经被占用')
         })
       },
       checkTeamUrl(success, fail) {
         return new Promise((resolve, reject) => {
-          checkTeamUrl(this.url).then(res => {
+          checkTeamUrl(this.teamForm.url).then(res => {
             if (res.data.code == 1) {
               resolve('团队URL可用')
             } else {
               reject('团队URL已存在')
             }
           }).catch(err => {
-            if (err.responseJSON.code == -1 || err.responseJSON.message == '该编码已存在') {
+            if (err.responseJSON.code == -1 || err.responseJSON.message == '团队URL已存在') {
               reject('团队URL已存在')
             }
           })
@@ -187,17 +184,19 @@
       },
 
       newTeam: function () {
-        if (this.url == "") {
+        if (this.teamForm.name == "") {
+          this.$Message.warning("请输入团队名称");
+          return;
+        }
+        if (this.teamForm.url == "") {
           this.$Message.warning("请输入团队URL");
           return;
         }
-        createTeam({
-          name: this.name,
-          description: this.des,
-          img: this.teamIcon,
-          industry: this.industry,
-          url: this.url
-        }).then(res => {
+        if (this.urlExist) {
+          this.$Message.warning("团队URL已存在");
+          return;
+        }
+        createTeam(this.teamForm).then(res => {
           if (res.data.code === 1) {
             this.$store.dispatch('GetUserInfo')
             this.$store.dispatch('getTeamList')
@@ -213,10 +212,7 @@
       handleFormatError(file) {
         this.$Notice.warning({
           title: 'The file format is incorrect',
-          desc:
-            'File format of ' +
-            file.name +
-            ' is incorrect, please select jpg or png.'
+          desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
         })
       },
       handleMaxSize(file) {
