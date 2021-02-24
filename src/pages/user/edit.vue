@@ -36,6 +36,9 @@
           <FormItem label="手机号码" prop="mobile">
             <Input v-model="accountInfo.mobile" placeholder="请输入手机号码" />
           </FormItem>
+          <FormItem label="邮箱" prop="mobile">
+            <Input v-model="accountInfo.email" placeholder="请输入邮箱" />
+          </FormItem>
           <FormItem label="常用语言" prop="language">
             <Input
               v-model="accountInfo.language"

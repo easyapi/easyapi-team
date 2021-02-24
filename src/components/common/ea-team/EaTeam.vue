@@ -2,7 +2,7 @@
   <div class="current-team-info">
     <h2 class="current-team-name lrPading-20">当前团队</h2>
     <div class="clear current-team-content lrPading-20">
-      <img class="lf teams-img" :src="teamImg + '!icon.jpg'" alt />
+      <img class="lf teams-img" :src="teamImg ? teamImg + '?icon.jpg' : 'https://qiniu.easyapi.com/team/default.png?icon.jpg'" alt />
       <div class="lf teams-img-r">
         <p>{{ teamName }}</p>
         <div class="team-btn">
@@ -22,7 +22,7 @@
           v-bind:key="index"
           @click="changeTeam(item.team.id)"
         >
-          <img :src="item.team.img + '!icon.jpg'" alt />
+          <img :src="item.team.img ? item.team.img + '?icon.jpg' : 'https://qiniu.easyapi.com/team/default.png?icon.jpg'" alt />
           <span style="display: block">{{ item.team.name }}</span>
         </a>
       </div>

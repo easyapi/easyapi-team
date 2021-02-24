@@ -3,7 +3,7 @@
     <div class="member-card" v-for="(item, i) in members" :key="i">
       <div class="member grid" @click="memberSetting(i)" v-if="item.user">
         <div class="fl icon">
-          <img :src="item.user.photo + '!icon.jpg'" alt=""/>
+          <img :src="item.user.photo ? item.user.photo + '?icon.jpg' : 'https://qiniu.easyapi.com/user/default.jpg?icon.jpg'" alt=""/>
         </div>
         <div class="fl info">
           <p class="name">{{ item.user.nickname }}</p>
@@ -282,7 +282,7 @@
           type: this.permision
         };
         setMemberType(data).then(res => {
-          this.$Message.success("修改成功!!");
+          this.$Message.success("修改成功!");
           this.getTeamUserList();
           this.closeMemberSD();
         }).catch(function (err) {
@@ -298,7 +298,7 @@
       delMember: function () {
         let id = this.members[this.memberSelect].userTeamId;
         delMember(id).then(res => {
-          this.$Message.success("删除成功!!");
+          this.$Message.success("删除成功!");
           this.memberSelect = "";
           this.getTeamUserList();
           this.closeDelSD();

@@ -56,7 +56,7 @@
       <div class="m">
         <div class="team-info grid">
           <div class="team-icon">
-            <img :src="accountGolbalInfo.team.img + '!icon.jpg'" alt/>
+            <img :src="accountGolbalInfo.team.img ? accountGolbalInfo.team.img + '?icon.jpg' : 'https://qiniu.easyapi.com/team/default.png?icon.jpg'" alt/>
           </div>
           <div>
             <ul class="team-info_list">
@@ -589,7 +589,7 @@
                   (message) => {
                     var json = JSON.parse(message.body);
                     _that.$Modal.remove();
-                    _that.$Message.success("充值成功！！");
+                    _that.$Message.success("充值成功！");
                   }
                 );
               });
@@ -608,7 +608,7 @@
           warningBalance: s,
         }).then((res) => {
           if (res.data.code === 1) {
-            this.$Message.success("余额预警设置成功!");
+            this.$Message.success("余额预警设置成功");
           }
         }).catch(function (err) {
           this.$Message.success("余额预警设置失败!");
@@ -635,7 +635,7 @@
           industry: this.teamType,
         }).then((res) => {
           if (res.data.code) {
-            this.$Message.success("修改成功!");
+            this.$Message.success("修改成功");
             setTimeout(() => {
               location.reload();
             }, 1000);
@@ -679,7 +679,7 @@
           username: this.transferMember,
         }).then((res) => {
           if (res.data.code) {
-            this.$Message.success("转让成功!");
+            this.$Message.success("转让成功");
             this.teamTransfer = false;
             this.getTeamInfo();
           }
