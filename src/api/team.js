@@ -39,7 +39,7 @@ export function changeTeam(teamId) {
 export function createTeam(data) {
   return request({
     url: `${baseUrl}/api/team`,
-    method: "PUT",
+    method: "POST",
     data: {
       ...data
     }
