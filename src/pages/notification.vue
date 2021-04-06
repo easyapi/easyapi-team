@@ -119,6 +119,7 @@
         }
       },
       check() {
+        
         this.$router.push("/api/?documentId=17044&categoryId=50369&apiId=218291");
       }
     }
