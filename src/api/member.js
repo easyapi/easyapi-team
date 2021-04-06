@@ -52,12 +52,9 @@ export function addMember(data) {
  *
  * @see https://www.easyai.com
  */
-export function delMember(data, id) {
+export function delMember(id) {
   return request({
     url: `${baseUrl}/api/user-team/${id}`,
     method: "DELETE",
-    data: {
-      ...data
-    }
   });
 }

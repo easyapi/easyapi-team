@@ -3,11 +3,11 @@
     <div class="infotitle">
       <div class="wp">全部通知</div>
     </div>
-    <div class="wp mt">
+    <div class="wp mt" v-if="notificationListArray.length != 0">
       <div class="notification">
         <div id="appdnot">
           <ul>
-            <li class="appdnot_li" v-for="item in notificationListArray" :key="item">
+            <li class="appdnot_li" v-for="(item,index) in notificationListArray" :key="index">
               <Row>
                 <Col span="1">
                   <Avatar src="https://qiniu.easyapi.com/2015/1/0/1423382895789!icon.jpg" size="large"/>
@@ -18,13 +18,16 @@
                       {{formatMsgTime(item.addTime)}}
                     </Tooltip>
                   </h4>
-                  <p class="gray">磊大更新了发票管理API文档的接口商户注册&nbsp&nbsp&nbsp
+                  <p class="gray">磊大更新了发票管理API文档的接口商户注册&nbsp;&nbsp;&nbsp;
                     <span @click="check" class="check" target="_blank">查看</span></p></Col>
               </Row>
             </li>
           </ul>
         </div>
       </div>
+    </div>
+    <div v-else class="no-data">
+      <img src="../assets/images/no-data.png" alt="">
     </div>
   </div>
 </template>
@@ -37,17 +40,35 @@
     data() {
       return {
         notificationListArray: [],
-        k: 0
+        pagination:{
+          size: 15,
+          page: 0,
+          totalPages: 0
+        }
       };
     },
     mounted() {
       document.title = "团队通知 - EasyAPI";
       window.addEventListener("scroll", this.lazyLoading); // 滚动到底部，再加载的处理事件
-      getNotificationList().then((res) => {
-        this.notificationListArray = res.data.content;
-      });
+      this.getNotificationList();
     },
     methods: {
+      getPageList(){
+         if (this.pagination.page < this.pagination.totalPages - 1) {
+          this.pagination.page = this.pagination.page + 1
+          this.getNotificationList()
+         }
+      },
+      getNotificationList(){
+         let params = {
+            size:this.pagination.size,
+            page:this.pagination.page
+         }
+         getNotificationList(params).then((res) => {
+           this.notificationListArray = this.notificationListArray.concat(res.data.content);
+           this.pagination.totalPages = res.data.totalPages;
+        });
+      },
       formatMsgTime(timespan) {
         let dateTime = new Date(timespan);
         let year = dateTime.getFullYear();
@@ -94,14 +115,7 @@
         let scrollHeight = document.documentElement.scrollHeight;
         if (scrollTop + clientHeight >= scrollHeight) { // 滚动到底部，逻辑代码
           //事件处理
-          getNotificationList().then((res) => {
-            if (this.k > res.data.content.length - 1) {
-              this.k = this.list.length - 1;
-            } else {
-              this.notificationListArray.push(res.data.content[this.k]);
-            }
-            this.k++;
-          });
+          this.getPageList();
         }
       },
       check() {
@@ -112,6 +126,10 @@
 </script>
 
 <style scoped>
+  .no-data{
+    margin: 200px auto;
+    text-align: center;
+  }
   .infotitle {
     padding: 20px 0;
     background: #ecf1f5;
