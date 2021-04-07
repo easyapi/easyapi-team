@@ -12,25 +12,28 @@
         <Option v-for="item in memberList" :value="item.value" :key="item.value">{{ item.label }}</Option>
       </Select>
     </div>
-    <div class="eventbox">
-      <div>
+    <div class="eventbox" v-if="!noData">
+      <!-- <div> -->
         <ul>
-          <li v-for="item in eventListArray" :key="item">
+          <li v-for="(item,index) in eventListArray" :key="index">
             <div class="mr">
-              <p>07/18</p>
-              <p>星期二</p>
+              <p>{{item.updateTime.slice(5,7)}}/{{item.updateTime.slice(8,10)}}</p>
+              <p>{{weekTime(item.updateTime.slice(0,10))}}</p>
             </div>
             <div class="em">{{item.team.name}}</div>
-            <Divider dashed="true"/>
+            <Divider :dashed="true"/>
             <div class="event_content">
               <span class="addTime">{{item.addTime}}</span>
               <Avatar icon="ios-person" size="50" class="event_avatar" :src="item.user.photo"/>
-              <span><strong class="event_info">磊大</strong>修改了:<span class="shd"
+              <span><strong class="event_info">{{item.user.nickname}}</strong>{{item.type}}:<span class="shd"
                                                                     v-html="item.content">{{item.content}}</span></span>
             </div>
           </li>
         </ul>
-      </div>
+      <!-- </div> -->
+    </div>
+    <div v-else class="no-data">
+      <img src="../../assets/images/no-data.png" alt="">
     </div>
   </div>
 </template>
@@ -42,12 +45,15 @@
     name: "Event",
     data: function () {
       return {
-        showPro: false,
-        showMem: false,
         eventListArray: [],
         member: "",
         project: "",
-        timer: [],
+        noData:false,
+        pagination:{
+          size: 20,
+          page: 0,
+          totalPages: 0
+        },
         memberList: [
           {
             value: "New York",
@@ -76,43 +82,58 @@
         ]
       };
     },
-    created: function () {
-
-    },
     mounted: function () {
       document.title = "团队动态 - EasyAPI";
+      window.addEventListener("scroll", this.lazyLoading); // 滚动到底部，再加载的处理事件
       this.getEventList();
     },
     methods: {
+      getPageList(){
+         if (this.pagination.page < this.pagination.totalPages - 1) {
+          this.pagination.page = this.pagination.page + 1
+          this.getEventList()
+         }
+      },
       getEventList() {
-        getEventList().then(res => {
+        let params = {
+            size:this.pagination.size,
+            page:this.pagination.page
+        }
+        getEventList(params).then(res => {
           if (res.data.code == 1) {
-            this.eventListArray = res.data.content;
-            for (let a of this.eventListArray) {
+            for (let a of res.data.content) {
               a.addTime = new Date(a.addTime).toLocaleTimeString();
             }
+            this.eventListArray = this.eventListArray.concat(res.data.content);
+            this.pagination.totalPages = res.data.totalPages;
+          }else{
+            this.noData = true
           }
         });
       },
-      timeStampString(time) {
-        let datetime = new Date();
-        datetime.setTime(time);
-        let year = datetime.getFullYear();
-        let month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-        let date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-        let hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-        let minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-        let second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-        return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
-      }
+      weekTime(time){
+        let weekArray = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+        let week = weekArray[new Date(time).getDay()];
+        return week;
+      },
+      lazyLoading() { // 滚动到底部，再加载的处理事件
+        let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        let clientHeight = document.documentElement.clientHeight;
+        let scrollHeight = document.documentElement.scrollHeight;
+        if (scrollHeight - clientHeight - scrollTop <= 10) { // 滚动到底部，逻辑代码
+          //事件处理
+          this.getPageList();
+        }
+      },
     }
   };
 </script>
 
 <style scoped>
   .event_card {
-    margin: 30px 40px;
-    border: #dcdee2 1px solid;
+    max-width: 1200px;
+    overflow: hidden;
+    margin:30px auto;
   }
 
   .event_ti {
@@ -133,15 +154,13 @@
   }
 
   .eventbox {
-    padding: 40px;
-    width: 1200px;
+    padding-top: 40px;
   }
 
   .mr {
     background: #1ac1d6;
     display: inline-block;
     font-size: 12px;
-    float: left;
     color: #ffffff;
     width: 54px;
     text-align: center;
@@ -195,6 +214,10 @@
     line-height: 50px;
     position: relative;
     top: -50px;
+  }
+  .no-data{
+    margin: 200px auto;
+    text-align: center;
   }
 </style>
 <style lang="scss">

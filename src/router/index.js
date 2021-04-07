@@ -35,6 +35,8 @@ const UserEdit = () => import("../pages/user/edit.vue");
 
 const UserPassword = () => import("../pages/user/password.vue");
 
+const UserThirdParty = () => import("../pages/user/third-party.vue")
+
 
 Vue.use(Router);
 
@@ -121,7 +123,11 @@ export default new Router({
       path: "/user/password",
       name: "user-password",
       component: UserPassword
+    },
+    {
+      path: "/user/thirdParty",
+      name: "user-thirdParty",
+      component: UserThirdParty
     }
-
   ]
 });

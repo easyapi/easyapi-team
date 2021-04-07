@@ -18,7 +18,8 @@
       return {
         tabs: [
           {name: '基本信息', to: '/user/edit'},
-          {name: '修改密码', to: '/user/password'}
+          {name: '修改密码', to: '/user/password'},
+          {name: '三方登录', to: '/user/thirdParty'}
         ]
       }
     },

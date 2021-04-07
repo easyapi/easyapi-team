@@ -3,23 +3,23 @@
     <div class="infotitle">
       <div class="wp">全部通知</div>
     </div>
-    <div class="wp mt" v-if="notificationListArray.length != 0">
+    <div class="wp mt" v-if="!noData">
       <div class="notification">
         <div id="appdnot">
           <ul>
             <li class="appdnot_li" v-for="(item,index) in notificationListArray" :key="index">
               <Row>
                 <Col span="1">
-                  <Avatar src="https://qiniu.easyapi.com/2015/1/0/1423382895789!icon.jpg" size="large"/>
+                  <Avatar :src="item.sender.photo"/>
                 </Col>
                 <Col span="23">
-                  <h4>接口消息
-                    <Tooltip :content="timeStampString(item.addTime)" placement="bottom" class="fr gray">
+                  <h4>{{item.category}}
+                    <Tooltip :content="item.addTime" placement="bottom" class="fr gray">
                       {{formatMsgTime(item.addTime)}}
                     </Tooltip>
                   </h4>
-                  <p class="gray">磊大更新了发票管理API文档的接口商户注册&nbsp;&nbsp;&nbsp;
-                    <span @click="check" class="check" target="_blank">查看</span></p></Col>
+                  <p class="gray">{{item.content}}&nbsp;&nbsp;&nbsp;
+                    <a :href='"https://www.easyapi.com" + item.href' class="check" target="_blank">查看</a></p></Col>
               </Row>
             </li>
           </ul>
@@ -40,8 +40,9 @@
     data() {
       return {
         notificationListArray: [],
+        noData:false,
         pagination:{
-          size: 15,
+          size: 20,
           page: 0,
           totalPages: 0
         }
@@ -65,8 +66,12 @@
             page:this.pagination.page
          }
          getNotificationList(params).then((res) => {
-           this.notificationListArray = this.notificationListArray.concat(res.data.content);
-           this.pagination.totalPages = res.data.totalPages;
+           if(res.data.code == 1){
+             this.notificationListArray = this.notificationListArray.concat(res.data.content);
+             this.pagination.totalPages = res.data.totalPages;
+           }else{
+             this.noData = true
+           }
         });
       },
       formatMsgTime(timespan) {
@@ -98,17 +103,6 @@
         }
         return timeSpanStr;
       },
-      timeStampString(time) {
-        let datetime = new Date();
-        datetime.setTime(time);
-        let year = datetime.getFullYear();
-        let month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-        let date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-        let hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-        let minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-        let second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-        return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
-      },
       lazyLoading() { // 滚动到底部，再加载的处理事件
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         let clientHeight = document.documentElement.clientHeight;
@@ -118,10 +112,6 @@
           this.getPageList();
         }
       },
-      check() {
-        
-        this.$router.push("/api/?documentId=17044&categoryId=50369&apiId=218291");
-      }
     }
   };
 </script>
