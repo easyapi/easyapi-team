@@ -62,9 +62,7 @@
             <ul class="team-info_list">
               <li>团队名称: {{ accountGolbalInfo.team.name }}</li>
               <li>行业: {{ accountGolbalInfo.team.industry }}</li>
-              <li>
-                创建时间: {{ accountGolbalInfo.team.addTime | dateFormat }}
-              </li>
+              <li>创建时间: {{ accountGolbalInfo.team.addTime | dateFormat }}</li>
               <li>团队URL: {{ accountGolbalInfo.team.url }}</li>
             </ul>
           </div>

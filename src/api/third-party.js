@@ -6,12 +6,9 @@ import request from "@/utils/request";
  *
  * @see https://www.easyai.com
  */
-export function getThirdPartyList(params) {
+export function getUserThirdPartyList() {
   return request({
-    url: `${baseUrl}/third-parties`,
+    url: `${baseUrl}/user/third-parties`,
     method: "GET",
-    params: {
-      ...params,
-    },
   });
 }

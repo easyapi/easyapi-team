@@ -11,10 +11,14 @@
                 <img src="../../assets/images/weixin.jpg"/>
                 <span>微信</span>
               </h4>
-              <p>当前未绑定微信账号</p>
+              <p v-if="wechatInfo == null">当前未绑定微信账号</p>
+              <p v-else>当前已绑定
+                <img :src="wechatInfo.imageUrl" alt="" style="border-radius: 50%;">{{wechatInfo.displayName}}
+              </p>
             </div>
             <div class="user-base-accountBind-item-right">
-              <a href="https://account-api.easyapi.com/auth/wechat">绑定</a>
+              <a v-if="wechatInfo == null" href="https://account-api.easyapi.com/auth/wechat">绑定</a>
+              <a v-else href="javascript:;" @click="unlink">解绑</a>
             </div>
           </div>
           <div class="user-base-accountBind-item border-none">
@@ -23,10 +27,12 @@
                 <img src="../../assets/images/qq.jpg"/>
                 <span>QQ</span>
               </h4>
-              <p>当前未绑定QQ账号</p>
+              <p v-if="qqInfo == null">当前未绑定QQ账号</p>
+              <p v-else>当前已绑定QQ账号</p>
             </div>
             <div class="user-base-accountBind-item-right">
-              <a href="https://account-api.easyapi.com/auth/qq">绑定</a>
+              <a v-if="qqInfo == null" href="https://account-api.easyapi.com/auth/qq">绑定</a>
+              <a v-else href="javascript:;" @click="unlink">解绑</a>
             </div>
           </div>
         </div>
@@ -37,18 +43,48 @@
 
 <script>
 import leftNav from "./moudles/left";
+import {getUserThirdPartyList} from "../../api/third-party"
 export default {
   name: "user-thirdParty",
   data() {
-    return {};
+    return {
+      wechatInfo:null,
+      qqInfo:null
+    };
   },
   created() {
     document.title = "三方登录 - 个人设置 - EasyAPI";
+    this.getUserThirdPartyList()
   },
   components: {
     leftNav,
   },
-  methods: {},
+  methods: {
+    getUserThirdPartyList(){
+      getUserThirdPartyList().then(res=>{
+        if(res.data.code === 1){
+          for(let item of res.data.content){
+            if(item.providerId == "wechat"){
+              this.wechatInfo = item
+            }
+            if(item.providerId == "qq"){
+              this.qqInfo = item
+            }
+          }
+        }
+      })
+    },
+    //解绑
+    unlink(){
+      this.$Modal.confirm({
+          title: "提示",
+          content: "确定要解绑吗？",
+          onOk: () => {
+
+          },
+      })
+    }
+  },
 };
 </script>
 

@@ -65,7 +65,7 @@
             @click="stand('微信支付')"
           >
             <span>
-              <img src="../../assets/images/wxpay.png" alt style="padding-top:10px;"/>
+              <img src="../../assets/images/wxpay.png" alt style="padding-top:8px;height: 40px"/>
             </span>
           </div>
           <div
@@ -145,7 +145,7 @@
 </template>
 <script>
   import {getAccountMoney} from "../../api/money";
-  import {ServiceList, balance, paymentMethod} from "../../api/service";
+  import {ServiceList, balance} from "../../api/service";
   import calcudate from "calcudate";
   import accountUser from "../../store/modules/user";
   import $ from "jquery";
@@ -256,54 +256,8 @@
             //   this.onePrice.push(second)
             // }
             // console.log(this.onePrice)
-            // this.howMuchOfTheRest()
+            this.howMuchOfTheRest()
           }
-        }).catch((error) => {
-          console.log(error);
-        });
-      },
-      //查询 服务报价列表
-      getDocPrice() {
-        let second = "";
-        this.$ajax({
-          method: "GET",
-          url: ServiceList,
-          headers: {
-            authorization: "Bearer " + this.getCookie("authenticationToken"),
-          },
-          params: {serviceId: this.serviceId},
-        }).then((res) => {
-          if (res.data.code !== 0) {
-            let arr = [];
-            Object.keys(res.data.content).forEach(function (key) {
-              let obj = {};
-              obj.month = key;
-              obj.price = res.data.content[key];
-              arr.push(obj);
-            });
-
-            this.frequency = arr;
-            // this.servicePriceId = res.data.content[0].servicePriceId
-            for (let v of this.frequency) {
-              second = (v.price / v.month).toFixed(2);
-              this.onePrice.push(second);
-            }
-            this.howMuchOfTheRest();
-          }
-        }).catch((error) => {
-          console.log(error);
-        });
-      },
-      //余额
-      choosePaymentMethod() {
-        this.$ajax({
-          method: "GET",
-          url: paymentMethod,
-          headers: {
-            authorization: "Bearer " + this.getCookie("authenticationToken"),
-          },
-        }).then((res) => {
-          this.balance = res.data.content.balance;
         }).catch((error) => {
           console.log(error);
         });
@@ -320,7 +274,6 @@
         }).then((res) => {
           if (res.data.code == 1) {
             this.balance = res.data.content.balance;
-
             // 设置预警值
             // if (res.data.content.warningBalance > 0) {
             //   this.moneyWarnSize = res.data.content.warningBalance;
@@ -410,12 +363,15 @@
               okText: "",
               cancelText: "",
               onOk: () => {
-                this.getServiceList();
-                this.getTeamInfo();
-                this.howMuchOfTheRest();
+                 this.getServiceList();
+                 this.getTeamInfo();
+                 this.howMuchOfTheRest();
               },
             });
           }
+          this.getServiceList();
+          this.getTeamInfo();
+          this.howMuchOfTheRest();
           this.$Message.success(res.data.message);
         }).catch((error) => {
           if (this.assignment == "" || this.assignment == null) {
@@ -448,10 +404,10 @@
       }
       this.getServiceList();
       this.getTeamInfo();
+
     },
     mounted() {
       document.title = "服务续费 - EasyAPI";
-      this.choosePaymentMethod();
     },
   };
 </script>

@@ -21,6 +21,8 @@ const Members = () => import("../pages/member/index.vue");
 
 const Orders = () => import("../pages/order/index.vue");
 
+// const NewIdex = () => import("../pages/user")
+
 const New = () => import("../pages/new.vue");
 
 const NewSuccess = () => import("../pages/new-success.vue");
@@ -35,7 +37,9 @@ const UserEdit = () => import("../pages/user/edit.vue");
 
 const UserPassword = () => import("../pages/user/password.vue");
 
-const UserThirdParty = () => import("../pages/user/third-party.vue")
+const UserThirdParty = () => import("../pages/user/third-party.vue");
+
+
 
 
 Vue.use(Router);
