@@ -145,7 +145,7 @@
 </template>
 <script>
   import {getAccountMoney} from "../../api/money";
-  import {ServiceList, balance} from "../../api/service";
+  import {getServiceList, renewBalance,getTeamServiceInfo} from "../../api/service";
   import calcudate from "calcudate";
   import accountUser from "../../store/modules/user";
   import $ from "jquery";
@@ -153,6 +153,14 @@
   export default {
     data() {
       return {
+        teamServiceId:"",
+        num: "",
+        numAgain: "",
+        date: "",
+        dateAgain: "",
+        clockItem: "",//当前时间
+        serviceName: "",//服务名称
+        type: "",
         purchase: false,
         frequency: "",
         selectMoney: "",
@@ -162,18 +170,7 @@
         discount: "",
         howMany: "",
         serviceId: "",
-        teamServiceId: "",
-        onePrice: [],
         price: 0,
-        dateMonth: "",
-        dueTime: "",
-        clockItem: "",
-        serviceName: "",
-        type: "",
-        num: "",
-        numAgain: "",
-        date: "",
-        dateAgain: "",
       };
     },
     filters: {
@@ -191,45 +188,69 @@
         }
       },
     },
+    created() {
+      this.teamServiceId = this.$route.query.teamServiceId;
+      this.getTeamServiceInfo();
+      this.getTeamInfo();
+    },
+    mounted() {
+      document.title = "服务续费 - EasyAPI";
+    },
     methods: {
-      selectMoneyFn(num, servicePriceId, discount, price) {
-        this.selectMoney = num;
-        this.servicePriceId = servicePriceId;
-        this.price = price;
-        if (this.type == 3) {
-          this.date = this.addMonth(this.dateAgain, num);
-        }
-        if (this.type == 2) {
-          this.num = this.numAgain + num;
-        }
+      //当前时间
+      getItem() {
+        var currentTime = new Date();
+        var year = currentTime.getFullYear(); //年
+        var month = currentTime.getMonth() + 1; //月
+        var day = currentTime.getDate(); //日
+        var hh = currentTime.getHours(); //时
+        var mm = currentTime.getMinutes(); //分
+        var ss = currentTime.getSeconds(); //秒
+        this.clockItem = year + "-";
+        if (month < 10) this.clockItem += "0";
+        this.clockItem += month + "-";
+        if (day < 10) this.clockItem += "0";
+        this.clockItem += day + " ";
+        if (hh < 10) this.clockItem += "0";
+        this.clockItem += hh + ":";
+        if (mm < 10) this.clockItem += "0";
+        this.clockItem += mm + ":";
+        if (ss < 10) this.clockItem += "0";
+        this.clockItem += ss;
       },
-      addMonth(date, month) {
-        let y = date.getFullYear();
-        let m = date.getMonth();
-        let d = date.getDate();
-        let newDate = new Date(`${y}/${m}/${d}`);
-        if (m + month > 11) {
-          newDate = new Date(newDate.setFullYear(y + parseInt((m + month) / 12)));
-          newDate = new Date(newDate.setMonth((m + month) % 12));
-        } else {
-          newDate = new Date(newDate.setMonth(m + month));
+      //获取团队服务详情
+      getTeamServiceInfo(){
+        getTeamServiceInfo(this.teamServiceId).then(res=>{
+          if(res.data != null){
+            let obj = res.data
+            this.serviceName = obj.service.name;
+            this.type = obj.service.type;
+            this.serviceId = obj.service.serviceId;
+            this.getItem();
+            if(this.type == 3){
+              //代表已过期
+              if(new Date(obj.endTime).getTime() < new Date(this.clockItem).getTime()){
+                this.date = new Date(obj.endTime).getTime()
+                this.dateAgain = new Date(this.clockItem).getTime()
+              }else{
+                this.dateAgain = new Date(obj.endTime).getTime()
+                this.date = new Date(obj.endTime).getTime()
+              }
+            }
+            if(this.type == 2){
+              this.num =  obj.balance,
+              this.numAgain = obj.balance
+            }
+            this.getServiceList();
+          }
+        })
+      },
+      //查询服务报价列表
+      getServiceList(){
+        let params = {
+          serviceId: this.serviceId
         }
-        return newDate;
-      },
-      stand(pay) {
-        this.assignment = pay;
-      },
-      //查询 服务报价列表
-      getServiceList() {
-        let second = "";
-        this.$ajax({
-          method: "GET",
-          url: ServiceList,
-          headers: {
-            authorization: "Bearer " + this.getCookie("authenticationToken"),
-          },
-          params: {serviceId: this.serviceId},
-        }).then((res) => {
+        getServiceList(params).then(res=>{
           if (res.data.code !== 0) {
             let arr = [];
             res.data.content.forEach((item) => {
@@ -246,91 +267,59 @@
               obj.once = (obj.price / obj.num).toFixed(4);
               arr.push(obj);
             });
-
             this.frequency = arr;
-            // this.frequency = arr
-            // console.log(this.frequency)
-            // // this.servicePriceId = res.data.content[0].servicePriceId
-            // for (let v of this.frequency) {
-            //   second = (v.price / v.month).toFixed(2)
-            //   this.onePrice.push(second)
-            // }
-            // console.log(this.onePrice)
-            this.howMuchOfTheRest()
           }
         }).catch((error) => {
-          console.log(error);
+          
         });
       },
+      //选择服务价格
+      selectMoneyFn(num, servicePriceId, discount, price) {
+        this.selectMoney = num;
+        this.servicePriceId = servicePriceId;
+        this.price = price;
+        if (this.type == 3) {
+          this.date = this.addMonth(this.dateAgain, num);
+        }
+        if (this.type == 2) {
+          this.num = this.numAgain + num;
+        }
+      },
+      // 根据选择服务添加
+      addMonth(date, month) {
+        let y = new Date(date).getFullYear();
+        let m = new Date(date).getMonth();
+        let d = new Date(date).getDate();
+        let newDate = new Date(`${y}/${m}/${d}`);
+        if (m + month > 11) {
+          newDate = new Date(newDate.setFullYear(y + parseInt((m + month) / 12)));
+          newDate = new Date(newDate.setMonth((m + month) % 12));
+        } else {
+          newDate = new Date(newDate.setMonth(m + month));
+        }
+        return newDate;
+      },
+      //支付方式
+      stand(pay) {
+        this.assignment = pay;
+      },
+      //时间戳转时间
       dateFormat(date) {
-        let y = date.getFullYear();
-        let m = date.getMonth();
-        let d = date.getDate();
+        let y = new Date(date).getFullYear();
+        let m = new Date(date).getMonth();
+        let d = new Date(date).getDate();
         return `${y}/${m + 1}/${d}`;
       },
+      //获取团队账户
       getTeamInfo() {
         getAccountMoney({
           teamId: this.$store.state.user.team.id,
         }).then((res) => {
           if (res.data.code == 1) {
             this.balance = res.data.content.balance;
-            // 设置预警值
-            // if (res.data.content.warningBalance > 0) {
-            //   this.moneyWarnSize = res.data.content.warningBalance;
-            //   this.needMoneyWarn = true;
-            // } else {
-            //   this.needMoneyWarn = false;
-            // }
           }
         });
-      },
-      //剩余多少日期
-      howMuchOfTheRest() {
-        let documentEndTime = accountUser.state.accountInfo.team.documentEndTime;
-        let now = "";
-        if (documentEndTime && documentEndTime >= this.clockItem) {
-          this.howMany = documentEndTime.split(" ")[0];
-          now = new Date(this.howMany);
-          this.dueTime = calcudate
-            .add(now)
-            .months(this.dateMonth)
-            .toLocaleDateString();
-        } else {
-          now = new Date();
-          this.dueTime = calcudate.add(now).months(this.selectMoney).toLocaleDateString();
-        }
-        // this.howMany = accountUser.state.accountInfo.team.documentEndTime;
-        // this.dueTime = this.howMany?this.howMany:'已到期，请续费^_^';
-      },
-      //当前时间
-      getItem() {
-        var currentTime = new Date();
-        var year = currentTime.getFullYear(); //年
-        var month = currentTime.getMonth() + 1; //月
-        var day = currentTime.getDate(); //日
-
-        var hh = currentTime.getHours(); //时
-        var mm = currentTime.getMinutes(); //分
-        var ss = currentTime.getSeconds(); //秒
-        this.clockItem = year + "-";
-
-        if (month < 10) this.clockItem += "0";
-
-        this.clockItem += month + "-";
-
-        if (day < 10) this.clockItem += "0";
-
-        this.clockItem += day + " ";
-
-        if (hh < 10) this.clockItem += "0";
-
-        this.clockItem += hh + ":";
-        if (mm < 10) this.clockItem += "0";
-        this.clockItem += mm + ":";
-
-        if (ss < 10) this.clockItem += "0";
-        this.clockItem += ss;
-      },
+      }, 
       //确定购买
       Sure() {
         if (this.selectMoney === "") {
@@ -340,14 +329,11 @@
         this.purchase = true;
       },
       determineThePurchase() {
-        this.$ajax({
-          method: "POST",
-          url: balance,
-          data: {
-            servicePriceId: this.servicePriceId,
-            payment: this.assignment,
-          },
-        }).then((res) => {
+        let data = {
+          servicePriceId: this.servicePriceId,
+          payment: this.assignment
+        }
+        renewBalance(data).then(res=>{
           if (this.assignment === "支付宝") {
             this.formHtml = res.data.alipay;
             let form = $(this.formHtml);
@@ -363,15 +349,13 @@
               okText: "",
               cancelText: "",
               onOk: () => {
-                 this.getServiceList();
-                 this.getTeamInfo();
-                 this.howMuchOfTheRest();
+                 this.getTeamServiceInfo();
+                 this.selectMoney = ""
               },
             });
           }
-          this.getServiceList();
-          this.getTeamInfo();
-          this.howMuchOfTheRest();
+          this.getTeamServiceInfo();
+          this.selectMoney = ""
           this.$Message.success(res.data.message);
         }).catch((error) => {
           if (this.assignment == "" || this.assignment == null) {
@@ -381,33 +365,6 @@
           }
         });
       },
-      getCookie(name) {
-        var arr,
-          reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-        if ((arr = document.cookie.match(reg))) return arr[2];
-        else return null;
-      },
-    },
-    created() {
-      this.serviceId = this.$route.query.serviceId;
-      this.num = Number(this.$route.query.num);
-      this.numAgain = Number(this.$route.query.num);
-      this.serviceName = this.$route.query.serviceName;
-      this.type = this.$route.query.type;
-      if (this.type == 3) {
-        this.date = new Date(
-          new Date().getTime() + this.num * 1000 * 60 * 60 * 24
-        );
-        this.dateAgain = new Date(
-          new Date().getTime() + this.num * 1000 * 60 * 60 * 24
-        );
-      }
-      this.getServiceList();
-      this.getTeamInfo();
-
-    },
-    mounted() {
-      document.title = "服务续费 - EasyAPI";
     },
   };
 </script>

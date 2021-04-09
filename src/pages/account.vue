@@ -569,7 +569,7 @@
               this.recharge = false;
               this.$Modal.confirm({
                 title: "微信扫码支付",
-                content: `<div class="wx-pay"><p class="wx-pay_amount">支付${_that.rechargeAmount}元</p><p><img src="http://qr.topscan.com/api.php?text=${url}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
+                content: `<div class="wx-pay"><p class="wx-pay_amount">支付${_that.rechargeAmount}元</p><p><img src="https://api.easyapi.com/api/qr-code?text=${url}&bg=ffffff&appKey=f89UK9X5Q3C2YW2y&appSecret=hr2he5ufz6vw0ikz"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
                 okText: "",
                 cancelText: "",
                 onOk: () => {
