@@ -20,7 +20,7 @@
       width="520"
       @visibleChange="memberSDVisible"
     >
-      <div class="n-row grid" v-if="memberSelect">
+      <div class="n-row grid" v-if="memberSelect > 0 || memberSelect == 0">
         <p class="bottom-5">
           从团队中移除<span class="t-blue">{{members[memberSelect].user.nickname}}</span>
         </p>
@@ -203,7 +203,9 @@
           return;
         }
         this.memberSelect = i;
-        if (this.members[this.memberSelect].type === "创建人") return;
+        // if (this.members[this.memberSelect].type === "管理员"){
+        //   return;
+        // };
         this.memberSetDialog = true;
         this.permision = this.members[this.memberSelect].type;
         this.getMemberInvite(this.members[i].user.id);

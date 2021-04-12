@@ -15,7 +15,7 @@
           <div slot="title" class="Code-title">手机端索取发票</div>
           <div class="Code-picture" slot="content">
             <img
-              :src="'https://qr.topscan.com/api.php?text=' + picture"
+              :src="'https://api.easyapi.com/api/qr-code?text=' + picture + '&bg=ffffff&appKey=f89UK9X5Q3C2YW2y&appSecret=hr2he5ufz6vw0ikz'"
               alt
               style="width: 100px; height: 100px"
             />
@@ -459,6 +459,7 @@
         getInvoiceToken(encryption.toUpperCase()).then((res) => {
           if (res.data.code == 1) {
             this.fapiaoToken = res.data.content;
+            this.qrCode();
           }
         });
       },

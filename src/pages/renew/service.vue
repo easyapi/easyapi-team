@@ -270,7 +270,7 @@
             this.frequency = arr;
           }
         }).catch((error) => {
-          
+          this.$Message.error(error.response.data.message)
         });
       },
       //选择服务价格
@@ -362,6 +362,7 @@
             this.$Message.warning("请选择和支付方式");
           } else {
             this.$Message.error(error.data.message);
+            
           }
         });
       },

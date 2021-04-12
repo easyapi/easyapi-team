@@ -11,19 +11,20 @@
   </div>
 </template>
 <script>
-  import RechargeList from './moudles/recharge'
-  import BillList from './moudles/bill'
+import RechargeList from "./moudles/recharge";
+import BillList from "./moudles/bill";
 
-  export default {
-    name: "Bills",
-    components: {
-      RechargeList,
-      BillList
-    },
-    data() {
-    }
-  }
+export default {
+  name: "Bills",
+  components: {
+    RechargeList,
+    BillList,
+  },
+  data() {
+    return {};
+  },
+};
 </script>
 <style lang="stylus" scoped>
-  @import '../../styles/color.styl';
+@import '../../styles/color.styl';
 </style>
