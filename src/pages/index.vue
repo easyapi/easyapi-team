@@ -89,7 +89,6 @@
 </template>
 <script>
   import {teamPage} from '../api/page'
-  import {changeTeam} from '../api/team'
   import Cookies from 'js-cookie'
   import {mapGetters} from 'vuex'
 
@@ -150,7 +149,7 @@
       },
       //团队信息
       getTeamInfo(domain) {
-        this.$ajax.get(teamPage + '/' + domain, {}).then(res => {
+        teamPage(domain).then(res => {
           this.button = res.data
         }).catch(error => {
           console.log(error)

@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getCaptcha(username) {
   return request({
-    url: `${baseUrl}/api/account/captcha/activation`,
+    url: `${accountUrl}/api/account/captcha/activation`,
     method: "POST",
     data: {
       username: username

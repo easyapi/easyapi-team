@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +8,7 @@ import request from "@/utils/request";
  */
 export function alipay(params) {
   return request({
-    url: `${baseUrl}/api/alipay/recharge`,
+    url: `${accountUrl}/api/alipay/recharge`,
     method: "GET",
     params: {
       ...params,
@@ -23,7 +23,7 @@ export function alipay(params) {
  */
 export function wxpay(params) {
   return request({
-    url: `${baseUrl}/api/wxpay/recharge`,
+    url: `${accountUrl}/api/wxpay/recharge`,
     method: "GET",
     params: {
       ...params,

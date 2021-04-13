@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 
@@ -9,7 +9,7 @@ import request from "@/utils/request";
  */
 export function setMemberType(data) {
   return request({
-    url: `${baseUrl}/api/user-team`,
+    url: `${accountUrl}/api/user-team`,
     method: "PUT",
     data: {
       ...data
@@ -24,7 +24,7 @@ export function setMemberType(data) {
  */
 export function getMemberInvitedInfo(params) {
   return request({
-    url: `${baseUrl}/api/invite`,
+    url: `${accountUrl}/api/invite`,
     method: "GET",
     params: {
       ...params
@@ -39,7 +39,7 @@ export function getMemberInvitedInfo(params) {
  */
 export function addMember(data) {
   return request({
-    url: `${baseUrl}/api/user-team`,
+    url: `${accountUrl}/api/user-team`,
     method: "POST",
     data: {
       ...data
@@ -54,7 +54,7 @@ export function addMember(data) {
  */
 export function delMember(id) {
   return request({
-    url: `${baseUrl}/api/user-team/${id}`,
+    url: `${accountUrl}/api/user-team/${id}`,
     method: "DELETE",
   });
 }

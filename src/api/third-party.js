@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getUserThirdPartyList() {
   return request({
-    url: `${baseUrl}/user/third-parties`,
+    url: `${accountUrl}/user/third-parties`,
     method: "GET",
   });
 }
@@ -20,7 +20,7 @@ export function getUserThirdPartyList() {
  */
 export function unbindThirdParty(id) {
   return request({
-    url: `${baseUrl}/third-party/${id}`,
+    url: `${accountUrl}/third-party/${id}`,
     method: "DELETE",
   });
 }

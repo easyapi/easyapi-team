@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getEventList(params) {
   return request({
-    url: `${baseUrl}/events`,
+    url: `${accountUrl}/events`,
     method: "GET",
     params: {
       ...params,

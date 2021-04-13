@@ -1,4 +1,4 @@
-import { baseUrl } from "./api";
+import { accountUrl } from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getOrderList(params) {
   return request({
-    url: `${baseUrl}/api/orders`,
+    url: `${accountUrl}/api/orders`,
     method: "GET",
     params: {
       ...params,

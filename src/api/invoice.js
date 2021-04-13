@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 
@@ -9,7 +9,7 @@ import request from "@/utils/request";
  */
 export function getInvoiceToken(username) {
   return request({
-    url: `${baseUrl}/invoice/access-token`,
+    url: `${accountUrl}/invoice/access-token`,
     method: "GET",
     params: {
       username: username

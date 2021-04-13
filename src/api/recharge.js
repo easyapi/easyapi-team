@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getRechargeList(params) {
   return request({
-    url: `${baseUrl}/api/recharges`,
+    url: `${accountUrl}/api/recharges`,
     method: "GET",
     params: {
       ...params,

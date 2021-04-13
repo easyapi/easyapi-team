@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getAccountInfo() {
   return request({
-    url: `${baseUrl}/api/account`,
+    url: `${accountUrl}/api/account`,
     method: "GET",
   });
 }
@@ -21,7 +21,7 @@ export function getAccountInfo() {
  */
 export function getUserTeamList() {
   return request({
-    url: `${baseUrl}/api/user/teams`,
+    url: `${accountUrl}/api/user/teams`,
     method: "GET",
   });
 }
@@ -33,7 +33,7 @@ export function getUserTeamList() {
  */
 export function changePassword(data) {
   return request({
-    url: `${baseUrl}/api/account/change-password`,
+    url: `${accountUrl}/api/account/change-password`,
     method: "POST",
     data: {
       ...data
@@ -48,7 +48,7 @@ export function changePassword(data) {
  */
 export function updateAccountInfo(data) {
   return request({
-    url: `${baseUrl}/api/account`,
+    url: `${accountUrl}/api/account`,
     method: "PUT",
     data: {
       ...data

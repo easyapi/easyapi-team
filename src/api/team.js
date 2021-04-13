@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getTeamUserList(teamId) {
   return request({
-    url: `${baseUrl}/api/team/users`,
+    url: `${accountUrl}/api/team/users`,
     method: "GET",
     params: {
       teamId: teamId,
@@ -25,7 +25,7 @@ export function getTeamUserList(teamId) {
  */
 export function changeTeam(teamId) {
   return request({
-    url: `${baseUrl}/api/team/${teamId}/change`,
+    url: `${accountUrl}/api/team/${teamId}/change`,
     method: "PUT",
   });
 }
@@ -38,7 +38,7 @@ export function changeTeam(teamId) {
  */
 export function createTeam(data) {
   return request({
-    url: `${baseUrl}/api/team`,
+    url: `${accountUrl}/api/team`,
     method: "POST",
     data: {
       ...data
@@ -53,7 +53,7 @@ export function createTeam(data) {
  */
 export function updateTeam(id, data) {
   return request({
-    url: `${baseUrl}/api/team/${id}`,
+    url: `${accountUrl}/api/team/${id}`,
     method: "PUT",
     data: {
       ...data
@@ -68,7 +68,7 @@ export function updateTeam(id, data) {
  */
 export function deleteTeam(id, data) {
   return request({
-    url: `${baseUrl}/api/team/${id}`,
+    url: `${accountUrl}/api/team/${id}`,
     method: "DELETE",
     data: {
       ...data
@@ -83,7 +83,7 @@ export function deleteTeam(id, data) {
  */
 export function checkTeamUrl(url) {
   return request({
-    url: `${baseUrl}/api/team/checkUrl`,
+    url: `${accountUrl}/api/team/checkUrl`,
     method: "GET",
     params: {
       url: url,
@@ -98,7 +98,7 @@ export function checkTeamUrl(url) {
  */
 export function quitTeam(id, params) {
   return request({
-    url: `${baseUrl}/api/team/${id}/exit`,
+    url: `${accountUrl}/api/team/${id}/exit`,
     method: "GET",
     params: {
       ...params
@@ -113,7 +113,7 @@ export function quitTeam(id, params) {
  */
 export function transferTeam(id, data) {
   return request({
-    url: `${baseUrl}/api/team/${id}/transfer`,
+    url: `${accountUrl}/api/team/${id}/transfer`,
     method: "PUT",
     data: {
       ...data

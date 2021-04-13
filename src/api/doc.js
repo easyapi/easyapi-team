@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import axios from "axios";
 
 
@@ -7,7 +7,7 @@ import axios from "axios";
  *
  * @see https://www.easyai.com
  */
-export const getDocumentPriceList = () => axios.get(`${baseUrl}/team/document/price`);
+export const getDocumentPriceList = () => axios.get(`${accountUrl}/team/document/price`);
 
 
 /**
@@ -15,7 +15,7 @@ export const getDocumentPriceList = () => axios.get(`${baseUrl}/team/document/pr
  **
  * @see https://www.easyai.com
  */
-export const documentRenew = (data) => axios.post(`${baseUrl}/api/team/document/renew`, {
+export const documentRenew = (data) => axios.post(`${accountUrl}/api/team/document/renew`, {
   data: {
     data
   }

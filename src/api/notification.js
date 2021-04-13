@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 
@@ -9,7 +9,7 @@ import request from "@/utils/request";
  */
 export function getNotificationList(params) {
   return request({
-    url: `${baseUrl}/notifications`,
+    url: `${accountUrl}/notifications`,
     method: "GET",
     params: {
       ...params,

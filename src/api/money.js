@@ -1,4 +1,4 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getAccountMoney(params) {
   return request({
-    url: `${baseUrl}/api/money/check`,
+    url: `${accountUrl}/api/money/check`,
     method: "GET",
     params: {
       ...params,
@@ -24,7 +24,7 @@ export function getAccountMoney(params) {
  */
 export function balanceWarn(id, data) {
   return request({
-    url: `${baseUrl}/api/money/${id}`,
+    url: `${accountUrl}/api/money/${id}`,
     method: "PUT",
     data: {
       ...data,

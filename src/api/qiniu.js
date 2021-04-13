@@ -1,11 +1,11 @@
-import {baseUrl} from "./api";
+import {accountUrl} from "./api";
 import axios from "axios";
 
 
 /**
  * 获取七牛KEY
  */
-export const getQiniuKey = `${baseUrl}/api/qiniu/key`;
+export const getQiniuKey = `${accountUrl}/api/qiniu/key`;
 
 
 /**
@@ -13,4 +13,4 @@ export const getQiniuKey = `${baseUrl}/api/qiniu/key`;
  *
  * @see https://www.easyai.com
  */
-export const getQiniuToken = () => axios.get(`${baseUrl}/api/qiniu/upToken`);
+export const getQiniuToken = () => axios.get(`${accountUrl}/api/qiniu/upToken`);
