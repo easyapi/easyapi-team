@@ -274,27 +274,9 @@ export default {
     },
     renderQuantity: function (h, p, html) {
       let str = "";
-      switch (p.type) {
-        case 3:
-          str = "时长1月";
-          break;
-        case 1:
-          break;
-        case 2:
-          break;
-        case 4:
-          if (p.quantity === 0) {
-            str = p.unit || "--";
-          } else if (p.quantity > 0) {
-            str = `${p.quantity}*${p.unit || ""}`;
-          }
-          break;
-        default:
-          str = "";
-          break;
-      }
-      if (html) {
-        return `<p>${str}</p>`;
+      str = `${p.quantity} ${p.unit}`
+      if(html){
+        return str
       }
       return h("p", str);
     },
