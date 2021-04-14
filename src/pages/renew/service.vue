@@ -361,8 +361,7 @@
           if (this.assignment == "" || this.assignment == null) {
             this.$Message.warning("请选择和支付方式");
           } else {
-            this.$Message.error(error.data.message);
-            
+            this.$Message.error(error.response.data.message);
           }
         });
       },

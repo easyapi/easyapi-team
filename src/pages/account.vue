@@ -473,7 +473,6 @@
       },
       //生成二维码
       qrCode: function () {
-        this.getInvoiceToken();
         this.picture =
           "https://fapiao-h5.easyapi.com?accessToken=" + this.fapiaoToken;
       },
@@ -640,7 +639,6 @@
             }, 1000);
           }
         }).catch((error) => {
-          console.log(error.response);
           this.$Message.error(error.response.data.message);
         });
       },

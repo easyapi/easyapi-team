@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="noMoreData" v-if="noMoreData">
-      <div>没有更多数据了</div>
+      <div>没有更多数据了...</div>
     </div>
   </div>
 </template>
@@ -122,8 +122,9 @@ export default {
       if (this.pagination.page < this.pagination.totalPages - 1) {
         this.pagination.page = this.pagination.page + 1;
         this.getEventList();
-      } else {
-        this.noMoreData = true;
+      }
+      if(this.pagination.page == this.pagination.totalPages - 1){
+        this.noMoreData = true
       }
     },
     getEventList() {

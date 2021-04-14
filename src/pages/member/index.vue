@@ -288,7 +288,7 @@
           this.getTeamUserList();
           this.closeMemberSD();
         }).catch(function (err) {
-          this.$Message.success("修改失败!!");
+          this.$Message.error("修改失败!!");
           this.closeMemberSD();
         }).then(function () {
         });
@@ -305,7 +305,7 @@
           this.getTeamUserList();
           this.closeDelSD();
         }).catch(function (err) {
-          this.$Message.success("删除失败!!");
+          this.$Message.error("删除失败!!");
         }).then(function () {
           this.closeDelSD();
         });
@@ -348,7 +348,7 @@
               }
               this.closeNewSD();
             }).catch(function (err) {
-              this.$Message.success("添加失败!!");
+              this.$Message.error("添加失败!!");
             });
           }
         });

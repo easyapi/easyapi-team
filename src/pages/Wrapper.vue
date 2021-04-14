@@ -69,7 +69,8 @@
         getTeamUserList(this.$store.state.user.team.id).then(res => {
           this.members = res.data.content
           this.loadingMemberList = false
-        }).catch(err => {
+        }).catch(error => {
+          this.$Message.error(error.response.data.message);
           this.loadingMemberList = false
         })
       }

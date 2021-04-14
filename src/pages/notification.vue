@@ -84,8 +84,9 @@ export default {
       if (this.pagination.page < this.pagination.totalPages - 1) {
         this.pagination.page = this.pagination.page + 1;
         this.getNotificationList();
-      } else {
-        this.noMoreData = true;
+      } 
+      if(this.pagination.page == this.pagination.totalPages - 1){
+        this.noMoreData = true
       }
     },
     getNotificationList() {

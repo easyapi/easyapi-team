@@ -1,11 +1,11 @@
 <template>
   <div class="Insequence">
     <div class="Insequence-title">
-      <span>{{ serviceName }}服务续费</span>
+      <span>{{ serviceName }}监控续费</span>
     </div>
     <div class="Insequence_conter">
       <div class="Insequence_service">
-        <strong class="Insequence_service_title">服务价格：</strong>
+        <strong class="Insequence_service_title">监控价格：</strong>
         <div class="left">
           <div
             class="Insequence_Price"
@@ -361,7 +361,7 @@
           if (this.assignment == "" || this.assignment == null) {
             this.$Message.warning("请选择和支付方式");
           } else {
-            this.$Message.error(error.data.message);
+            this.$Message.error(error.response.data.message);
             
           }
         });

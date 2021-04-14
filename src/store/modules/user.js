@@ -81,6 +81,7 @@ const user = {
         //用户团队{}
         commit("SET_USER_TEAM", userInfoData.userTeam);
       }).catch(error => {
+        this.$Message.error(error.response.data.message);
       });
     },
     // 登出

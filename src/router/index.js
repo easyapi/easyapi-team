@@ -29,6 +29,12 @@ const NewSuccess = () => import("../pages/new-success.vue");
 
 const RenewService = () => import("../pages/renew/service.vue");
 
+const RenewDoc = () => import("../pages/renew/doc.vue")
+
+const RenewGateway = () => import("../pages/renew/gateway.vue")
+
+const RenewMonitor = () => import("../pages/renew/monitor.vue")
+
 const RenewAlipay = () => import("../pages/renew/alipay.vue");
 
 const RenewSuccess = () => import("../pages/renew/success.vue");
@@ -107,6 +113,21 @@ export default new Router({
       path: "/renew/service",
       name: "renew-service",
       component: RenewService
+    },
+    {
+      path: "/renew/doc",
+      name: "renew-doc",
+      component: RenewDoc
+    },
+    {
+      path: "/renew/gateway",
+      name: "renew-gateway",
+      component: RenewGateway
+    },
+    {
+      path: "/renew/monitor",
+      name: "renew-doc",
+      component: RenewMonitor
     },
     {
       path: "/renew/alipay",

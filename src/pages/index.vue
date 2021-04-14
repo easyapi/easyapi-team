@@ -152,7 +152,7 @@
         teamPage(domain).then(res => {
           this.button = res.data
         }).catch(error => {
-          console.log(error)
+          this.$Message.error(error.response.data.message);
         })
       }
     },

@@ -1,7 +1,8 @@
 <template>
   <div class="m-wrapper" v-cloak>
     <h4 class="title">订单记录</h4>
-    <Table
+    <div v-if="noData">
+      <Table
       class="table"
       v-if="tableData.length"
       stripe
@@ -9,9 +10,7 @@
       :data="tableData"
       :loading="dataLoading"
     ></Table>
-    <p v-if="!tableData.length" style="text-align: center">
-      <img src="../../assets/images/no-data.png" alt />
-    </p>
+    
     <Page
       :total="total"
       v-if="tableData.length"
@@ -20,6 +19,10 @@
       class="page-nav"
       @on-change="pageChange"
     ></Page>
+    </div>
+    <p v-else class="noData">
+      <img src="../../assets/images/no-data.png" alt />
+    </p>
     <ea-dialog
       title="订单详情"
       :open="detailOpen"
@@ -78,7 +81,7 @@
           <Row>
             <Col span="8" class="row detail-key">时间</Col>
             <Col span="16" class="row">
-              {{ tableData[billDetailIndex].addTime | dateFormat }}
+              {{ tableData[billDetailIndex].addTime}}
             </Col>
           </Row>
         </Col>
@@ -101,6 +104,7 @@ export default {
   components: {},
   data: function () {
     return {
+      noData:true,
       tableHead: [
         {
           title: "日期",
@@ -204,18 +208,19 @@ export default {
         size: this.pageSize,
       })
         .then((res) => {
-          if (res.data == null) {
+          if (res.data.code === 1) {
+            this.total = res.data.totalElements;
+            this.tableData = res.data.content;
+          } else {
             this.total = 0;
             this.tableData = [];
             this.dataLoading = false;
-            return;
-          } else {
-            if (!this.total) this.total = res.data.totalElements;
-            if (res.data.content.length) this.tableData = res.data.content;
+            this.noData = false
           }
           this.dataLoading = false;
         })
-        .catch(function (err) {
+        .catch(function (error) {
+          this.$Message.error(error.response.data.message);
           this.tableData = [];
         })
         .then(function () {});
@@ -315,7 +320,10 @@ export default {
     line-height: 120px;
   }
 }
-
+.noData{
+  text-align center;
+  margin-top 150px;
+}
 .detail-table {
   border-top: 1px solid c-border;
   border-left: 1px solid c-border;

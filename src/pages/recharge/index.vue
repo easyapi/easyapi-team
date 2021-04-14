@@ -106,9 +106,9 @@
           } else {
             if (res.data.content.length) this.tableData = res.data.content;
           }
-        }).catch(function (err) {
+        }).catch(function (error) {
+          this.$Message.error(error.response.data.message);
           this.dataLoading = false;
-          console.log(err);
         });
       }
     },
