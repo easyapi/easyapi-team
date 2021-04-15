@@ -1,5 +1,5 @@
 import {accountUrl} from "./api";
-import axios from "axios";
+import request from "@/utils/request";
 
 
 /**
@@ -7,16 +7,25 @@ import axios from "axios";
  *
  * @see https://www.easyai.com
  */
-export const getDocumentPriceList = () => axios.get(`${accountUrl}/team/document/price`);
+export function getDocumentPriceList() {
+  return request({
+    url: `${accountUrl}/team/document/price`,
+    method: "GET",
+  });
+}
 
 
 /**
  * 文档续费
- **
+ *
  * @see https://www.easyai.com
  */
-export const documentRenew = (data) => axios.post(`${accountUrl}/api/team/document/renew`, {
-  data: {
-    data
-  }
-});
+export function documentRenew(data) {
+  return request({
+    url: `${accountUrl}/team/document/renew`,
+    method: "POST",
+    data: {
+      ...data,
+    },
+  });
+}
