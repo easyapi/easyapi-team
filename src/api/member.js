@@ -41,9 +41,7 @@ export function addMember(data) {
   return request({
     url: `${accountUrl}/api/user-team`,
     method: "POST",
-    data: {
-      ...data
-    }
+    data: data
   });
 }
 

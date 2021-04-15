@@ -3,7 +3,7 @@ import request from "@/utils/request";
 
 
 /**
- * 获取网关项目详情信息
+ * 获取监控项目详情信息
  *
  * @see https://www.easyai.com
  */

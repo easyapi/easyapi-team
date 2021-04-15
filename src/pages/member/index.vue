@@ -195,7 +195,6 @@
           this.members = res.data.content;
         });
       },
-
       // 成员设置弹窗
       memberSetting: function (i) {
         if (!this.hasPowerSetting) {
@@ -300,15 +299,15 @@
       delMember: function () {
         let id = this.members[this.memberSelect].userTeamId;
         delMember(id).then(res => {
-          this.$Message.success("删除成功!");
-          this.memberSelect = "";
-          this.getTeamUserList();
-          this.closeDelSD();
+          if(res.data.code === 1){
+            this.$Message.success("删除成功!");
+            this.memberSelect = null;
+            this.closeDelSD();
+            this.getTeamUserList();    
+          }
         }).catch(function (err) {
           this.$Message.error("删除失败!!");
-        }).then(function () {
-          this.closeDelSD();
-        });
+        })
       },
 
       /**
@@ -332,7 +331,7 @@
             });
             let data = memberData;
             addMember(data).then(res => {
-              if (res.data.code) {
+              if (res.data.code === 1) {
                 this.$Message.success({
                   content: res.data.message.replace("添加", "邀请"),
                   duration: 3

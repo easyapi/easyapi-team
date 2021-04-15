@@ -1,7 +1,7 @@
 <template>
   <div class="Insequence">
     <div class="Insequence-title">
-      <span>{{ serviceName }}文档续费</span>
+      <span>文档续费</span>
     </div>
     <div class="Insequence_conter">
       <div class="Insequence_service">
@@ -15,11 +15,11 @@
             @click="selectMoneyFn(price.num, price.id, null, price.price)"
           >
             <strong>
-              {{ price.num | total(type) }}&nbsp;&nbsp;￥{{
+              {{ 12 > price.num ? price.num + "月"  : parseInt(price.num / 12) + "年" + (price.num % 12 !== 0 ? (price.num % 12) + "月" : "") }}&nbsp;&nbsp;￥{{
               price.price.toFixed(2)
               }}
             </strong>
-            <p>￥{{ price.once }}/{{ type == 2 ? "次" : "月" }}</p>
+            <p>￥{{ price.once }}/月</p>
           </div>
         </div>
       </div>
@@ -84,13 +84,9 @@
         </div>
       </div>
       <div class="Insequence_fl">
-        <strong class="Insequence_service_title">{{
-          type == 2 ? "剩余次数：" : "到期时间："
-          }}</strong>
+        <strong class="Insequence_service_title">到期时间：</strong>
         <div class="frequency">
-          <strong style="color: #323232; font-size: 14px">{{
-            type == 2 ? num : dateFormat(date)
-            }}</strong>
+          <strong style="color: #323232; font-size: 14px">{{dateFormat(date)}}</strong>
         </div>
       </div>
       <div class="Insequence_fl">
@@ -144,23 +140,18 @@
   </div>
 </template>
 <script>
+  import {getDocumentPriceList} from "../../api/doc.js";
   import {getAccountMoney} from "../../api/money";
-  import {getServiceList, renewBalance,getTeamServiceInfo} from "../../api/service";
-  import calcudate from "calcudate";
-  import accountUser from "../../store/modules/user";
+  import {renewBalance} from "../../api/service";
   import $ from "jquery";
 
   export default {
     data() {
       return {
         teamServiceId:"",
-        num: "",
-        numAgain: "",
         date: "",
         dateAgain: "",
         clockItem: "",//当前时间
-        serviceName: "",//服务名称
-        type: "",
         purchase: false,
         frequency: "",
         selectMoney: "",
@@ -168,33 +159,16 @@
         balance: "",
         assignment: "余额支付",
         discount: "",
-        howMany: "",
         serviceId: "",
         price: 0,
       };
     },
-    filters: {
-      total(val, type) {
-        if (type == 2) {
-          return val + "次";
-        }
-        if (type == 3) {
-          if (val < 12) {
-            return val + "月";
-          }
-          return (
-            parseInt(val / 12) + "年" + (val % 12 !== 0 ? (val % 12) + "月" : "")
-          );
-        }
-      },
-    },
     created() {
-      this.teamServiceId = this.$route.query.teamServiceId;
-      this.getTeamServiceInfo();
       this.getTeamInfo();
+      this.getDocumentPriceList();
     },
     mounted() {
-      document.title = "服务续费 - EasyAPI";
+      document.title = "文档续费 - EasyAPI";
     },
     methods: {
       //当前时间
@@ -219,50 +193,40 @@
         this.clockItem += ss;
       },
       //获取团队服务详情
-      getTeamServiceInfo(){
-        getTeamServiceInfo(this.teamServiceId).then(res=>{
-          if(res.data != null){
-            let obj = res.data
-            this.serviceName = obj.service.name;
-            this.type = obj.service.type;
-            this.serviceId = obj.service.serviceId;
-            this.getItem();
-            if(this.type == 3){
-              //代表已过期
-              if(new Date(obj.endTime).getTime() < new Date(this.clockItem).getTime()){
-                this.date = new Date(obj.endTime).getTime()
-                this.dateAgain = new Date(this.clockItem).getTime()
-              }else{
-                this.dateAgain = new Date(obj.endTime).getTime()
-                this.date = new Date(obj.endTime).getTime()
-              }
-            }
-            if(this.type == 2){
-              this.num =  obj.balance,
-              this.numAgain = obj.balance
-            }
-            this.getServiceList();
-          }
-        })
-      },
-      //查询服务报价列表
-      getServiceList(){
-        let params = {
-          serviceId: this.serviceId
-        }
-        getServiceList(params).then(res=>{
+      // getTeamServiceInfo(){
+      //   getTeamServiceInfo(this.teamServiceId).then(res=>{
+      //     if(res.data != null){
+      //       let obj = res.data
+      //       this.type = obj.service.type;
+      //       this.serviceId = obj.service.serviceId;
+      //       this.getItem();
+      //       if(this.type == 3){
+      //         //代表已过期
+      //         if(new Date(obj.endTime).getTime() < new Date(this.clockItem).getTime()){
+      //           this.date = new Date(obj.endTime).getTime()
+      //           this.dateAgain = new Date(this.clockItem).getTime()
+      //         }else{
+      //           this.dateAgain = new Date(obj.endTime).getTime()
+      //           this.date = new Date(obj.endTime).getTime()
+      //         }
+      //       }
+      //       if(this.type == 2){
+      //         this.num =  obj.balance,
+      //         this.numAgain = obj.balance
+      //       }
+      //       // this.getServiceList();
+      //     }
+      //   })
+      // },
+      //查询文档报价列表
+      getDocumentPriceList(){
+        getDocumentPriceList().then(res=>{
           if (res.data.code !== 0) {
             let arr = [];
             res.data.content.forEach((item) => {
               let obj = {};
-              if (item.type == 2) {
-                obj.num = item.times;
-                obj.price = item.price;
-              }
-              if (item.type == 3) {
-                obj.num = item.month;
-                obj.price = item.price;
-              }
+              obj.num = item.month;
+              obj.price = item.price;
               obj.id = item.servicePriceId;
               obj.once = (obj.price / obj.num).toFixed(4);
               arr.push(obj);
@@ -273,19 +237,14 @@
           this.$Message.error(error.response.data.message)
         });
       },
-      //选择服务价格
+      //选择文档价格
       selectMoneyFn(num, servicePriceId, discount, price) {
         this.selectMoney = num;
         this.servicePriceId = servicePriceId;
         this.price = price;
-        if (this.type == 3) {
-          this.date = this.addMonth(this.dateAgain, num);
-        }
-        if (this.type == 2) {
-          this.num = this.numAgain + num;
-        }
+        this.date = this.addMonth(this.dateAgain, num);
       },
-      // 根据选择服务添加
+      // 根据选择文档添加
       addMonth(date, month) {
         let y = new Date(date).getFullYear();
         let m = new Date(date).getMonth();
@@ -312,11 +271,20 @@
       },
       //获取团队账户
       getTeamInfo() {
-        getAccountMoney({
+        let params = {
           teamId: this.$store.state.user.team.id,
-        }).then((res) => {
+        }
+        getAccountMoney(params).then((res) => {
           if (res.data.code == 1) {
-            this.balance = res.data.content.balance;
+            let obj = res.data.content
+            this.balance = obj.balance;
+            if(new Date(obj.team.documentEndTime).getTime() < new Date(this.clockItem).getTime()){
+              this.date = new Date(obj.team.documentEndTime).getTime()
+              this.dateAgain = new Date(this.clockItem).getTime()
+            }else{
+              this.dateAgain = new Date(obj.team.documentEndTime).getTime()
+              this.date = new Date(obj.team.documentEndTime).getTime()
+            }
           }
         });
       }, 

@@ -146,8 +146,6 @@
 <script>
   import {getAccountMoney} from "../../api/money";
   import {getServiceList, renewBalance,getTeamServiceInfo} from "../../api/service";
-  import calcudate from "calcudate";
-  import accountUser from "../../store/modules/user";
   import $ from "jquery";
 
   export default {
@@ -168,7 +166,6 @@
         balance: "",
         assignment: "余额支付",
         discount: "",
-        howMany: "",
         serviceId: "",
         price: 0,
       };
@@ -242,6 +239,14 @@
               this.numAgain = obj.balance
             }
             this.getServiceList();
+          }
+          //当前团对没有开通此服务
+          if(res.data.code === -1){
+            this.$Message.error(res.data.message);
+            setTimeout(()=>{
+              window.location.href = "https://service.easyapi.com/"
+            },2000);
+            
           }
         })
       },

@@ -13,8 +13,6 @@ export function getDocumentPriceList() {
     method: "GET",
   });
 }
-
-
 /**
  * 文档续费
  *
