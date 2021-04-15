@@ -15,3 +15,16 @@ export function getRechargeList(params) {
     },
   });
 }
+
+
+/**
+ * 未付款充值记录再次支付
+ *
+ * @see https://www.easyai.com
+ */
+export function payRecharge(rechargeId) {
+  return request({
+    url: `${accountUrl}/recharge/${rechargeId}/pay`,
+    method: "GET"
+  });
+}
