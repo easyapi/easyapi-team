@@ -12,7 +12,7 @@
             :class="{ eaActive: selectMoney === price.num }"
             v-for="(price, i) in frequency"
             :key="i"
-            @click="selectMoneyFn(price.num, price.id, null, price.price)"
+            @click="selectMoneyFn(price.num, price.price)"
           >
             <strong>
               {{ 12 > price.num ? price.num + "月"  : parseInt(price.num / 12) + "年" + (price.num % 12 !== 0 ? (price.num % 12) + "月" : "") }}&nbsp;&nbsp;￥{{
@@ -84,6 +84,13 @@
         </div>
       </div>
       <div class="Insequence_fl">
+        <strong class="Insequence_service_title">团队人数：</strong>
+        <div class="frequency">
+           <InputNumber v-model="number" controls-outside :min="teamNum"></InputNumber>
+        </div>
+      </div>
+      <p style="margin-top:-10px;margin-bottom:10px;margin-left:100px;color: #888888;font-size: 12px;">提示：团队超出20人，超出部分按每人5元计算</p>
+      <div class="Insequence_fl">
         <strong class="Insequence_service_title">到期时间：</strong>
         <div class="frequency">
           <strong style="color: #323232; font-size: 14px">{{dateFormat(date)}}</strong>
@@ -95,7 +102,7 @@
         >
         <div class="frequency">
           <strong style="color: #fa2222; font-size: 26px">
-            {{ price.toFixed(2) }} </strong
+            {{ totalPrice }} </strong
           >&nbsp;
           <span style="color: #323232; font-size: 14px">元</span>
         </div>
@@ -140,37 +147,50 @@
   </div>
 </template>
 <script>
-  import {getDocumentPriceList} from "../../api/doc.js";
+  import {getDocumentPriceList,documentRenew} from "../../api/doc.js";
+  import {getTeamUserList} from "../../api/team"
   import {getAccountMoney} from "../../api/money";
-  import {renewBalance} from "../../api/service";
   import $ from "jquery";
 
   export default {
     data() {
       return {
-        teamServiceId:"",
         date: "",
         dateAgain: "",
         clockItem: "",//当前时间
         purchase: false,
         frequency: "",
         selectMoney: "",
-        servicePriceId: "",
         balance: "",
-        assignment: "余额支付",
-        discount: "",
-        serviceId: "",
         price: 0,
+        assignment: "余额支付",
+        serviceId: "",
+        teamNum:0,//团队人数
+        number:0,//可改变团队人数
       };
+    },
+    computed:{
+      totalPrice(){
+        return this.number > 20 && this.selectMoney != "" ? (this.price + (this.number-20) * 5).toFixed(2) : this.price.toFixed(2)
+      }
     },
     created() {
       this.getTeamInfo();
       this.getDocumentPriceList();
+      this.getTeamUserList();
     },
     mounted() {
       document.title = "文档续费 - EasyAPI";
     },
     methods: {
+      getTeamUserList(){
+        getTeamUserList().then(res=>{
+          if(res.data.code === 1){
+            this.teamNum = res.data.content.length
+            this.number = res.data.content.length
+          }
+        })
+      },
       //当前时间
       getItem() {
         var currentTime = new Date();
@@ -192,32 +212,6 @@
         if (ss < 10) this.clockItem += "0";
         this.clockItem += ss;
       },
-      //获取团队服务详情
-      // getTeamServiceInfo(){
-      //   getTeamServiceInfo(this.teamServiceId).then(res=>{
-      //     if(res.data != null){
-      //       let obj = res.data
-      //       this.type = obj.service.type;
-      //       this.serviceId = obj.service.serviceId;
-      //       this.getItem();
-      //       if(this.type == 3){
-      //         //代表已过期
-      //         if(new Date(obj.endTime).getTime() < new Date(this.clockItem).getTime()){
-      //           this.date = new Date(obj.endTime).getTime()
-      //           this.dateAgain = new Date(this.clockItem).getTime()
-      //         }else{
-      //           this.dateAgain = new Date(obj.endTime).getTime()
-      //           this.date = new Date(obj.endTime).getTime()
-      //         }
-      //       }
-      //       if(this.type == 2){
-      //         this.num =  obj.balance,
-      //         this.numAgain = obj.balance
-      //       }
-      //       // this.getServiceList();
-      //     }
-      //   })
-      // },
       //查询文档报价列表
       getDocumentPriceList(){
         getDocumentPriceList().then(res=>{
@@ -227,7 +221,6 @@
               let obj = {};
               obj.num = item.month;
               obj.price = item.price;
-              obj.id = item.servicePriceId;
               obj.once = (obj.price / obj.num).toFixed(4);
               arr.push(obj);
             });
@@ -238,9 +231,8 @@
         });
       },
       //选择文档价格
-      selectMoneyFn(num, servicePriceId, discount, price) {
+      selectMoneyFn(num, price) {
         this.selectMoney = num;
-        this.servicePriceId = servicePriceId;
         this.price = price;
         this.date = this.addMonth(this.dateAgain, num);
       },
@@ -278,6 +270,7 @@
           if (res.data.code == 1) {
             let obj = res.data.content
             this.balance = obj.balance;
+            this.getItem();
             if(new Date(obj.team.documentEndTime).getTime() < new Date(this.clockItem).getTime()){
               this.date = new Date(obj.team.documentEndTime).getTime()
               this.dateAgain = new Date(this.clockItem).getTime()
@@ -291,17 +284,19 @@
       //确定购买
       Sure() {
         if (this.selectMoney === "") {
-          this.$Message.warning("请选择服务价格");
+          this.$Message.warning("请选择文档价格");
           return;
         }
         this.purchase = true;
       },
       determineThePurchase() {
         let data = {
-          servicePriceId: this.servicePriceId,
-          payment: this.assignment
+          price:Number(this.totalPrice),
+          payment: this.assignment,
+          month:this.selectMoney,
+          addUserSize:this.number
         }
-        renewBalance(data).then(res=>{
+        documentRenew(data).then(res=>{
           if (this.assignment === "支付宝") {
             this.formHtml = res.data.alipay;
             let form = $(this.formHtml);
@@ -312,22 +307,22 @@
             this.$Modal.confirm({
               title: "微信扫码支付",
               content: `<div class="wx-pay"><p class="wx-pay_amount">支付${
-              this.price - this.discount
+              Number(this.totalPrice)
                 }元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
               okText: "",
               cancelText: "",
               onOk: () => {
-                 this.getTeamServiceInfo();
+                 this.getTeamInfo();
                  this.selectMoney = ""
               },
             });
           }
-          this.getTeamServiceInfo();
+          this.getTeamInfo();
           this.selectMoney = ""
           this.$Message.success(res.data.message);
         }).catch((error) => {
           if (this.assignment == "" || this.assignment == null) {
-            this.$Message.warning("请选择和支付方式");
+            this.$Message.warning("请选择支付方式");
           } else {
             this.$Message.error(error.response.data.message);  
           }

@@ -12,7 +12,7 @@
             :class="{ eaActive: selectMoney === price.num }"
             v-for="(price, i) in frequency"
             :key="i"
-            @click="selectMoneyFn(price.num, price.id, null, price.price)"
+            @click="selectMoneyFn(price.num, price.price)"
           >
             <strong>
               {{ 12 > price.num ? price.num + "月"  : parseInt(price.num / 12) + "年" + (price.num % 12 !== 0 ? (price.num % 12) + "月" : "") }}&nbsp;&nbsp;￥{{
@@ -160,11 +160,9 @@ export default {
       purchase: false,
       frequency: "",
       selectMoney: "",
-      servicePriceId: "",
       balance: "",
       assignment: "余额支付",
       discount: "",
-      serviceId: "",
       price: 0,
     };
   },
@@ -205,7 +203,6 @@ export default {
         if (res.data != null) {
           let obj = res.data;
           this.serviceName = obj.service.name;
-          this.serviceId = obj.service.serviceId;
           this.getItem();
             //代表已过期
           if (new Date(obj.endTime).getTime() <new Date(this.clockItem).getTime()) {
@@ -229,7 +226,6 @@ export default {
               let obj = {};
               obj.num = item.month;
               obj.price = item.price;
-              obj.id = item.servicePriceId;
               obj.once = (obj.price / obj.num).toFixed(4);
               arr.push(obj);
             });
@@ -241,9 +237,8 @@ export default {
         });
     },
     //选择网关价格
-    selectMoneyFn(num, servicePriceId, discount, price) {
+    selectMoneyFn(num, price) {
       this.selectMoney = num;
-      this.servicePriceId = servicePriceId;
       this.price = price;
       this.date = this.addMonth(this.dateAgain, num);
       
@@ -293,9 +288,12 @@ export default {
     },
     determineThePurchase() {
       let data = {
-        servicePriceId: this.servicePriceId,
+        price:this.price,
         payment: this.assignment,
+        month:this.selectMoney,
       };
+      console.log(data)
+      return;
       renewBalance(data)
         .then((res) => {
           if (this.assignment === "支付宝") {
@@ -308,7 +306,7 @@ export default {
             this.$Modal.confirm({
               title: "微信扫码支付",
               content: `<div class="wx-pay"><p class="wx-pay_amount">支付${
-                this.price - this.discount
+                this.price
               }元</p><p><img src="http://qr.liantu.com/api.php?text=${weChatPayment}"></img></p><p>请使用微信扫描二维码以完成支付</p></div>`,
               okText: "",
               cancelText: "",
