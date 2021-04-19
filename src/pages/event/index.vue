@@ -134,7 +134,7 @@ export default {
         page: this.pagination.page,
       };
       getEventList(params).then((res) => {
-        if (res.data.code == 1) {
+        if (res.data.code === 1) {
           for (let a of res.data.content) {
             a.addTime = new Date(a.addTime).toLocaleTimeString();
           }

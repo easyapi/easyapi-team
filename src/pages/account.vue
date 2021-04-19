@@ -56,7 +56,9 @@
       <div class="m">
         <div class="team-info grid">
           <div class="team-icon">
-            <img :src="accountGolbalInfo.team.img ? accountGolbalInfo.team.img + '?icon.jpg' : 'https://qiniu.easyapi.com/team/default.png?icon.jpg'" alt/>
+            <img
+              :src="accountGolbalInfo.team.img ? accountGolbalInfo.team.img + '?icon.jpg' : 'https://qiniu.easyapi.com/team/default.png?icon.jpg'"
+              alt/>
           </div>
           <div>
             <ul class="team-info_list">
@@ -457,7 +459,7 @@
       getInvoiceToken() {
         let encryption = md5("" + this.$store.state.user.team.id);
         getInvoiceToken(encryption.toUpperCase()).then((res) => {
-          if (res.data.code == 1) {
+          if (res.data.code === 1) {
             this.fapiaoToken = res.data.content;
             this.qrCode();
           }
@@ -465,32 +467,26 @@
       },
       //跳转发票
       jumpInvoice() {
-        this.getInvoiceToken();
-        window.open(
-          "https://fapiao-user-center-web.easyapi.com/?accessToken=" +
-          this.fapiaoToken
-        );
+        if (!this.fapiaoToken) {
+          this.getInvoiceToken();
+        }
+        window.open("https://fapiao-user-center-web.easyapi.com/?accessToken=" + this.fapiaoToken);
       },
       //生成二维码
       qrCode: function () {
-        this.picture =
-          "https://fapiao-h5.easyapi.com?accessToken=" + this.fapiaoToken;
+        this.picture = "https://fapiao-h5.easyapi.com?accessToken=" + this.fapiaoToken;
       },
       getTeamInfo: function () {
         if (!this.$store.state.user.team) {
           return;
         }
-        getAccountMoney({
-          teamId: this.$store.state.user.team.id,
-        }).then((res) => {
-          if (res.data.code == 1) {
+        getAccountMoney({teamId: this.$store.state.user.team.id,}).then((res) => {
+          if (res.data.code === 1) {
             this.accountGolbalInfo = res.data.content;
             // 设置预警值
             if (res.data.content.warningBalance > 0) {
               this.moneyWarnSize = res.data.content.warningBalance;
               this.needMoneyWarn = true;
-            } else {
-              this.needMoneyWarn = false;
             }
           }
         });
@@ -657,7 +653,7 @@
       checkTeamUrl(success, fail) {
         return new Promise((resolve, reject) => {
           checkTeamUrl(this.teamUrl).then((res) => {
-            if (res.data.code == 1) {
+            if (res.data.code === 1) {
               resolve("团队URL可用");
             } else {
               reject("团队URL已存在");

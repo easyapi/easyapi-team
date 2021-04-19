@@ -84,7 +84,7 @@ export default {
       if (this.pagination.page < this.pagination.totalPages - 1) {
         this.pagination.page = this.pagination.page + 1;
         this.getNotificationList();
-      } 
+      }
       if(this.pagination.page == this.pagination.totalPages - 1){
         this.noMoreData = true
       }
@@ -96,7 +96,7 @@ export default {
         page: this.pagination.page,
       };
       getNotificationList(params).then((res) => {
-        if (res.data.code == 1) {
+        if (res.data.code === 1) {
           this.notificationListArray = this.notificationListArray.concat(
             res.data.content
           );

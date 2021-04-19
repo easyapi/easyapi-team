@@ -246,7 +246,7 @@
             setTimeout(()=>{
               window.location.href = "https://service.easyapi.com/"
             },2000);
-            
+
           }
         })
       },
@@ -320,11 +320,11 @@
         getAccountMoney({
           teamId: this.$store.state.user.team.id,
         }).then((res) => {
-          if (res.data.code == 1) {
+          if (res.data.code === 1) {
             this.balance = res.data.content.balance;
           }
         });
-      }, 
+      },
       //确定购买
       Sure() {
         if (this.selectMoney === "") {

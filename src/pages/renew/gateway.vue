@@ -212,7 +212,7 @@ export default {
             this.dateAgain = new Date(obj.endTime).getTime();
             this.date = new Date(obj.endTime).getTime();
           }
-          
+
         }
       });
     },
@@ -241,7 +241,7 @@ export default {
       this.selectMoney = num;
       this.price = price;
       this.date = this.addMonth(this.dateAgain, num);
-      
+
     },
     // 根据选择网关添加
     addMonth(date, month) {
@@ -273,7 +273,7 @@ export default {
       getAccountMoney({
         teamId: this.$store.state.user.team.id,
       }).then((res) => {
-        if (res.data.code == 1) {
+        if (res.data.code === 1) {
           this.balance = res.data.content.balance;
         }
       });

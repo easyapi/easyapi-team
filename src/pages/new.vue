@@ -170,7 +170,7 @@
       checkTeamUrl(success, fail) {
         return new Promise((resolve, reject) => {
           checkTeamUrl(this.teamForm.url).then(res => {
-            if (res.data.code == 1) {
+            if (res.data.code === 1) {
               resolve('团队URL可用')
             } else {
               reject('团队URL已存在')

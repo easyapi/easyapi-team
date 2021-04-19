@@ -221,7 +221,7 @@ export default {
       });
     },
     //查询监控报价列表
-    getMonitorPriceList() {  
+    getMonitorPriceList() {
       getMonitorPriceList()
         .then((res) => {
           if (res.data.code !== 0) {
@@ -276,7 +276,7 @@ export default {
       getAccountMoney({
         teamId: this.$store.state.user.team.id,
       }).then((res) => {
-        if (res.data.code == 1) {
+        if (res.data.code === 1) {
           this.balance = res.data.content.balance;
         }
       });

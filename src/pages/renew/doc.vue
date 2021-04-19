@@ -267,7 +267,7 @@
           teamId: this.$store.state.user.team.id,
         }
         getAccountMoney(params).then((res) => {
-          if (res.data.code == 1) {
+          if (res.data.code === 1) {
             let obj = res.data.content
             this.balance = obj.balance;
             this.getItem();
@@ -280,7 +280,7 @@
             }
           }
         });
-      }, 
+      },
       //确定购买
       Sure() {
         if (this.selectMoney === "") {
@@ -324,7 +324,7 @@
           if (this.assignment == "" || this.assignment == null) {
             this.$Message.warning("请选择支付方式");
           } else {
-            this.$Message.error(error.response.data.message);  
+            this.$Message.error(error.response.data.message);
           }
         });
       },
