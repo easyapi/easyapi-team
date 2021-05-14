@@ -1,4 +1,3 @@
-import { accountUrl } from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +7,7 @@ import request from "@/utils/request";
  */
 export function getOrderList(params) {
   return request({
-    url: `${accountUrl}/api/orders`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/orders`,
     method: "GET",
     params: {
       ...params,

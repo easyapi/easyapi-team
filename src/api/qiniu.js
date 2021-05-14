@@ -1,11 +1,10 @@
-import {accountUrl} from "./api";
-import axios from "axios";
+import request from "@/utils/request";
 
 
 /**
  * 获取七牛KEY
  */
-export const getQiniuKey = `${accountUrl}/api/qiniu/key`;
+export const getQiniuKey = `${process.env.VUE_APP_ACCOUNT_API}/api/qiniu/key`;
 
 
 /**
@@ -13,4 +12,4 @@ export const getQiniuKey = `${accountUrl}/api/qiniu/key`;
  *
  * @see https://www.easyai.com
  */
-export const getQiniuToken = () => axios.get(`${accountUrl}/api/qiniu/upToken`);
+export const getQiniuToken = () => request.get(`${process.env.VUE_APP_ACCOUNT_API}/api/qiniu/upToken`);

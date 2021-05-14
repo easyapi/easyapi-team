@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 
@@ -9,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getNotificationList(params) {
   return request({
-    url: `${accountUrl}/notifications`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/notifications`,
     method: "GET",
     params: {
       ...params,

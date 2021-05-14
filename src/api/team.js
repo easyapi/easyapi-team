@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +7,7 @@ import request from "@/utils/request";
  */
 export function getTeamUserList(teamId) {
   return request({
-    url: `${accountUrl}/api/team/users`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/team/users`,
     method: "GET",
     params: {
       teamId: teamId,
@@ -25,7 +24,7 @@ export function getTeamUserList(teamId) {
  */
 export function changeTeam(teamId) {
   return request({
-    url: `${accountUrl}/api/team/${teamId}/change`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/team/${teamId}/change`,
     method: "PUT",
   });
 }
@@ -38,7 +37,7 @@ export function changeTeam(teamId) {
  */
 export function createTeam(data) {
   return request({
-    url: `${accountUrl}/api/team`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/team`,
     method: "POST",
     data: {
       ...data
@@ -53,7 +52,7 @@ export function createTeam(data) {
  */
 export function updateTeam(id, data) {
   return request({
-    url: `${accountUrl}/api/team/${id}`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/team/${id}`,
     method: "PUT",
     data: {
       ...data
@@ -68,7 +67,7 @@ export function updateTeam(id, data) {
  */
 export function deleteTeam(id, data) {
   return request({
-    url: `${accountUrl}/api/team/${id}`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/team/${id}`,
     method: "DELETE",
     data: {
       ...data
@@ -83,7 +82,7 @@ export function deleteTeam(id, data) {
  */
 export function checkTeamUrl(url) {
   return request({
-    url: `${accountUrl}/api/team/checkUrl`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/team/checkUrl`,
     method: "GET",
     params: {
       url: url,
@@ -98,7 +97,7 @@ export function checkTeamUrl(url) {
  */
 export function quitTeam(id, params) {
   return request({
-    url: `${accountUrl}/api/team/${id}/exit`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/team/${id}/exit`,
     method: "GET",
     params: {
       ...params
@@ -113,7 +112,7 @@ export function quitTeam(id, params) {
  */
 export function transferTeam(id, data) {
   return request({
-    url: `${accountUrl}/api/team/${id}/transfer`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/team/${id}/transfer`,
     method: "PUT",
     data: {
       ...data

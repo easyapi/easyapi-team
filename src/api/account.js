@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +7,7 @@ import request from "@/utils/request";
  */
 export function getAccountInfo() {
   return request({
-    url: `${accountUrl}/api/account`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/account`,
     method: "GET",
   });
 }
@@ -21,7 +20,7 @@ export function getAccountInfo() {
  */
 export function getUserTeamList() {
   return request({
-    url: `${accountUrl}/api/user/teams`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/user/teams`,
     method: "GET",
   });
 }
@@ -33,7 +32,7 @@ export function getUserTeamList() {
  */
 export function changePassword(data) {
   return request({
-    url: `${accountUrl}/api/account/change-password`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/account/change-password`,
     method: "POST",
     data: {
       ...data
@@ -48,7 +47,7 @@ export function changePassword(data) {
  */
 export function updateAccountInfo(data) {
   return request({
-    url: `${accountUrl}/api/account`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/account`,
     method: "PUT",
     data: {
       ...data

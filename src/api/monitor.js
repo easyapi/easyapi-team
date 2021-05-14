@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 
@@ -22,7 +21,7 @@ export function getMonitorProject(id) {
  */
 export function getMonitorPriceList() {
   return request({
-    url: `${accountUrl}/monitor/price`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/monitor/price`,
     method: "GET",
   });
 }
@@ -35,7 +34,7 @@ export function getMonitorPriceList() {
  */
 export function monitorRenew(data) {
   return request({
-    url: `${accountUrl}/monitor/renew`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/monitor/renew`,
     method: "POST",
     data: {
       ...data,

@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 
@@ -22,7 +21,7 @@ export function getGatewayProject(id) {
  */
 export function getGatewayPriceList() {
   return request({
-    url: `${accountUrl}/gateway/price`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/gateway/price`,
     method: "GET",
   });
 }
@@ -35,7 +34,7 @@ export function getGatewayPriceList() {
  */
 export function documentRenew(data) {
   return request({
-    url: `${accountUrl}/gateway/renew`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/gateway/renew`,
     method: "POST",
     data: {
       ...data,

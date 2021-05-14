@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +7,7 @@ import request from "@/utils/request";
  */
 export function getRechargeList(params) {
   return request({
-    url: `${accountUrl}/api/recharges`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/recharges`,
     method: "GET",
     params: {
       ...params,
@@ -24,7 +23,7 @@ export function getRechargeList(params) {
  */
 export function payRecharge(rechargeId) {
   return request({
-    url: `${accountUrl}/recharge/${rechargeId}/pay`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/recharge/${rechargeId}/pay`,
     method: "GET"
   });
 }

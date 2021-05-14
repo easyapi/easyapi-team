@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 
@@ -9,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getDocumentPriceList() {
   return request({
-    url: `${accountUrl}/team/document/price`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/team/document/price`,
     method: "GET",
   });
 }
@@ -20,7 +19,7 @@ export function getDocumentPriceList() {
  */
 export function documentRenew(data) {
   return request({
-    url: `${accountUrl}/team/document/renew`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/team/document/renew`,
     method: "POST",
     data: {
       ...data,

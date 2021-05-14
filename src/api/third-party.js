@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +7,7 @@ import request from "@/utils/request";
  */
 export function getUserThirdPartyList() {
   return request({
-    url: `${accountUrl}/user/third-parties`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/user/third-parties`,
     method: "GET",
   });
 }
@@ -20,7 +19,7 @@ export function getUserThirdPartyList() {
  */
 export function unbindThirdParty(id) {
   return request({
-    url: `${accountUrl}/third-party/${id}`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/third-party/${id}`,
     method: "DELETE",
   });
 }

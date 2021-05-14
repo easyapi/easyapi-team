@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +7,7 @@ import request from "@/utils/request";
  */
 export function teamPage(domain) {
   return request({
-    url: `${accountUrl}/page/team/${domain}`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/page/team/${domain}`,
     method: "GET"
   });
 }

@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +7,7 @@ import request from "@/utils/request";
  */
 export function getEventList(params) {
   return request({
-    url: `${accountUrl}/events`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/events`,
     method: "GET",
     params: {
       ...params,

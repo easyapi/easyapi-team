@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +7,7 @@ import request from "@/utils/request";
  */
 export function alipay(params) {
   return request({
-    url: `${accountUrl}/api/alipay/recharge`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/alipay/recharge`,
     method: "GET",
     params: {
       ...params,
@@ -23,7 +22,7 @@ export function alipay(params) {
  */
 export function wxpay(params) {
   return request({
-    url: `${accountUrl}/api/wxpay/recharge`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/wxpay/recharge`,
     method: "GET",
     params: {
       ...params,

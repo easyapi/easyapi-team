@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 /**
@@ -8,7 +7,7 @@ import request from "@/utils/request";
  */
 export function getAccountMoney(params) {
   return request({
-    url: `${accountUrl}/api/money/check`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/money/check`,
     method: "GET",
     params: {
       ...params,
@@ -24,7 +23,7 @@ export function getAccountMoney(params) {
  */
 export function balanceWarn(id, data) {
   return request({
-    url: `${accountUrl}/api/money/${id}`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/api/money/${id}`,
     method: "PUT",
     data: {
       ...data,

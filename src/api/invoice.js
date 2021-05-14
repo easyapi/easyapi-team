@@ -1,4 +1,3 @@
-import {accountUrl} from "./api";
 import request from "@/utils/request";
 
 
@@ -9,7 +8,7 @@ import request from "@/utils/request";
  */
 export function getInvoiceToken(username) {
   return request({
-    url: `${accountUrl}/invoice/access-token`,
+    url: `${process.env.VUE_APP_ACCOUNT_API}/invoice/access-token`,
     method: "GET",
     params: {
       username: username
