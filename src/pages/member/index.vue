@@ -78,7 +78,7 @@
               :rules="[
                 {
                   required: true,
-                  message: '成员邮箱不能为空',
+                  message: '成员手机号不能为空',
                   trigger: 'blur'
                 },
               ]"
@@ -86,7 +86,7 @@
               <Input
                 v-model="item.userName"
                 class="top-5"
-                placeholder="请输入新成员邮箱"
+                placeholder="请输入新成员手机号"
               >
                 <Select
                   v-model="item.type"

@@ -3,18 +3,28 @@
     <div class="h-left clearfix">
       <a href="https://www.easyapi.com">
         <div class="ea-header-item logo">
-          <img src="https://qiniu.easyapi.com/icon.png" alt/>
+          <img src="https://qiniu.easyapi.com/icon.png" alt />
         </div>
       </a>
-      <router-link v-if="team" class="ea-header-item" to="/">{{team.name }}</router-link>
+      <router-link v-if="team" class="ea-header-item" to="/">{{
+        team.name
+      }}</router-link>
     </div>
     <div class="h-right clearfix">
       <div class="fr menu-box">
         <div class="current-team-box">
-          <a id="showCalendar" :class="{ active: showCalendar }" @click="gotoCalendar">
+          <a
+            id="showCalendar"
+            :class="{ active: showCalendar }"
+            @click="gotoCalendar"
+          >
             <span class="calendar"></span>
           </a>
-          <a id="showInform" :class="{ active: showInform }" @click="gotoInform">
+          <a
+            id="showInform"
+            :class="{ active: showInform }"
+            @click="gotoInform"
+          >
             <span class="inform"></span>
           </a>
           <a id="showTeamInfo" :class="{ active: showTeamInfo }">
@@ -24,7 +34,7 @@
         </div>
         <div class="user-avatar">
           <a>
-            <img id="showPersonage" :src="photo" alt/>
+            <img id="showPersonage" :src="photo" alt />
           </a>
           <div :class="{ active: isActive }" class="ea-DropdownMenu">
             <router-link to="/notification">我的通知</router-link>
@@ -40,12 +50,12 @@
 <script>
 import { mapGetters } from "vuex";
 import Cookies from "js-cookie";
-import EaTeam from "./common/ea-team/EaTeam"
+import EaTeam from "./common/ea-team/EaTeam";
 
 export default {
   name: "Header",
-  components:{
-    EaTeam
+  components: {
+    EaTeam,
   },
   data: function () {
     return {
@@ -297,7 +307,8 @@ export default {
         width: 35px;
         height: 35px;
         background: url('../assets/images/inform.png') no-repeat;
-        background-size: cover;
+        background-size: 89% 89%;
+        background-position: -1px 2px;
       }
 
       .team-icon {

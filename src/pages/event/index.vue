@@ -24,16 +24,18 @@
       <div class="eventbox" v-if="!noData">
         <ul>
           <li v-for="(item, index) in eventListArray" :key="index">
-            <div class="mr">
-              <p>
-                {{ item.updateTime.slice(5, 7) }}/{{
-                  item.updateTime.slice(8, 10)
-                }}
-              </p>
-              <p>{{ weekTime(item.updateTime.slice(0, 10)) }}</p>
+            <div class="eventItemTop">
+              <div class="mr">
+                <p>
+                  {{ item.updateTime.slice(5, 7) }}/{{
+                    item.updateTime.slice(8, 10)
+                  }}
+                </p>
+                <p>{{ weekTime(item.updateTime.slice(0, 10)) }}</p>
+              </div>
+              <div class="em">{{ item.team.name }}</div>
+              <div class="line"></div>
             </div>
-            <div class="em">{{ item.team.name }}</div>
-            <Divider :dashed="true" />
             <div class="event_content">
               <span class="addTime">{{ item.addTime }}</span>
               <Avatar
@@ -123,8 +125,8 @@ export default {
         this.pagination.page = this.pagination.page + 1;
         this.getEventList();
       }
-      if(this.pagination.page == this.pagination.totalPages - 1){
-        this.noMoreData = true
+      if (this.pagination.page == this.pagination.totalPages - 1) {
+        this.noMoreData = true;
       }
     },
     getEventList() {
@@ -176,12 +178,29 @@ export default {
 };
 </script>
 
+<style>
+.shd {
+  color: #1ac1d6 !important;
+}
+.shd a {
+  color: #1ac1d6 !important;
+}
+</style>
 <style scoped>
+.eventItemTop {
+  display: flex;
+  align-content: center;
+}
+.eventItemTop .line {
+  width: 80%;
+  height: 1px;
+  background: #e8eaec;
+  margin-top: 25px;
+}
 .event_card {
   max-width: 1200px;
   overflow: hidden;
   margin: 30px auto;
-  border: 1px solid #ddd;
   padding: 40px;
 }
 
@@ -239,6 +258,9 @@ export default {
   padding: 0 20px;
   background: #fff;
   display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ivu-divider-dashed {
@@ -261,8 +283,6 @@ export default {
 .event_content {
   padding: 8px 0 8px 70px;
   line-height: 50px;
-  position: relative;
-  top: -50px;
 }
 .no-data {
   margin: 200px auto;
@@ -281,6 +301,7 @@ export default {
   text-align: center;
   color: #2d8cf0;
 }
+
 .demo-spin-icon-load {
   animation: ani-demo-spin 1s linear infinite;
 }
