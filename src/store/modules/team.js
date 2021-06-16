@@ -34,7 +34,7 @@ const team = {
     switchoverTeam({dispatch, commit, state}, teamId) {
       changeTeam(teamId).then(res => {
         if (res.data.code === 1) {
-          dispatch("GetUserInfo");
+          dispatch("getUser");
           location.hash = "";
           location.reload();
         }

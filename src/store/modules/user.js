@@ -57,35 +57,36 @@ const user = {
   },
 
   actions: {
-    // 用户名登录
-    LoginByUsername({commit}, userInfo) {
-    },
-    // 获取用户信息
-    GetUserInfo({commit, state}) {
+    /**
+     * 获取用户信息
+     */
+    getUser({commit, state}) {
       getAccountInfo().then(res => {
-        let userInfoData = res.data;
-        commit("SET_ACCOUNT_INFO", userInfoData);
-        commit("SET_USER_ID", userInfoData.id);
-        commit("SET_USERNAME", userInfoData.username);
-        commit("SET_NICKNAME", userInfoData.nickname);
-        commit("SET_PHOTO", userInfoData.photo);
-        commit("SET_MOBILE", userInfoData.mobile);
-        commit("SET_EMAIL", userInfoData.email);
-        if (userInfoData.team) {
+        let user = res.data.content;
+        commit("SET_ACCOUNT_INFO", user);
+        commit("SET_USER_ID", user.id);
+        commit("SET_USERNAME", user.username);
+        commit("SET_NICKNAME", user.nickname);
+        commit("SET_PHOTO", user.photo);
+        commit("SET_MOBILE", user.mobile);
+        commit("SET_EMAIL", user.email);
+        if (user.team) {
           //团队信息{}，包括：name，img，id。。
-          commit("SET_TEAM", userInfoData.team);
+          commit("SET_TEAM", user.team);
           //团队信息具体信息
-          commit("SET_TEAM_NAME", userInfoData.team.name);
-          commit("SET_TEAM_IMG", userInfoData.team.img);
+          commit("SET_TEAM_NAME", user.team.name);
+          commit("SET_TEAM_IMG", user.team.img);
         }
         //用户团队{}
-        commit("SET_USER_TEAM", userInfoData.userTeam);
+        commit("SET_USER_TEAM", user.userTeam);
       }).catch(error => {
         this.$Message.error(error.response.data.message);
       });
     },
-    // 登出
-    Logout({commit, state}) {
+    /**
+     * 登出
+     */
+    logout({commit, state}) {
       Cookies.remove("authenticationToken");
     }
   }

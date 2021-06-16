@@ -101,7 +101,7 @@ export default {
 
   methods: {
     quitLogin() {
-      this.$store.dispatch("Logout");
+      this.$store.dispatch("logout");
       window.location.href =
         "https://account.easyapi.com/login?from=https://team.easyapi.com";
     },
@@ -123,7 +123,7 @@ export default {
   },
   mounted() {
     if (this.authenticationToken) {
-      this.$store.dispatch("GetUserInfo");
+      this.$store.dispatch("getUser");
     }
   },
 };

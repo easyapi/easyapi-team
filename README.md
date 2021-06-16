@@ -48,7 +48,7 @@ npm run build --report
   │   ├── images            #图片
   │   └── styles            #样式表
   ├── components            #公用组件
-  │   ├── Head.vue          #head组件
+  │   ├── header.vue          #头部组件
   │   └── common            #公用组件
   ├── libs                  #依赖工具函数
   ├── locale                #多语言文件
@@ -66,7 +66,7 @@ npm run build --report
   │   └── index.js          #路由
   ├── service
   │   ├── apiList.js        #api列表
-  │   └── request.js          #ajax封装
+  │   └── request.js        #ajax封装
   └── store                 #vuex相关
   ├── actions.js
   ├── getters.js

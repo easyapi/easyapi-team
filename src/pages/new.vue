@@ -198,7 +198,7 @@
         }
         createTeam(this.teamForm).then(res => {
           if (res.data.code === 1) {
-            this.$store.dispatch('GetUserInfo')
+            this.$store.dispatch('getUser')
             this.$store.dispatch('getTeamList')
             this.$router.replace('new/success')
           }

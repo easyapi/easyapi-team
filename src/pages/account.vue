@@ -435,7 +435,7 @@
     },
     computed: {},
     created: function () {
-      this.$store.dispatch("GetUserInfo");
+      this.$store.dispatch("getUser");
       this.getTeamInfo();
       if ((this.role = this.$store.state.user.userTeam.type)) {
         this.role = this.$store.state.user.userTeam.type;
@@ -776,7 +776,7 @@
         },).then((res) => {
           if (res.data.code === 1) {
             this.$Message.success("解散成功");
-            this.$store.dispatch("GetUserInfo");
+            this.$store.dispatch("getUser");
             this.$router.replace("/launch");
           }
         });

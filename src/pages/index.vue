@@ -145,7 +145,7 @@
       },
 
       quitLogin() {
-        this.$store.dispatch('Logout')
+        this.$store.dispatch('logout')
       },
       //团队信息
       getTeamInfo(domain) {
@@ -164,7 +164,7 @@
         this.getTeamInfo(domain)
       }
       if (this.authenticationToken) {
-        this.$store.dispatch('GetUserInfo')
+        this.$store.dispatch('getUser')
       }
     }
   }
