@@ -12,6 +12,7 @@ import "view-design/dist/styles/iview.css";
 
 import "./styles/gobal.styl";
 import "./styles/a-icon-font.css";
+import "./styles/icon-arrow.css"
 // icomoon
 import "./styles/icomoon/style.css";
 import "./styles/fontello/fontello.css";

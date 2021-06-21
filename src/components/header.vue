@@ -6,9 +6,12 @@
           <img src="https://qiniu.easyapi.com/icon.png" alt />
         </div>
       </a>
-      <router-link v-if="team" class="ea-header-item" to="/">{{
-        team.name
-      }}</router-link>
+      <a id="showTeamInfo" v-if="team" class="ea-header-item">
+        {{ team.name }}
+        <i v-if="showTeamInfo" class="team-icon icon-arrow-top iconfont"></i>
+        <i v-else class="team-icon icon-xiangxiajiantou iconfont"></i>
+      </a>
+      <EaTeam :class="{ active: showTeamInfo }"></EaTeam>
     </div>
     <div class="h-right clearfix">
       <div class="fr menu-box">
@@ -27,10 +30,9 @@
           >
             <span class="inform"></span>
           </a>
-          <a id="showTeamInfo" :class="{ active: showTeamInfo }">
+          <!-- <a id="showTeamInfo" :class="{ active: showTeamInfo }">
             <span class="team-icon"></span>
-          </a>
-          <EaTeam :class="{ active: showTeamInfo }"></EaTeam>
+          </a> -->
         </div>
         <div class="user-avatar">
           <a>
@@ -83,7 +85,7 @@ export default {
       (e) => {
         if (
           e.target.id === "showTeamInfo" ||
-          e.target.className === "team-icon"
+          e.target.classList[0] === "team-icon"
         ) {
           this.isActive = false;
           this.showTeamInfo = !this.showTeamInfo;
@@ -145,16 +147,20 @@ export default {
   .h-left {
     float: left;
     width: 70%;
+    position: relative;
   }
 
   .ea-header-item {
-    position: relative;
     float: left;
     height: 50px;
     padding: 0 30px;
     color: #fff;
     border-right: 1px solid darken(#1ac1d6, 5%);
     font-size: 14px;
+    cursor: pointer;
+    .iconfont{
+      font-size:14px;
+    }
   }
 
   .logo {
