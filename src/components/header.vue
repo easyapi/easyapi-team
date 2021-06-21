@@ -30,9 +30,6 @@
           >
             <span class="inform"></span>
           </a>
-          <!-- <a id="showTeamInfo" :class="{ active: showTeamInfo }">
-            <span class="team-icon"></span>
-          </a> -->
         </div>
         <div class="user-avatar">
           <a>
