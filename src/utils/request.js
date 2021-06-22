@@ -5,8 +5,8 @@ import Cookies from "js-cookie";
 // 添加请求拦截器
 axios.interceptors.request.use(
   function (config) {
-    let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZzIwMDg0QDEyNi5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYyNjMxMzk5NX0.yjHZuIy4x5Fls3JHmfEsNTjg29nMAjLrs9V3yt4OBoMjV0Nqv5KT6nhUk7Yh7TdncLlUjahf7MxO9w1NKeG51Q"
-    // let token = Cookies.get("authenticationToken");
+    let token = Cookies.get("authenticationToken");
+    // token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZzIwMDg0QDEyNi5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYyNjMxMzk5NX0.yjHZuIy4x5Fls3JHmfEsNTjg29nMAjLrs9V3yt4OBoMjV0Nqv5KT6nhUk7Yh7TdncLlUjahf7MxO9w1NKeG51Q"
     config.headers.Authorization = "Bearer " + token;
     return config;
   },
@@ -34,7 +34,7 @@ axios.interceptors.response.use(
       window.location.href = "https://account.easyapi.com/login?from=https://team.easyapi.com";
     } else if (error.response.data.code === -8) {
       // 处理-8无团队信息
-      window.location.href = "https://team.easyapi.com";
+      window.location.href = "https://team.easyapi.com/new?from=https://team.easyapi.com";
     } else if (error.response.data.code === -7) {
       // 处理-7认证失败
       router.push(`/unavailable`);
