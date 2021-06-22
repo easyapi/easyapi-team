@@ -3,7 +3,14 @@
     <div class="member-card" v-for="(item, i) in members" :key="i">
       <div class="member grid" @click="memberSetting(i)" v-if="item.user">
         <div class="fl icon">
-          <img :src="item.user.photo ? item.user.photo + '?icon.jpg' : 'https://qiniu.easyapi.com/user/default.jpg?icon.jpg'" alt=""/>
+          <img
+            :src="
+              item.user.photo
+                ? item.user.photo + '?icon.jpg'
+                : 'https://qiniu.easyapi.com/user/default.jpg?icon.jpg'
+            "
+            alt=""
+          />
         </div>
         <div class="fl info">
           <p class="name">{{ item.user.nickname }}</p>
@@ -22,9 +29,15 @@
     >
       <div class="n-row grid" v-if="memberSelect > 0 || memberSelect == 0">
         <p class="bottom-5">
-          从团队中移除<span class="t-blue">{{members[memberSelect].user.nickname}}</span>
+          从团队中移除<span class="t-blue">{{
+            members[memberSelect].user.nickname
+          }}</span>
         </p>
-        <p class="bottom-5">被移除的成员, 将不能再访问EasyAPI上的项目信息, 但<span class="t-blue">跟他相关的数据不会被删除</span></p>
+        <p class="bottom-5">
+          被移除的成员, 将不能再访问EasyAPI上的项目信息, 但<span class="t-blue"
+            >跟他相关的数据不会被删除</span
+          >
+        </p>
         <ea-button
           text="确认删除"
           size="small"
@@ -33,8 +46,11 @@
           @click="confirmClick"
         />
 
-        <p class="bottom-5" v-if="hasInviter">在{{ members[memberSelect].addTime | dateFormat }},&nbsp;由管理员&nbsp;{{
-          inviter }}&nbsp;邀请加入团队</p>
+        <p class="bottom-5" v-if="hasInviter">
+          在{{
+            members[memberSelect].addTime | dateFormat
+          }},&nbsp;由管理员&nbsp;{{ inviter }}&nbsp;邀请加入团队
+        </p>
 
         <Spin fix v-if="hasInviter && !inviter"></Spin>
 
@@ -42,15 +58,23 @@
           <h4 class="title">权限设置</h4>
           <RadioGroup v-model="permision" vertical>
             <Radio label="管理员">
-              <p class="radio-label">管理员<span class="des">可以创建，修改和删除项目，也可以设置其他人为管理员</span></p>
+              <p class="radio-label">
+                管理员<span class="des"
+                  >可以创建，修改和删除项目，也可以设置其他人为管理员</span
+                >
+              </p>
             </Radio>
             <Radio label="成员">
-              <p class="radio-label">成员<span class="des">普通成员,可以看到团队中所有成员以及他参与的内容</span></p>
+              <p class="radio-label">
+                成员<span class="des"
+                  >普通成员,可以看到团队中所有成员以及他参与的内容</span
+                >
+              </p>
             </Radio>
           </RadioGroup>
         </div>
 
-        <ea-button text="保存设置" class="top-20" @click="setMemberType"/>
+        <ea-button text="保存设置" class="top-20" @click="setMemberType" />
       </div>
     </ea-dialog>
     <ea-dialog
@@ -59,8 +83,13 @@
       width="420"
       @visibleChange="delSDVisible"
     >
-      <p>被移除的成员，将不能再访问&nbsp;EasyAPI&nbsp;上的项目信息，但<span class="t-blue">跟他相关的数据不会被删除</span></p>
-      <ea-button text="确认移除" type="red" class="top-20" @click="delMember"/>
+      <p>
+        被移除的成员，将不能再访问&nbsp;EasyAPI&nbsp;上的项目信息，但<span
+          class="t-blue"
+          >跟他相关的数据不会被删除</span
+        >
+      </p>
+      <ea-button text="确认移除" type="red" class="top-20" @click="delMember" />
     </ea-dialog>
     <ea-dialog
       title="添加新成员"
@@ -79,7 +108,7 @@
                 {
                   required: true,
                   message: '成员手机号不能为空',
-                  trigger: 'blur'
+                  trigger: 'blur',
                 },
               ]"
             >
@@ -98,9 +127,8 @@
                     v-for="item of permisionList"
                     :value="item"
                     :key="item"
-                  >{{ item }}
-                  </Option
-                  >
+                    >{{ item }}
+                  </Option>
                 </Select>
               </Input>
             </FormItem>
@@ -133,292 +161,299 @@
 </template>
 
 <script>
-  import {getTeamUserList} from "../../api/team";
-  import {
-    setMemberType,
-    getMemberInvitedInfo,
-    addMember,
-    delMember
-  } from "../../api/member";
+import { getTeamUserList } from "../../api/team";
+import {
+  setMemberType,
+  getMemberInvitedInfo,
+  addMember,
+  delMember,
+} from "../../api/member";
 
-  export default {
-    name: "Members",
-    components: {},
-    props: ["propMembers"],
-    data: function () {
-      return {
-        memberSetDialog: false,
-        memberSelect: null,
-        permision: "成员",
-        permisionList: ["成员", "管理员"],
-        inviter: "",
-        hasInviter: true,
-        confirmDelMember: false,
-        members: this.propMembers,
-        newMemberSet: false,
-        newMemberList: {
-          items: [
-            {
-              userName: "",
-              type: "成员"
-            }
-          ]
-        },
-        memberRule: {
-          userName: []
-        },
-        newMemberRemark: "",
+export default {
+  name: "Members",
+  components: {},
+  props: ["propMembers"],
+  data: function () {
+    return {
+      memberSetDialog: false,
+      memberSelect: null,
+      permision: "成员",
+      permisionList: ["成员", "管理员"],
+      inviter: "",
+      hasInviter: true,
+      confirmDelMember: false,
+      members: this.propMembers,
+      newMemberSet: false,
+      newMemberList: {
+        items: [
+          {
+            userName: "",
+            type: "成员",
+          },
+        ],
+      },
+      memberRule: {
+        userName: [],
+      },
+      newMemberRemark: "",
 
-        // 是否有设置他人权限
-        hasPowerSetting: false
-      };
-    },
-    created: function () {
+      // 是否有设置他人权限
+      hasPowerSetting: false,
+    };
+  },
+  created: function () {
+    let t = this.$store.state.user.userTeam.type;
+    this.hasPowerSetting = t === "创建人" || t === "管理员" ? true : false;
+  },
+  mounted: function () {
+    document.title = "团队成员 - EasyAPI";
+    this.getMemberInvite();
+    this.getTeamUserList();
+  },
+  watch: {
+    "$store.state.user.userTeam": function () {
+      this.getTeamUserList();
       let t = this.$store.state.user.userTeam.type;
       this.hasPowerSetting = t === "创建人" || t === "管理员" ? true : false;
     },
-    mounted: function () {
-      document.title = "团队成员 - EasyAPI";
-      this.getMemberInvite();
-      this.getTeamUserList();
+  },
+  methods: {
+    getTeamUserList: function () {
+      getTeamUserList(this.$store.state.user.team.id).then((res) => {
+        this.members = res.data.content;
+      });
     },
-    watch: {
-      "$store.state.user.userTeam": function () {
-        this.getTeamUserList();
-        let t = this.$store.state.user.userTeam.type;
-        this.hasPowerSetting = t === "创建人" || t === "管理员" ? true : false;
+    // 成员设置弹窗
+    memberSetting: function (i) {
+      if (!this.hasPowerSetting) {
+        this.$Message.error("你没有权限!!");
+        return;
+      }
+      this.memberSelect = i;
+      if (this.members[this.memberSelect].type === "创建人") {
+        this.$Message.error("创建人无需编辑");
+        return;
+      }
+      this.memberSetDialog = true;
+      this.permision = this.members[this.memberSelect].type;
+      this.getMemberInvite(this.members[i].user.id);
+    },
+    memberSDVisible: function (show) {
+      if (!show) {
+        this.memberSetDialog = false;
+        this.inviter = "";
+        this.hasInviter = true;
       }
     },
-    methods: {
-      getTeamUserList: function () {
-        getTeamUserList(this.$store.state.user.team.id).then(res => {
-          this.members = res.data.content;
-        });
-      },
-      // 成员设置弹窗
-      memberSetting: function (i) {
-        if (!this.hasPowerSetting) {
-          this.$Message.error("你没有权限!!");
-          return;
+    closeMemberSD: function (resetSelect = true) {
+      this.memberSetDialog = false;
+      setTimeout(() => {
+        this.inviter = "";
+        this.hasInviter = true;
+        if (resetSelect) this.memberSelect = null;
+      }, 200);
+    },
+
+    // 获取成员被邀请信息
+    getMemberInvite: function (id) {
+      let params = {
+        inviteeId: id,
+        teamId: this.$store.state.user.team.id,
+      };
+      getMemberInvitedInfo(params).then((res) => {
+        if (res.data && res.data.content && res.data.content.length > 0) {
+          this.inviter = res.data.content[0].inviter.nickname;
+        } else {
+          this.hasInviter = false;
         }
-        this.memberSelect = i;
-        // if (this.members[this.memberSelect].type === "管理员"){
-        //   return;
-        // };
-        this.memberSetDialog = true;
-        this.permision = this.members[this.memberSelect].type;
-        this.getMemberInvite(this.members[i].user.id);
-      },
-      memberSDVisible: function (show) {
-        if (!show) {
-          this.memberSetDialog = false;
-          this.inviter = "";
-          this.hasInviter = true;
-        }
-      },
-      closeMemberSD: function (resetSelect = true) {
-        this.memberSetDialog = false;
-        setTimeout(() => {
-          this.inviter = "";
-          this.hasInviter = true;
-          if (resetSelect) this.memberSelect = null;
-        }, 200);
-      },
+      });
+    },
 
-      // 获取成员被邀请信息
-      getMemberInvite: function (id) {
-        let params = {
-          inviteeId: id,
-          teamId: this.$store.state.user.team.id
-        };
-        getMemberInvitedInfo(params).then(res => {
-          if (res.data && res.data.content && res.data.content.length > 0) {
-            this.inviter = res.data.content[0].inviter.nickname;
-          } else {
-            this.hasInviter = false;
-          }
-        });
-      },
+    // 确认删除按钮
+    confirmClick: function () {
+      this.confirmDelMember = true;
+      this.closeMemberSD(false);
+    },
 
-      // 确认删除按钮
-      confirmClick: function () {
-        this.confirmDelMember = true;
-        this.closeMemberSD(false);
-      },
+    // 确认移除弹窗
+    delSDVisible: function (show) {
+      if (!show) this.closeDelSD();
+    },
+    closeDelSD: function () {
+      this.confirmDelMember = false;
+    },
 
-      // 确认移除弹窗
-      delSDVisible: function (show) {
-        if (!show) this.closeDelSD();
-      },
-      closeDelSD: function () {
-        this.confirmDelMember = false;
-      },
+    /**
+     * 添加新成员
+     */
+    newMember: function () {
+      this.newMemberSet = true;
+    },
+    newMemberSDVisible: function (show) {
+      if (!show) this.newMemberSet = false;
+    },
+    closeNewSD: function () {
+      this.newMemberSet = false;
+      this.$refs["newMemberList"].resetFields();
+    },
+    appendMember: function () {
+      this.newMemberList.items.push({
+        userName: "",
+        type: "成员",
+      });
+    },
 
-      /**
-       * 添加新成员
-       */
-      newMember: function () {
-        this.newMemberSet = true;
-      },
-      newMemberSDVisible: function (show) {
-        if (!show) this.newMemberSet = false;
-      },
-      closeNewSD: function () {
-        this.newMemberSet = false;
-        this.$refs["newMemberList"].resetFields();
-      },
-      appendMember: function () {
-        this.newMemberList.items.push({
-          userName: "",
-          type: "成员"
-        });
-      },
-
-      /**
-       * 设置权限设置
-       */
-      setMemberType: function () {
-        let data = {
-          id: this.members[this.memberSelect].userTeamId,
-          type: this.permision
-        };
-        setMemberType(data).then(res => {
+    /**
+     * 设置权限设置
+     */
+    setMemberType: function () {
+      let data = {
+        id: this.members[this.memberSelect].userTeamId,
+        type: this.permision,
+      };
+      setMemberType(data)
+        .then((res) => {
           this.$Message.success("修改成功!");
           this.getTeamUserList();
           this.closeMemberSD();
-        }).catch(function (err) {
+        })
+        .catch(function (err) {
           this.$Message.error("修改失败!!");
           this.closeMemberSD();
-        }).then(function () {
-        });
-      },
+        })
+        .then(function () {});
+    },
 
-      /**
-       * 删除成员
-       */
-      delMember: function () {
-        let id = this.members[this.memberSelect].userTeamId;
-        delMember(id).then(res => {
-          if(res.data.code === 1){
+    /**
+     * 删除成员
+     */
+    delMember: function () {
+      let id = this.members[this.memberSelect].userTeamId;
+      delMember(id)
+        .then((res) => {
+          if (res.data.code === 1) {
             this.$Message.success("删除成功!");
             this.memberSelect = null;
             this.closeDelSD();
-            this.getTeamUserList();    
+            this.getTeamUserList();
           }
-        }).catch(function (err) {
-          this.$Message.error("删除失败!!");
         })
-      },
+        .catch(function (err) {
+          this.$Message.error("删除失败!!");
+        });
+    },
 
-      /**
-       * 添加新成员
-       */
-      confirmNewMember: function () {
-        this.$refs["newMemberList"].validate().then(vaild => {
-          if (vaild) {
-            let type = [];
-            let username = [];
-            let teamId = [];
-            let remark = [];
-            let memberData = [];
-            this.newMemberList.items.forEach(el => {
-              memberData.push({
-                type: el.type,
-                teamId: this.$store.state.user.team.id,
-                username: el.userName,
-                remark: this.newMemberRemark
-              });
+    /**
+     * 添加新成员
+     */
+    confirmNewMember: function () {
+      this.$refs["newMemberList"].validate().then((vaild) => {
+        if (vaild) {
+          let type = [];
+          let username = [];
+          let teamId = [];
+          let remark = [];
+          let memberData = [];
+          this.newMemberList.items.forEach((el) => {
+            memberData.push({
+              type: el.type,
+              teamId: this.$store.state.user.team.id,
+              username: el.userName,
+              remark: this.newMemberRemark,
             });
-            let data = memberData;
-            addMember(data).then(res => {
+          });
+          let data = memberData;
+          addMember(data)
+            .then((res) => {
               if (res.data.code === 1) {
                 this.$Message.success({
                   content: res.data.message.replace("添加", "邀请"),
-                  duration: 3
+                  duration: 3,
                 });
                 this.getTeamUserList();
                 this.newMemberRemark = "";
                 this.newMemberList.items = [
                   {
                     userName: "",
-                    type: "成员"
-                  }
+                    type: "成员",
+                  },
                 ];
               }
               this.closeNewSD();
-            }).catch(function (err) {
+            })
+            .catch(function (err) {
               this.$Message.error("添加失败!!");
             });
-          }
-        });
-      }
-    }
-  };
+        }
+      });
+    },
+  },
+};
 </script>
 
 <style lang="stylus" scoped>
-  @import '../../styles/color.styl'
+@import '../../styles/color.styl'
 
-  .m-wrapper
-    padding-top: 40px
+.m-wrapper
+  padding-top: 40px
 
-  .member-card
-    float: left
-    padding: 20px
-    width: (100 / 5) %
-    min-width: 200px
+.member-card
+  float: left
+  padding: 20px
+  width: (100 / 5) %
+  min-width: 200px
 
-    .member
-      padding: 10px
-      cursor: pointer
-      transition: all .4s ease
-
-      &:hover
-        box-shadow 0 3px 8px c-background-dark
-        transform: translateY(-5px)
-
-      .icon
-        height: 50px
-        width: 50px
-
-        img
-          height: 100%
-          width: 100%
-          background-color: c-background-dark
-          border-radius: 50%
-
-      .info
-        margin-left: 10px
-        font-size: 14px
-
-        .name
-          color: c-blue
-          margin: 5px 0
-
-  .new
-    float: left
-    margin: 30px
-    font-size: 50px
-    color: c-blue
+  .member
+    padding: 10px
     cursor: pointer
+    transition: all .4s ease
 
     &:hover
-      opacity: .8
+      box-shadow 0 3px 8px c-background-dark
+      transform: translateY(-5px)
 
-  .radio-label
-    display: inline-block
+    .icon
+      height: 50px
+      width: 50px
 
-    .des
-      margin-left: 15px
-      color: c-black2
+      img
+        height: 100%
+        width: 100%
+        background-color: c-background-dark
+        border-radius: 50%
 
-  .permision-set
-    margin-top: 20px
+    .info
+      margin-left: 10px
+      font-size: 14px
 
-    .title
-      margin: 5px 0
+      .name
+        color: c-blue
+        margin: 5px 0
 
-  .notice
+.new
+  float: left
+  margin: 30px
+  font-size: 50px
+  color: c-blue
+  cursor: pointer
+
+  &:hover
+    opacity: .8
+
+.radio-label
+  display: inline-block
+
+  .des
+    margin-left: 15px
     color: c-black2
-    font-size: .8em
+
+.permision-set
+  margin-top: 20px
+
+  .title
+    margin: 5px 0
+
+.notice
+  color: c-black2
+  font-size: .8em
 </style>

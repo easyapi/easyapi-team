@@ -6,12 +6,18 @@
           <img src="https://qiniu.easyapi.com/icon.png" alt />
         </div>
       </a>
-      <a id="showTeamInfo" v-if="team" class="ea-header-item">
+      <a
+        @click.stop="showTeamInfo = !showTeamInfo"
+        v-if="team"
+        class="ea-header-item"
+      >
         {{ team.name }}
         <i v-if="showTeamInfo" class="team-icon icon-arrow-top iconfont"></i>
         <i v-else class="team-icon icon-xiangxiajiantou iconfont"></i>
       </a>
-      <EaTeam :class="{ active: showTeamInfo }"></EaTeam>
+      <div ref="showTeamInfo">
+        <EaTeam :class="{ active: showTeamInfo }"></EaTeam>
+      </div>
     </div>
     <div class="h-right clearfix">
       <div class="fr menu-box">
@@ -80,17 +86,9 @@ export default {
     body.addEventListener(
       "click",
       (e) => {
-        if (
-          e.target.id === "showTeamInfo" ||
-          e.target.classList[0] === "team-icon"
-        ) {
-          this.isActive = false;
-          this.showTeamInfo = !this.showTeamInfo;
-        } else if (e.target.id === "showPersonage") {
+        if (e.target.id === "showPersonage") {
           this.isActive = !this.isActive;
-          this.showTeamInfo = false;
         } else {
-          this.showTeamInfo = false;
           this.isActive = false;
         }
       },
@@ -124,6 +122,14 @@ export default {
     if (this.authenticationToken) {
       this.$store.dispatch("getUser");
     }
+    let that = this;
+    document.addEventListener("click", function (e) {
+      if (!!that.$refs.showTeamInfo.contains(e.target)) {
+        that.showTeamInfo = true;
+      } else {
+        that.showTeamInfo = false;
+      }
+    });
   },
 };
 </script>
