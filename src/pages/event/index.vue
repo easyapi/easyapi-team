@@ -24,7 +24,7 @@
       <div class="eventbox" v-if="!noData">
         <ul>
           <li v-for="(item, index) in eventListArray" :key="index">
-            <div class="eventItemTop">
+            <div class="eventItemTop" v-if="item.ifShow">
               <div class="mr">
                 <p>
                   {{ item.updateTime.slice(5, 7) }}/{{
@@ -37,7 +37,9 @@
               <div class="line"></div>
             </div>
             <div class="event_content">
-              <span class="addTime">{{ item.addTime }}</span>
+              <span class="addTime">{{
+                getLocaleTimeString(item.addTime)
+              }}</span>
               <Avatar
                 icon="ios-person"
                 size="50"
@@ -129,6 +131,9 @@ export default {
         this.noMoreData = true;
       }
     },
+    getLocaleTimeString(time) {
+      return new Date(time).toLocaleTimeString();
+    },
     getEventList() {
       this.loading = true;
       let params = {
@@ -137,10 +142,18 @@ export default {
       };
       getEventList(params).then((res) => {
         if (res.data.code === 1) {
-          for (let a of res.data.content) {
-            a.addTime = new Date(a.addTime).toLocaleTimeString();
-          }
           this.eventListArray = this.eventListArray.concat(res.data.content);
+          for (let i in this.eventListArray) {
+            if (this.eventListArray[i - 1]) {
+              if (this.eventListArray[i].addTime.slice(0, 10) ===this.eventListArray[Number(i - 1)].addTime.slice(0, 10)) {
+                this.eventListArray[i].ifShow = false;
+              } else {
+                this.eventListArray[i].ifShow = true;
+              }
+            } else {
+              this.eventListArray[i].ifShow = true;
+            }
+          }
           this.pagination.totalPages = res.data.totalPages;
           this.loading = false;
         } else {
