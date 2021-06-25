@@ -62,9 +62,10 @@ export default {
 </script>
 
 <style lang="stylus">
-// .ivu-modal-footer
-//   border-top: none
-//   padding: 0
+
+.ivu-modal-footer
+  border-top: none
+  padding: 0
 
 // .ea-dialog-wrap .ivu-modal
 // top: 30%
